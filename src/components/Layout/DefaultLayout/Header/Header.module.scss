@@ -1,0 +1,44 @@
+.wrapper {
+  width: 100%;
+  height: var(--default-layout-header-height);
+  padding: 8px 16px;
+}
+
+.container {
+  max-width: 1140px;
+  margin: 0 auto;
+}
+
+.inner {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.navbar-brand a {
+  font-family: "Titillium Web", sans-serif;
+  font-size: 1.5rem !important;
+  padding-top: 0rem !important;
+  padding-bottom: 0.25rem;
+  margin-right: 2rem !important;
+  color: #5cb85c !important;
+  font-weight: 700;
+}
+
+.navbar-nav{
+  display: flex;
+  align-items: center;
+
+}
+
+.navbar-nav .nav-item + .nav-item {
+  margin-left: 1rem;
+}
+
+.navbar-nav .nav-link {
+  color: rgba(0, 0, 0, 0.3);
+
+  &:active{
+    color: rgba(0, 0, 0, 0.8);
+  }
+}

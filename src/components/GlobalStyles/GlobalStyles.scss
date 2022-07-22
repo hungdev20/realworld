@@ -1,0 +1,44 @@
+@import "normalize.css";
+@import url("https://fonts.googleapis.com/css2?family=Source+Serif+Pro:wght@300;400;600;700;900&display=swap");
+
+:root {
+  --primary: #5cb85c;
+
+  --default-layout-header-height: 56px;
+  --default-layout-width: 1150px;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html {
+  font-size: 16px;
+}
+
+body {
+  font-family: "Source Serif Pro", serif;
+  font-size: 1rem;
+  line-height: 1.5;
+  text-rendering: optimizespeed;
+  color: #373a3c;
+  background-color: #fff;
+}
+
+button,
+input,
+[tabindex] {
+  outline: none;
+  border: none;
+}
+
+a[href] {
+  color: var(--text-color);
+  text-decoration: none;
+}
+
+ul{
+  list-style: none;
+  margin: 0;
+}
