@@ -1,0 +1,20 @@
+//sidebar
+
+.sidebar {
+  padding: 5px 10px 10px 10px;
+  background: #f3f3f3;
+  border-radius: 4px;
+  p {
+    margin-bottom: 0.2rem;
+  }
+
+  .tag-item {
+    &:focus,
+    &:hover {
+      background-color: #687077;
+    }
+    &:focus {
+      text-decoration: underline;
+    }
+  }
+}

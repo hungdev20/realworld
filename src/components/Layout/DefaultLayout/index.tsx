@@ -9,11 +9,11 @@ function DefaultLayout({ children }: { children: any }) {
   return (
     <div className={cx("wrapper")}>
       <Header />
-      {/* <div className={cx("container")}>
-        <Sidebar />
+      <div className={cx("wp-content")}>
+        {/* <Sidebar /> */}
         <div className={cx("content")}>{children}</div>
       </div>
-      <Footer /> */}
+      {/* <Footer /> */}
     </div>
   );
 }

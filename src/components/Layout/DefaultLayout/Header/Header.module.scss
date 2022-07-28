@@ -4,11 +4,6 @@
   padding: 8px 16px;
 }
 
-.container {
-  max-width: 1140px;
-  margin: 0 auto;
-}
-
 .inner {
   display: flex;
   justify-content: space-between;
@@ -25,20 +20,23 @@
   font-weight: 700;
 }
 
-.navbar-nav{
+.navbar-nav {
   display: flex;
   align-items: center;
-
 }
 
 .navbar-nav .nav-item + .nav-item {
   margin-left: 1rem;
 }
 
-.navbar-nav .nav-link {
+.navbar-nav .nav-item a {
   color: rgba(0, 0, 0, 0.3);
 
-  &:active{
-    color: rgba(0, 0, 0, 0.8);
+  &:hover {
+    color: rgba(0, 0, 0, 0.6);
   }
+}
+
+.active{
+  color: rgba(0, 0, 0, 0.8)!important;
 }
