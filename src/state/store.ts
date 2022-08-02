@@ -1,12 +1,10 @@
-import { combineReducers, createStore, applyMiddleware } from "redux";
+import { createStore, applyMiddleware } from "redux";
 import createSagaMiddleware from "redux-saga";
+import IndexReducer from "../index-reducer";
+import IndexSaga from "../index-sagas";
 
-import signupReducer from "./signup/reducer";
-import signupWatcher from "./signup/sagas";
-
-const rootReducer = combineReducers({ signupReducer });
 
 const sagaMiddleware = createSagaMiddleware();
-export const store = createStore(rootReducer, applyMiddleware(sagaMiddleware));
-sagaMiddleware.run(signupWatcher);
+export const store = createStore(IndexReducer, applyMiddleware(sagaMiddleware));
+sagaMiddleware.run(IndexSaga);
 export default store;

@@ -50,12 +50,22 @@ ul {
   padding: 0;
 }
 
-.h1, .h2, .h3, .h4, .h5, .h6, h1, h2, h3, h4, h5, h6 {
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   margin: 0;
   font-weight: 500;
   line-height: 1.2;
 }
-
 
 .tag-default {
   background-color: #818a91;
@@ -72,4 +82,15 @@ ul {
   padding-right: 0.6em;
   padding-left: 0.6em;
   border-radius: 10rem;
+}
+
+.error-messages {
+  color: #b85c5c;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  padding-left: 40px;
+  text-align: left;
+  .error {
+    list-style-type: disc;
+  }
 }

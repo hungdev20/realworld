@@ -12,10 +12,11 @@ const cx = classNames.bind(styles);
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(""); 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const errorMessages = useSelector((state) => state.signupReducer.errors.errors);
+  const requestStatus = useSelector((state: any) => state.signupReducer.requesting);
+  const errorMessages = useSelector((state: any) => state.signupReducer.errors.errors);
   let errors: any = [];
   if (errorMessages != undefined) {
     errors = Object.entries(errorMessages);
@@ -33,7 +34,7 @@ function Register() {
     <div className={cx("wrapper")}>
       <div className={cx("auth-page")}>
         <div className={cx("container", "page")}>
-          <Form className={cx("form-signup")}>
+          <Form className={cx("form-signup")} onSubmit={handleSignup}>
             <h1 className={cx("title")}>Sign up</h1>
             <Link className={cx("login")} to="/login">
               Have an account?
@@ -49,6 +50,7 @@ function Register() {
                 </li>
               )) : ""}
             </ul>
+
             <Form.Group className="mb-3" controlId="formBasicUsername">
               <Form.Control
                 size="lg"
@@ -73,16 +75,20 @@ function Register() {
                 placeholder="Password"
                 onChange={(event) => setPassword(event.target.value)}
               />
-              {/* <small id="error" className="text-danger form-text">
-                  {error}
-                </small> */}
             </Form.Group>
+            {requestStatus ?
+              <button className={cx("btn-register")}
+                disabled
+              >Sign up</button>
+              :
+              <button className={cx("btn-register")}
+              >Sign up</button>
+            }
 
-            <button className={cx("btn-register")} onClick={handleSignup}>Sign up</button>
           </Form>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 

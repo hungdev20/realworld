@@ -6,7 +6,7 @@ const initialState = {
   errors: {},
   messages: [],
 };
-
+ 
 export interface Actions {
   type: string;
   email?: string;

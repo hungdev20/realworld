@@ -1,29 +1,64 @@
+
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from 'react-redux'
+import { useNavigate } from "react-router-dom";
+import {loginRequest} from "../../state/login/actions"
 const cx = classNames.bind(styles);
-
+ 
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("");
+  const requestStatus = useSelector((state: any) => state.loginReducer.requesting);
+  const errorMessages = useSelector((state: any) => state.loginReducer.errors.errors);
+
+  let errors: any = [];
+  if (errorMessages != undefined) {
+    errors = Object.entries(errorMessages);
+  }
+  const handleLogin = (e: any) => {
+    e.preventDefault();
+
+    const payload = {
+      email: email,
+      password: password
+    }
+    dispatch(loginRequest(payload, navigate));
+  };
   return (
     <div className={cx("wrapper")}>
       <div className={cx("auth-page")}>
         <div className={cx("container", "page")}>
-          <Form className={cx("form-login")}>
+          <Form className={cx("form-login")} onSubmit={handleLogin}>
             <h1 className={cx("title")}>Sign in</h1>
             <Link className={cx("register")} to="/register">
               Need an account?
             </Link>
+
+            <ul className={cx("error-messages")}>
+              {errors != null ? errors.map((error: any, index: number) => (
+                <li
+                  className={cx("error")}
+                  key={index}
+                >
+                  {error[0] + " " + error[1][0]}
+                </li>
+              )) : ""}
+            </ul>
+
             <Form.Group className="mb-3" controlId="formBasicEmail">
               <Form.Control
                 size="lg"
                 type="email"
                 placeholder="Email"
-                //   onChange={(event) => setUsername(event.target.value)}
+                onChange={(event) => setEmail(event.target.value)}
               />
-              {/* <small id="usernameerror" className="text-danger form-text">
-                  {usernameError}
-                </small> */}
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
@@ -31,22 +66,26 @@ function Login() {
                 size="lg"
                 type="password"
                 placeholder="Password"
-                //   onChange={(event) => setPassword(event.target.value)}
+                onChange={(event) => setPassword(event.target.value)}
               />
-              {/* <small id="passworderror" className="text-danger form-text">
-                  {passwordError}
-                </small> */}
-              {/* <small id="error" className="text-danger form-text">
-                  {error}
-                </small> */}
             </Form.Group>
+            <button className={cx("btn-login")}
+            >Sign in</button>
+            {/* {requestStatus ?
+              <button className={cx("btn-login")}
+                disabled
+              >Sign in</button>
+              :
+              <button className={cx("btn-login")}
+              >Sign in</button>
+            } */}
 
-            <button className={cx("btn-login")}>Sign in</button>
           </Form>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
 
 export default Login;
+

@@ -1,4 +1,3 @@
-// src/signup/sagas.js
 
 import { takeLatest, call, put } from "redux-saga/effects";
 import { SIGNUP_REQUESTING, SIGNUP_SUCCESS, SIGNUP_ERROR } from "./constants";
@@ -10,7 +9,7 @@ function* signupApi(
   navigate: any
 ) {
   const data = {
-    user: {
+    user: { 
       email: email,
       password: password,
       username: username,
@@ -27,6 +26,7 @@ function* signupApi(
 }
 
 function* signupFlow(action: any) {
+  
   const { payload, navigate } = action;
   try {
     yield call(

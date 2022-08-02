@@ -29,14 +29,20 @@
   margin-left: 1rem;
 }
 
-.navbar-nav .nav-item a {
-  color: rgba(0, 0, 0, 0.3);
+.navbar-nav .nav-item {
+  * {
+    color: rgba(0, 0, 0, 0.3);
+  }
 
-  &:hover {
+  &:hover * {
     color: rgba(0, 0, 0, 0.6);
   }
 }
 
-.active{
-  color: rgba(0, 0, 0, 0.8)!important;
+.navbar-nav .nav-item a {
+  margin-left: 2px;
+}
+
+.active {
+  color: rgba(0, 0, 0, 0.8) !important;
 }

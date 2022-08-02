@@ -14,16 +14,7 @@
     margin-bottom: 1rem;
     display: block;
   }
-  .error-messages {
-    color: #b85c5c;
-    font-weight: bold;
-    margin-bottom: 1rem;
-    padding-left: 40px;
-    text-align: left;
-    .error {
-      list-style-type: disc;
-    }
-  }
+
 }
 
 .btn-register {
@@ -42,4 +33,10 @@
   cursor: pointer;
   user-select: none;
   border: 1px solid transparent;
+
+  &:disabled{
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
+

@@ -4,10 +4,14 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Button from "react-bootstrap/Button";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { useSelector } from 'react-redux'
 import { Link } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { requestFetchArticles } from "../../state/articles/actions"
+
 import axios from "axios";
 import Sidebar from "../../components/Layout/DefaultLayout/Sidebar";
 
@@ -15,24 +19,22 @@ const cx = classNames.bind(styles);
 const faPropIcon = faHeart as IconProp;
 
 function Home() {
-  const tabs = ["yourFeed", "globalFeed"];
-  const [type, setType] = useState("yourFeed");
-  const [listGlobalFeed, setListGlobalFeed] = useState<any[]>([]);
-  const {render, typeTag} = Sidebar();
-  useEffect(() => {
-    let arg = "";
-    type === "yourFeed" ? (arg = "articles/feed") : (arg = "articles");
-    let paramTypeTag = "";
-    typeTag != ""
-      ? (paramTypeTag = `&tag=${typeTag}`)
-      : (paramTypeTag = "");
-    axios(
-      `https://api.realworld.io/api/${arg}?limit=10&offset=0${paramTypeTag}`
-    ).then((res) => {
-      setListGlobalFeed(res.data.articles);
-    });
-  }, [type, typeTag]);
+  const dispatch = useDispatch();
+  //Get list of articles
+  const articles = useSelector((state: any) => state.articlesReducer.data);
 
+  const token = Boolean(localStorage.getItem("token"));
+  const tabs = ["yourFeed", "globalFeed"];
+  let typeDefault;
+  token ? typeDefault = "yourFeed" : typeDefault = "globalFeed";
+  const [type, setType] = useState(typeDefault);
+  const payload = {
+    tab: type,
+    tag: ""
+  }
+  useEffect(() => {
+    dispatch(requestFetchArticles(payload));
+  }, [])
   return (
     <div className={cx("wrapper")}>
       <div className={cx("home-page")}>
@@ -48,42 +50,58 @@ function Home() {
             <Col md={9}>
               <div className={cx("feed-toggle")}>
                 <ul className={cx("nav")}>
-                  <li
-                    key="yourFeed"
-                    className={cx("nav-item")}
-                    onClick={() => setType("yourFeed")}
-                  >
-                    <Link
-                      to=""
-                      className={cx("nav-link")}
-                      style={
-                        type === tabs[0]
-                          ? {
-                              background: "#fff",
-                              borderBottom: "2px solid #5cb85c",
-                              color: "#5cb85c",
+                  {token ?
+                    <>
+                      <li
+                        key="yourFeed"
+                        className={cx("nav-item")}
+
+                      >
+                        <Link
+                          to=""
+                          className={cx("nav-link")}
+                          onClick={() => {
+                            {
+                              setType("yourFeed");
+                              dispatch(requestFetchArticles(payload))
                             }
-                          : {}
-                      }
-                    >
-                      Your Feed
-                    </Link>
-                  </li>
+                          }}
+                          style={
+                            type === tabs[0]
+                              ? {
+                                background: "#fff",
+                                borderBottom: "2px solid #5cb85c",
+                                color: "#5cb85c",
+                              }
+                              : {}
+                          }
+                        >
+                          Your Feed
+                        </Link>
+                      </li>
+                    </>
+                    : ''
+                  }
+
                   <li
                     key="globalFeed"
                     className={cx("nav-item")}
-                    onClick={() => setType("globalFeed")}
                   >
                     <Link
                       to=""
                       className={cx("nav-link")}
+                      onClick={() => {
+                        setType("globalFeed");
+                        dispatch(requestFetchArticles(payload))
+                      }}
+
                       style={
                         type === tabs[1]
                           ? {
-                              background: "#fff",
-                              borderBottom: "2px solid #5cb85c",
-                              color: "#5cb85c",
-                            }
+                            background: "#fff",
+                            borderBottom: "2px solid #5cb85c",
+                            color: "#5cb85c",
+                          }
                           : {}
                       }
                     >
@@ -91,47 +109,48 @@ function Home() {
                     </Link>
                   </li>
                 </ul>
-                {listGlobalFeed.map((feed, index) => (
+                {articles.map((article: any) => (
                   <div className={cx("article")}>
                     <div className={cx("article-preview")}>
                       <div className={cx("article-meta")}>
                         <div className={cx("wp-info")}>
                           <Link
-                            to={feed.author.username}
+                            to={"/@" + article.author.username}
                             className={cx("profile")}
                           >
                             <img
-                              src={feed.author.image}
-                              alt={feed.author.username}
+                              src={article.author.image}
+                              alt={article.author.username}
                             />
                           </Link>
                           <div className={cx("info")}>
                             <Link
-                              to={feed.author.username}
+                              to={"/@" + article.author.username}
                               className={cx("author")}
                             >
-                              {feed.author.username}
+                              {article.author.username}
                             </Link>
-                            <span className={cx("date")}>{feed.createdAt}</span>
+                            <span className={cx("date")}>{article.created_at}</span>
                           </div>
                         </div>
                         <div className={cx("favorite-btn")}>
                           <Button size="sm">
                             <FontAwesomeIcon icon={faPropIcon} />
                             <span className={cx("count-like")}>
-                              {feed.favoritesCount}
+                              {article.favoritesCount}
                             </span>
                           </Button>
                         </div>
                       </div>
-                      <Link to={feed.slug} className={cx("preview-link")}>
-                        <h1 className={cx("title")}>{feed.title}</h1>
-                        <p className={cx("description")}>{feed.description}</p>
+                      <Link to={"/article/" + article.slug} className={cx("preview-link")}>
+                        <h1 className={cx("title")}>{article.title}</h1>
+                        <p className={cx("description")}>{article.description}</p>
                         <div className={cx("actions")}>
                           <span className={cx("read-more")}>Read more...</span>
                           <ul className={cx("tag-list")}>
-                            {feed.tagList.map((tag: any) => (
+                            {article.tagList.map((tag: string, index: number) => (
                               <li
+                                key={index}
                                 className={cx(
                                   "tag-default",
                                   "tag-pill",
@@ -140,6 +159,7 @@ function Home() {
                               >
                                 {tag}
                               </li>
+
                             ))}
                           </ul>
                         </div>
@@ -147,10 +167,11 @@ function Home() {
                     </div>
                   </div>
                 ))}
+
               </div>
             </Col>
             <Col md={3}>
-              {render}
+              <Sidebar />
             </Col>
           </Row>
         </div>

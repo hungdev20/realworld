@@ -1,11 +1,22 @@
 import classNames from "classnames/bind";
 import styles from "./Header.module.scss";
 import { Link, NavLink } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { useState, useEffect } from "react";
-
+import { faGear, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
+import { LOGOUT_REQUEST } from "../../../../state/login/constants"
+import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 function Header() {
   let activeClassName = "active";
+  const token = Boolean(localStorage.getItem("token"));
+  const username = localStorage.getItem("username");
+  const faPropIcon = faPenToSquare as IconProp;
+  const faPropIcon1 = faGear as IconProp;
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   return (
     <header className={cx("wrapper")}>
       <div className={cx("container")}>
@@ -24,41 +35,78 @@ function Header() {
                 Home
               </NavLink>
             </li>
+            {token ?
+              <>
+                <li className={cx("nav-item")}>
+                  <FontAwesomeIcon icon={faPropIcon} />
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive ? cx(activeClassName) : undefined
+                    }
+                    to="/editor"
+                  >
+                    New Article
+                  </NavLink>
+                </li>
+                <li className={cx("nav-item")}>
+                  <FontAwesomeIcon icon={faPropIcon1} />
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive ? cx(activeClassName) : undefined
+                    }
+                    to="/settings"
+                  >
+                    Settings
+                  </NavLink>
+                </li>
+                <li className={cx("nav-item")}>
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive ? cx(activeClassName) : undefined
+                    }
+                    to={"/" + username}
+                  >
+                    {username}
+                  </NavLink>
+                </li>
+              </>
+              :
+              <>
+                <li className={cx("nav-item")}>
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive ? cx(activeClassName) : undefined
+                    }
+                    to="/login"
+                  >
+                    Sign in
+                  </NavLink>
+                </li>
+                <li className={cx("nav-item")}>
+                  <NavLink
+                    className={({ isActive }) =>
+                      isActive ? cx(activeClassName) : undefined
+                    }
+                    to="/register"
+                  >
+                    Sign up
+                  </NavLink>
+                </li>
+              </>
+
+            }
             <li className={cx("nav-item")}>
               <NavLink
                 className={({ isActive }) =>
                   isActive ? cx(activeClassName) : undefined
                 }
-                to="/login"
+                to=""
+                onClick={() => dispatch({ type: LOGOUT_REQUEST, navigate })}
               >
-                Sign in
-              </NavLink>
-            </li>
-            <li className={cx("nav-item")}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? cx(activeClassName) : undefined
-                }
-                to="/register"
-              >
-                Sign up
+                Logout
               </NavLink>
             </li>
           </ul>
-          {/* <Nav
-            activeKey="/"
-           
-          >
-            <Nav.Item>
-              <Nav.NavLink href="/">Home</Nav.NavLink>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link href="/signIn">Sign in</Nav.Link>
-            </Nav.Item>
-            <Nav.Item>
-              <Nav.Link href="/signUp">Sign up</Nav.Link>
-            </Nav.Item>
-          </Nav> */}
         </div>
       </div>
     </header>
