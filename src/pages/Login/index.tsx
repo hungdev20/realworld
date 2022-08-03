@@ -15,8 +15,8 @@ function Login() {
   const navigate = useNavigate();
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
-  const requestStatus = useSelector((state: any) => state.loginReducer.requesting);
-  const errorMessages = useSelector((state: any) => state.loginReducer.errors.errors);
+  const requestStatus = useSelector((state: any) => state.login.requesting);
+  const errorMessages = useSelector((state: any) => state.login.errors.errors);
 
   let errors: any = [];
   if (errorMessages != undefined) {

@@ -2,9 +2,12 @@ import classNames from "classnames/bind";
 import styles from "./Sidebar.module.scss";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
 import axios from "axios";
+import { requestFetchArticles } from "../../../../state/articles/actions";
 
-function Sidebar() {
+function Sidebar({ children }: { children: any }) {
+  const dispatch = useDispatch();
   const cx = classNames.bind(styles);
   const [tags, setTags] = useState<any[]>([]);
   useEffect(() => {
@@ -18,9 +21,17 @@ function Sidebar() {
       <div className={cx("tag-list")}>
         {tags.map((tag, index) => (
           <Link
-          key= {index}
+            key={index}
             to=""
             className={cx("tag-default", "tag-pill", "tag-item")}
+            onClick={() => {
+              {
+                dispatch(requestFetchArticles({
+                  tab: children,
+                  tag: tag
+                }))
+              }
+            }}
           >
             {tag}
           </Link>

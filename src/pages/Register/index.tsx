@@ -15,8 +15,8 @@ function Register() {
   const [password, setPassword] = useState(""); 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const requestStatus = useSelector((state: any) => state.signupReducer.requesting);
-  const errorMessages = useSelector((state: any) => state.signupReducer.errors.errors);
+  const requestStatus = useSelector((state: any) => state.signup.requesting);
+  const errorMessages = useSelector((state: any) => state.signup.errors.errors);
   let errors: any = [];
   if (errorMessages != undefined) {
     errors = Object.entries(errorMessages);

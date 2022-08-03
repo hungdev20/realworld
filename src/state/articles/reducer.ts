@@ -4,11 +4,11 @@ import {
   FETCH_ARTICLES_ERRORS,
 } from "./constants";
 
-const initialState = {
+const initialState: object = {
   requesting: false,
   success: false,
   errors: {},
-  messages: [],
+  messages: "", 
   data: [],
 };
 
@@ -31,8 +31,8 @@ const articlesReducer = (state = initialState, action: Actions) => {
       return {
         requesting: false,
         success: true,
-        errors: [], 
-        data: action.data,
+        errors: {}, 
+        data: (action.data ? action.data : undefined),
         messages: "Fetches articles successfully",
       };
     case FETCH_ARTICLES_ERRORS:
@@ -41,7 +41,7 @@ const articlesReducer = (state = initialState, action: Actions) => {
         success: false,
         errors: action.error,
         data:[],
-        messages: [],
+        messages: "",
       };
     default:
       return state;

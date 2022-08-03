@@ -5,7 +5,7 @@ export default async function fetchArticles(data: any) {
   let arg = "";
   data.tab === "yourFeed" ? (arg = "articles/feed") : (arg = "articles");
   let paramTypeTag = "";
-  data.tag != "" ? (paramTypeTag = `&tag=${data.tag}`) : (paramTypeTag = "");
+  data.tag != "" ? ((paramTypeTag = `&tag=${data.tag}`) && (arg = "articles")) : (paramTypeTag = "");
 
   return await axiosConfig({
     method: "get",

@@ -1,10 +1,12 @@
-import { takeLatest, call, put, fork, take } from "redux-saga/effects";
+import { takeLatest, call, put, fork, take, takeEvery } from "redux-saga/effects";
 import fetchArticles from "../../apis/fetchArticles";
 import {
   FETCH_ARTICLES_REQUEST,
   FETCH_ARTICLES_SUCCESS,
   FETCH_ARTICLES_ERRORS,
+
 } from "./constants";
+import { requestFetchArticles } from "./actions"
 
 interface Res {
   status: number;
@@ -18,12 +20,11 @@ function* articlesApi(tab: string, tag: string) {
   };
 
   const res: Res = yield call(fetchArticles, payload);
-  console.log(res);
-  
   return res;
 }
-function* articlesFlow(tab: string, tag: string) {
-  const res: Res = yield call(articlesApi, tab, tag);
+function* articlesFlow({ payload }: ReturnType<typeof requestFetchArticles>) {
+  
+  const res: Res = yield call(articlesApi, payload.tab, payload.tag);
   if (res.status === 200) {
     yield put({ type: FETCH_ARTICLES_SUCCESS, data: res.data });
   } else {
@@ -32,8 +33,8 @@ function* articlesFlow(tab: string, tag: string) {
 }
 
 function* articlesWatcher() {
-  const { payload } = yield take(FETCH_ARTICLES_REQUEST);
-  yield fork(articlesFlow, payload.tab, payload.tag);
+  yield takeEvery(FETCH_ARTICLES_REQUEST, articlesFlow);
+
 }
 
 export default articlesWatcher;

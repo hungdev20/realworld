@@ -1,6 +1,6 @@
-import { FETCH_ARTICLES_REQUEST } from "./constants";
+import { FETCH_ARTICLES_REQUEST} from "./constants";
 
-interface Payload { 
+interface Payload {
   tab: string;
   tag: string;
 }
@@ -10,3 +10,4 @@ export const requestFetchArticles = (payload: Payload) => {
     payload,
   };
 };
+

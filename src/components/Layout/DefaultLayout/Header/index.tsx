@@ -3,7 +3,6 @@ import styles from "./Header.module.scss";
 import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { useState, useEffect } from "react";
 import { faGear, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { LOGOUT_REQUEST } from "../../../../state/login/constants"
 import { useDispatch } from "react-redux";

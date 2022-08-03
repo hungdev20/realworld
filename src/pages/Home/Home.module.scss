@@ -23,7 +23,6 @@
     margin-bottom: 0px;
   }
 }
-
 .nav .nav-item {
   display: inline-block;
 
@@ -59,6 +58,11 @@
   align-items: center;
   .profile img {
     border-radius: 999px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 32px;
+    width: 32px;
+    border-radius: 30px;
   }
   .info {
     margin: 0 1.5rem 0 0.3rem;
@@ -79,7 +83,9 @@
 }
 
 .favorite-btn button {
-  background-color: #5cb85c;
+  color: #5cb85c;
+  background-image: none;
+  background-color: transparent;
   border-color: #5cb85c;
 
   &:hover {
@@ -88,7 +94,11 @@
     border-color: #419641;
   }
 }
-
+.favorite-btn button.favorited {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+}
 .count-like {
   margin-left: 2px;
 }
@@ -131,9 +141,8 @@
   }
 }
 
-.tag-outline {
+li.tag-outline {
   border: 1px solid #ddd;
   color: #aaa !important;
   background: none !important;
 }
-
