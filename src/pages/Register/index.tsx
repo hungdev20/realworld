@@ -77,11 +77,11 @@ function Register() {
               />
             </Form.Group>
             {requestStatus ?
-              <button className={cx("btn-register")}
+              <button className={cx("btn-register", "btn-lg")}
                 disabled
               >Sign up</button>
               :
-              <button className={cx("btn-register")}
+              <button className={cx("btn-register", "btn-lg")}
               >Sign up</button>
             }
 

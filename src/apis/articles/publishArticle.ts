@@ -1,13 +1,11 @@
-import axiosConfig from "./axiosConfig";
+import axiosConfig from "../axiosConfig";
 
-export default async function favoriteArticle(data: any) {
+export default async function publishArticle(data: any) {
   const AUTH_TOKEN = localStorage.getItem("token");
-  let method = "post";
-  data.favorited ? method = "delete" : method = "post"
 
   return await axiosConfig({
-    method: method,
-    url: `/articles/${data.slug}/favorite`,
+    method: "post",
+    url: `/articles`,
     headers: {
       Authorization: "Token " + (AUTH_TOKEN ? AUTH_TOKEN.toString() : ""),
     },

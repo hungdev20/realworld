@@ -1,0 +1,138 @@
+.banner {
+  padding: 2rem 0 2rem 0;
+  color: #fff;
+  background: #333;
+  margin-bottom: 2rem;
+  .title {
+    font-size: 2.8rem;
+    font-weight: 600;
+    text-shadow: 0px 1px 3px rgb(0 0 0 / 30%);
+    margin-bottom: 0px;
+  }
+  .author {
+    color: #fff;
+  }
+  button {
+    opacity: 0.8;
+    &:hover {
+      transition: 0.1s all;
+      opacity: 1;
+    }
+  }
+}
+
+.article-actions {
+  margin: 2rem 0 0 0;
+  display: block;
+  position: relative;
+  font-weight: 300;
+  .avatar img {
+    display: inline-block;
+    vertical-align: middle;
+    height: 32px;
+    width: 32px;
+    border-radius: 30px;
+  }
+  .info {
+    margin: 0 1.5rem 0 0.3rem;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1rem;
+    .author {
+      display: block;
+      font-weight: 500 !important;
+    }
+    .date {
+      color: #bbb;
+      font-size: 0.8rem;
+      display: block;
+    }
+  }
+  .actions-btn {
+    display: inline-block;
+    .follow {
+      margin-right: 4px;
+    }
+  }
+}
+
+.article-content {
+  .description {
+    font-family: "Source Serif Pro", serif;
+    font-size: 1.2rem;
+    line-height: 1.8rem;
+    margin-bottom: 2rem;
+  }
+  ul.tag-list {
+    padding-left: 0px !important;
+    display: inline-block;
+    list-style: none !important;
+    margin-bottom: 1rem;
+  }
+}
+
+.page .article-actions {
+  text-align: center;
+  margin: 1.5rem 0 3rem 0;
+  .article-meta {
+    display: inline-block;
+  }
+  .author {
+    text-align: left;
+    color: #5cb85c;
+  }
+}
+
+.wp-comments {
+  .app-login,
+  .app-register {
+    color: #5cb85c;
+  }
+  .form-comment {
+    margin-bottom: 0.75rem;
+    textarea {
+      border: none;
+      padding: 0;
+    }
+    .post-comment {
+      float: right;
+      font-weight: 700;
+    }
+  }
+
+  .comment-item {
+    margin-bottom: 0.75rem;
+  }
+}
+
+.list-comments {
+  .comment-author {
+    display: inline-block;
+    vertical-align: middle;
+    font-size: 0.8rem;
+    color: #5cb85c;
+    font-weight: 300;
+    margin-right: 6px;
+    .comment-author-img {
+      display: inline-block;
+      vertical-align: middle;
+      height: 20px;
+      width: 20px;
+      border-radius: 30px;
+    }
+  }
+  .date-posted {
+    display: inline-block;
+    vertical-align: middle;
+    color: #bbb;
+    font-size: 0.8rem;
+  }
+  .mod-options {
+    float: right;
+    color: #333;
+    font-size: 0.8rem;
+    margin-left: 5px;
+    opacity: 0.6;
+    cursor: pointer;
+  }
+}

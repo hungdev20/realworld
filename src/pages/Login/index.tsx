@@ -7,9 +7,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
-import {loginRequest} from "../../state/login/actions"
+import { loginRequest } from "../../state/login/actions"
 const cx = classNames.bind(styles);
- 
+
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -69,16 +69,14 @@ function Login() {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Form.Group>
-            <button className={cx("btn-login")}
-            >Sign in</button>
-            {/* {requestStatus ?
-              <button className={cx("btn-login")}
+            {requestStatus ?
+              <button className={cx("btn-login", "btn-lg", "btn-primary")}
                 disabled
               >Sign in</button>
               :
-              <button className={cx("btn-login")}
+              <button className={cx("btn-login", "btn-lg", "btn-primary")}
               >Sign in</button>
-            } */}
+            }
 
           </Form>
         </div>

@@ -30,7 +30,7 @@ function* loginApi(email: string, password: string) {
 
 function* logout(navigate: any) {
   yield put(unsetClient());
-
+ 
   localStorage.removeItem("token"); 
   localStorage.removeItem("username");
   navigate("/login");

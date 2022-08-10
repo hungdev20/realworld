@@ -83,15 +83,26 @@
 }
 
 .favorite-btn button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
   color: #5cb85c;
   background-image: none;
   background-color: transparent;
-  border-color: #5cb85c;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #5cb85c;
 
   &:hover {
-    color: #fff;
-    background-color: #449d44;
-    border-color: #419641;
+    color: #fff!important;
+    background-color: #449d44!important;
+    border-color: #419641!important;
   }
 }
 .favorite-btn button.favorited {
@@ -134,15 +145,10 @@
 
     .tag-list li {
       font-weight: 300;
-      font-size: 0.8rem;
+      font-size: 0.8rem; 
       padding-top: 0px;
       padding-bottom: 0px;
     }
   }
 }
 
-li.tag-outline {
-  border: 1px solid #ddd;
-  color: #aaa !important;
-  background: none !important;
-}

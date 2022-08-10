@@ -1,5 +1,5 @@
 import { call, put, fork, take, takeEvery } from "redux-saga/effects";
-import favoriteArticle from "../../../apis/favoriteArticle";
+import {favoriteArticle} from "../../../apis/articles";
 import {
     LIKE_ARTICLE_SUCCESS,
     LIKE_ARTICLE_ERRORS,

@@ -1,9 +1,10 @@
-import { takeLatest, call, put, fork, take, takeEvery } from "redux-saga/effects";
-import fetchArticles from "../../apis/fetchArticles";
+import { call, put,takeEvery } from "redux-saga/effects";
+import {fetchArticles} from "../../apis/articles";
 import {
   FETCH_ARTICLES_REQUEST,
   FETCH_ARTICLES_SUCCESS,
   FETCH_ARTICLES_ERRORS,
+  ADD_ARTICLE_REQUEST
 
 } from "./constants";
 import { requestFetchArticles } from "./actions"
@@ -18,10 +19,9 @@ function* articlesApi(tab: string, tag: string) {
     tab,
     tag,
   };
-
   const res: Res = yield call(fetchArticles, payload);
   return res;
-}
+} 
 function* articlesFlow({ payload }: ReturnType<typeof requestFetchArticles>) {
   
   const res: Res = yield call(articlesApi, payload.tab, payload.tag);

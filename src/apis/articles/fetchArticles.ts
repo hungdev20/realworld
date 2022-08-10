@@ -1,4 +1,4 @@
-import axiosConfig from "./axiosConfig";
+import axiosConfig from "../axiosConfig";
 
 export default async function fetchArticles(data: any) {
   const AUTH_TOKEN = localStorage.getItem("token");
