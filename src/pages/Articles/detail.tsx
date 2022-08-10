@@ -11,7 +11,7 @@ import { useSelector } from 'react-redux'
 import { fetchDetailArticleRequest } from "../../state/articles/detail/actions"
 import { fetchCommentsRequest, addCommentRequest, deleteCommentRequest } from "../../state/articles/comments/actions"
 import { followAuthorRequest } from "../../state/articles/follow/actions"
-
+  
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";

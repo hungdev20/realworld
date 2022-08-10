@@ -1,0 +1,128 @@
+.nav .nav-item {
+  display: inline-block;
+
+  .nav-link {
+    border-radius: 0px;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: #aaa;
+    display: block;
+    padding: 0.5em 1em;
+  }
+}
+
+// list-article
+
+.article-preview {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding: 1.5rem 0;
+}
+//chung
+.article-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 300;
+  margin: 0 0 1rem 0;
+}
+
+.wp-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .profile img {
+    border-radius: 999px;
+    display: inline-block;
+    vertical-align: middle;
+    height: 32px;
+    width: 32px;
+    border-radius: 30px;
+  }
+  .info {
+    margin: 0 1.5rem 0 0.3rem;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: 1rem;
+    .author {
+      display: block;
+      font-weight: 500 !important;
+      color: #5cb85c;
+    }
+    .date {
+      color: #bbb;
+      font-size: 0.8rem;
+      display: block;
+    }
+  }
+}
+
+.favorite-btn button {
+  padding: 0.25rem 0.5rem;
+  font-size: 0.875rem;
+  border-radius: 0.2rem;
+  color: #5cb85c;
+  background-image: none;
+  background-color: transparent;
+  display: inline-block;
+  font-weight: normal;
+  line-height: 1.25;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: middle;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid #5cb85c;
+
+  &:hover {
+    color: #fff !important;
+    background-color: #449d44 !important;
+    border-color: #419641 !important;
+  }
+}
+.favorite-btn button.favorited {
+  color: #fff;
+  background-color: #5cb85c;
+  border-color: #5cb85c;
+}
+.count-like {
+  margin-left: 2px;
+}
+.preview-link {
+  color: inherit !important;
+
+  .title {
+    font-weight: 600;
+    font-size: 1.5rem;
+    margin-bottom: 3px;
+  }
+
+  .description {
+    font-weight: 300;
+    color: #999;
+    margin-bottom: 15px;
+    font-size: 1rem;
+    line-height: 1.3rem;
+  }
+
+  .actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    .read-more {
+      max-width: 30%;
+      font-size: 0.8rem;
+      font-weight: 300;
+      color: #bbb;
+      vertical-align: middle;
+    }
+
+    .tag-list li {
+      font-weight: 300;
+      font-size: 0.8rem;
+      padding-top: 0px;
+      padding-bottom: 0px;
+    }
+  }
+}

@@ -63,7 +63,7 @@ function Header() {
                     className={({ isActive }) =>
                       isActive ? cx(activeClassName) : undefined
                     }
-                    to={"/" + username}
+                    to={"/@" + username}
                   >
                     {username}
                   </NavLink>
