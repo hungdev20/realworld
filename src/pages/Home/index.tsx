@@ -11,7 +11,7 @@ function Home() {
   let type = "";
 
   return (
-    <div className={cx("wrapper")}>
+    <div className={cx("wrapper")}> 
       <div className={cx("home-page")}>
         <div className={cx("banner")}>
           <div className={cx("container")}>

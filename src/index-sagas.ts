@@ -3,12 +3,18 @@ import loginWatcher from "./state/login/sagas";
 import getSettingsWatcher from "./state/settings/sagas";
 import updateSettingsWatcher from "./state/settings/updateSagas";
 import articlesWatcher from "./state/articles/sagas";
+import deleteArticleWatcher from "./state/articles/deleteSagas";
 import favoriteWatcher from "./state/articles/favourites/sagas";
 import detailArticleWatcher from "./state/articles/detail/sagas";
 import fetchCommentsWatcher from "./state/articles/comments/sagas";
 import addCommentWatcher from "./state/articles/comments/addCommentSagas";
 import deleteCommentWatcher from "./state/articles/comments/deleteCommentSagas";
 import followAuthorWatcher from "./state/articles/follow/sagas";
+import fetchProfileUserWatcher from "./state/user/sagas";
+import {addTagWatcher} from "./state/articles/publish"
+import {publishArticleWatcher} from "./state/articles/publish"
+import {editArticleWatcher} from "./state/articles/publish"
+import {removeTagWatcher} from "./state/articles/publish"
 import { all } from "redux-saga/effects";
 
 export default function* IndexSaga() {
@@ -23,6 +29,12 @@ export default function* IndexSaga() {
     fetchCommentsWatcher(),
     addCommentWatcher(),
     deleteCommentWatcher(),
-    followAuthorWatcher()
+    followAuthorWatcher(),
+    fetchProfileUserWatcher(),
+    deleteArticleWatcher(),
+    addTagWatcher(),
+    publishArticleWatcher(),
+    editArticleWatcher(),
+    removeTagWatcher()
   ]);
 }

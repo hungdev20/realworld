@@ -8,14 +8,17 @@ import Card from 'react-bootstrap/Card';
 
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
+import { useNavigate } from "react-router-dom";
 import { fetchDetailArticleRequest } from "../../state/articles/detail/actions"
 import { fetchCommentsRequest, addCommentRequest, deleteCommentRequest } from "../../state/articles/comments/actions"
 import { followAuthorRequest } from "../../state/articles/follow/actions"
-  
+import { favoriteArticleRequest } from "../../state/articles/favourites/actions"
+import { deleteArticleRequest } from "../../state/articles/actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
-import { faHeart, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import { faHeart, faPen, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import moment from "moment";
 
 function DetailArticle() {
     const cx = classNames.bind(styles);
@@ -25,14 +28,17 @@ function DetailArticle() {
     const [commentPayload, setCommentPayload] = useState(comment);
     const faPropIcon = faHeart as IconProp;
     const faPropIcon1 = faPlus as IconProp;
-    const faPropIcon2 = faTrashCan as IconProp;
+    const faPropIcon2 = faTrashCan as IconProp; 
+    const faPropIcon3 = faPen as IconProp;
     const params = useParams();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     let slug: string = params.slug!;
     const detailArticle = useSelector((state: any) => state.detailArticle.data.article);
     const commentsOfArticle = useSelector((state: any) => state.commentsArticle.data.comments);
     const requestStatus = useSelector((state: any) => state.addCommentArticle.requesting);
     const requestFollowAuthorStatus = useSelector((state: any) => state.followAuthorArticle.requesting);
+    const requestFavorite = useSelector((state: any) => state.favorites.requesting);
     const errorMessages = useSelector((state: any) => state.addCommentArticle.errors.errors);
 
     let errors: any = [];
@@ -103,7 +109,7 @@ function DetailArticle() {
                                     >
                                         {detailArticle.author.username}
                                     </Link>
-                                    <span className={cx("date")}>{detailArticle.createdAt}</span>
+                                    <span className={cx("date")}>{moment(detailArticle.createdAt).format("MMMM D, YYYY")}</span>
                                 </div>
                                 <div className={cx("actions-btn")}>
 
@@ -119,41 +125,128 @@ function DetailArticle() {
                                             <span>
                                                 {detailArticle.author.following ?
                                                     "Unfollow " + detailArticle.author.username
-                                                    : "Follow" + detailArticle.author.username
+                                                    : "Follow " + detailArticle.author.username
                                                 }
                                             </span>
                                         </button>
 
                                         :
+                                        token ?
+                                            detailArticle.author.username === username ?
+                                                <Link to={"/editor/" + detailArticle.slug}
+                                                    onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
+                                                    className={cx("btn", "follow", "btn-sm", "btn-outline-secondary")}
+                                                >
+                                                    <FontAwesomeIcon icon={faPropIcon3} />
+                                                    <span>
+                                                        Edit Article
+                                                    </span>
+                                                </Link>
+
+                                                :
+                                                <button
+                                                    onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
+                                                    className={cx("btn", "follow", "btn-sm",
+                                                        detailArticle.author.following ? "btn-secondary"
+                                                            : "btn-outline-secondary")}
+                                                >
+                                                    <FontAwesomeIcon icon={faPropIcon1} />
+                                                    <span>
+                                                        {detailArticle.author.following ?
+                                                            "Unfollow " + detailArticle.author.username
+                                                            : "Follow " + detailArticle.author.username
+                                                        }
+                                                    </span>
+                                                </button>
+
+                                            :
+
+                                            <Link to="/register"
+                                                onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
+                                                className={cx("btn", "follow", "btn-sm",
+                                                    detailArticle.author.following ? "btn-secondary"
+                                                        : "btn-outline-secondary")}
+                                            >
+                                                <FontAwesomeIcon icon={faPropIcon1} />
+                                                <span>
+                                                    {detailArticle.author.following ?
+                                                        "Unfollow " + detailArticle.author.username
+                                                        : "Follow " + detailArticle.author.username
+                                                    }
+                                                </span>
+                                            </Link>
+
+                                    }
+                                    {requestFavorite ?
                                         <button
-                                            onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
-                                            className={cx("btn", "follow", "btn-sm",
-                                                detailArticle.author.following ? "btn-secondary"
-                                                    : "btn-outline-secondary")}
+                                            disabled
+                                            className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
                                         >
-                                            <FontAwesomeIcon icon={faPropIcon1} />
+                                            <FontAwesomeIcon icon={faPropIcon} />
                                             <span>
-                                                {detailArticle.author.following ?
-                                                    "Unfollow " + detailArticle.author.username
-                                                    : "Follow" + detailArticle.author.username
+                                                {detailArticle.favorited ?
+                                                    "Unfavorite Article"
+                                                    : "Favorite Article"
                                                 }
                                             </span>
+                                            <span className={cx("count-like")}>
+                                                ({detailArticle.favoritesCount})
+                                            </span>
                                         </button>
+                                        :
+
+                                        token ?
+                                            detailArticle.author.username === username ?
+                                                <button
+                                                    className={cx("btn", "favorite", "btn-sm", "btn-outline-danger")}
+                                                    onClick={() => {
+                                                        dispatch(deleteArticleRequest(detailArticle.slug, navigate))
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faPropIcon2} />
+                                                    <span>
+                                                        Delete Article
+                                                    </span>
+
+                                                </button>
+                                                :
+                                                <button
+                                                    className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
+
+                                                    onClick={() => {
+                                                        dispatch(favoriteArticleRequest({
+                                                            slug: detailArticle.slug,
+                                                            favorited: detailArticle.favorited
+                                                        }))
+                                                    }}
+                                                >
+                                                    <FontAwesomeIcon icon={faPropIcon} />
+                                                    <span>
+                                                        {detailArticle.favorited ?
+                                                            "Unfavorite Article"
+                                                            : "Favorite Article"
+                                                        }
+                                                    </span>
+                                                    <span className={cx("count-like")}>
+                                                        ({detailArticle.favoritesCount})
+                                                    </span>
+                                                </button>
+                                            :
+                                            <Link to="/register"
+                                                className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
+                                            >
+                                                <FontAwesomeIcon icon={faPropIcon} />
+                                                <span>
+                                                    {detailArticle.favorited ?
+                                                        "Unfavorite Article"
+                                                        : "Favorite Article"
+                                                    }
+                                                </span>
+                                                <span className={cx("count-like")}>
+                                                    ({detailArticle.favoritesCount})
+                                                </span>
+                                            </Link>
                                     }
-                                    <button
-                                        className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
-                                    >
-                                        <FontAwesomeIcon icon={faPropIcon} />
-                                        <span>
-                                            {detailArticle.favorited ?
-                                                "Unfavorite Article"
-                                                : "Favorite Article"
-                                            }
-                                        </span>
-                                        <span className={cx("count-like")}>
-                                            ({detailArticle.favoritesCount})
-                                        </span>
-                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -204,7 +297,7 @@ function DetailArticle() {
                                 >
                                     {detailArticle.author.username}
                                 </Link>
-                                <span className={cx("date")}>{detailArticle.createdAt}</span>
+                                <span className={cx("date")}>{moment(detailArticle.createdAt).format("MMMM D, YYYY")}</span>
                             </div>
                             <div className={cx("actions-btn")}>
 
@@ -220,42 +313,130 @@ function DetailArticle() {
                                         <span>
                                             {detailArticle.author.following ?
                                                 "Unfollow " + detailArticle.author.username
-                                                : "Follow" + detailArticle.author.username
+                                                : "Follow " + detailArticle.author.username
                                             }
                                         </span>
                                     </button>
 
                                     :
+                                    token ?
+                                        detailArticle.author.username === username ?
+                                            <Link to={"editor/" + detailArticle.slug}
+                                                onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
+                                                className={cx("btn", "follow", "btn-sm", "btn-outline-secondary")}
+                                            >
+                                                <FontAwesomeIcon icon={faPropIcon3} />
+                                                <span>
+                                                    Edit Article
+                                                </span>
+                                            </Link>
+
+                                            :
+                                            <button
+                                                onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
+                                                className={cx("btn", "follow", "btn-sm",
+                                                    detailArticle.author.following ? "btn-secondary"
+                                                        : "btn-outline-secondary")}
+                                            >
+                                                <FontAwesomeIcon icon={faPropIcon1} />
+                                                <span>
+                                                    {detailArticle.author.following ?
+                                                        "Unfollow " + detailArticle.author.username
+                                                        : "Follow " + detailArticle.author.username
+                                                    }
+                                                </span>
+                                            </button>
+
+                                        :
+
+                                        <Link to="/register"
+                                            onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
+                                            className={cx("btn", "follow", "btn-sm",
+                                                detailArticle.author.following ? "btn-secondary"
+                                                    : "btn-outline-secondary")}
+                                        >
+                                            <FontAwesomeIcon icon={faPropIcon1} />
+                                            <span>
+                                                {detailArticle.author.following ?
+                                                    "Unfollow " + detailArticle.author.username
+                                                    : "Follow " + detailArticle.author.username
+                                                }
+                                            </span>
+                                        </Link>
+
+                                }
+                                {requestFavorite ?
                                     <button
-                                        onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
-                                        className={cx("btn", "follow", "btn-sm",
-                                            detailArticle.author.following ? "btn-secondary"
-                                                : "btn-outline-secondary")}
+                                        disabled
+                                        className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
                                     >
-                                        <FontAwesomeIcon icon={faPropIcon1} />
+                                        <FontAwesomeIcon icon={faPropIcon} />
                                         <span>
-                                            {detailArticle.author.following ?
-                                                "Unfollow " + detailArticle.author.username
-                                                : "Follow" + detailArticle.author.username
+                                            {detailArticle.favorited ?
+                                                "Unfavorite Article"
+                                                : "Favorite Article"
                                             }
                                         </span>
+                                        <span className={cx("count-like")}>
+                                            ({detailArticle.favoritesCount})
+                                        </span>
                                     </button>
+                                    :
+
+                                    token ?
+                                        detailArticle.author.username === username ?
+                                            <button
+                                                className={cx("btn", "favorite", "btn-sm", "btn-outline-danger")}
+                                                onClick={() => {
+                                                    dispatch(deleteArticleRequest(detailArticle.slug, navigate))
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faPropIcon2} />
+                                                <span>
+                                                    Delete Article
+                                                </span>
+
+                                            </button>
+                                            :
+                                            <button
+                                                className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
+
+                                                onClick={() => {
+                                                    dispatch(favoriteArticleRequest({
+                                                        slug: detailArticle.slug,
+                                                        favorited: detailArticle.favorited
+                                                    }))
+                                                }}
+                                            >
+                                                <FontAwesomeIcon icon={faPropIcon} />
+                                                <span>
+                                                    {detailArticle.favorited ?
+                                                        "Unfavorite Article"
+                                                        : "Favorite Article"
+                                                    }
+                                                </span>
+                                                <span className={cx("count-like")}>
+                                                    ({detailArticle.favoritesCount})
+                                                </span>
+                                            </button>
+                                        :
+                                        <Link to="/register"
+                                            className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
+                                        >
+                                            <FontAwesomeIcon icon={faPropIcon} />
+                                            <span>
+                                                {detailArticle.favorited ?
+                                                    "Unfavorite Article"
+                                                    : "Favorite Article"
+                                                }
+                                            </span>
+                                            <span className={cx("count-like")}>
+                                                ({detailArticle.favoritesCount})
+                                            </span>
+                                        </Link>
                                 }
-                                <button
-                                    className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
-                                >
-                                    <FontAwesomeIcon icon={faPropIcon} />
-                                    <span>
-                                        {detailArticle.favorited ?
-                                            "Unfavorite Article"
-                                            : "Favorite Article"
-                                        }
-                                    </span>
-                                    <span className={cx("count-like")}>
-                                        ({detailArticle.favoritesCount})
-                                    </span>
-                                </button>
                             </div>
+
                         </div>
                         <Row>
                             <Col md={{ span: 8, offset: 2 }} xs={12}>
@@ -327,7 +508,7 @@ function DetailArticle() {
                                                                 <img className={cx("comment-author-img")} src={comment.author.image} alt={comment.author.username} />
                                                             </Link>
                                                             <Link to={"/@" + comment.author.username} className={cx("comment-author")}>{comment.author.username}</Link>
-                                                            <span className={cx("date-posted")}>{comment.createdAt}</span>
+                                                            <span className={cx("date-posted")}>{moment(comment.createdAt).format("MMMM D, YYYY")}</span>
                                                             {comment.author.username === username ?
                                                                 <span className={cx("mod-options")}
                                                                     onClick={() => handleDeleteComment(detailArticle.slug, comment.id)}

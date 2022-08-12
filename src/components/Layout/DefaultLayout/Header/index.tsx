@@ -4,9 +4,7 @@ import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { LOGOUT_REQUEST } from "../../../../state/login/constants"
 import { useDispatch } from "react-redux";
-import { useNavigate } from "react-router-dom";
 const cx = classNames.bind(styles);
 function Header() {
   let activeClassName = "active";
@@ -15,7 +13,6 @@ function Header() {
   const faPropIcon = faPenToSquare as IconProp;
   const faPropIcon1 = faGear as IconProp;
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   return (
     <header className={cx("wrapper")}>
       <div className={cx("container")}>
@@ -94,17 +91,6 @@ function Header() {
               </>
 
             }
-            <li className={cx("nav-item")}>
-              <NavLink
-                className={({ isActive }) =>
-                  isActive ? cx(activeClassName) : undefined
-                }
-                to=""
-                onClick={() => dispatch({ type: LOGOUT_REQUEST, navigate })}
-              >
-                Logout
-              </NavLink>
-            </li>
           </ul>
         </div>
       </div>

@@ -5,7 +5,7 @@ import { AddArticle, DetailArticle } from "../pages/Articles";
 import User from "../pages/User";
 import Settings from "../pages/Settings";
 
-const publicRoutes = [
+const publicRoutes = [ 
     { path: "/", component: Home },
     { path: "/register", component: Register },
     { path: "/login", component: Login },
@@ -15,6 +15,7 @@ const publicRoutes = [
 
 const privateRoutes = [
     { path: "/editor", component: AddArticle },
+    { path: "/editor/:slug", component: AddArticle },
     { path: "/settings", component: Settings },
 ];
 

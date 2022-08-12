@@ -112,7 +112,7 @@ li.tag-outline {
   text-align: center;
   white-space: nowrap;
   vertical-align: middle;
-  cursor: pointer; 
+  cursor: pointer;
   user-select: none;
   border: 1px solid transparent;
   &:disabled {
@@ -170,38 +170,54 @@ li.tag-outline {
 }
 
 .btn-outline-secondary {
-  color: #ccc;
+  color: #ccc!important;
   background-image: none;
   background-color: transparent;
   border-color: #ccc;
 
   &:hover {
-    color: #fff;
+    color: #fff!important;
     background-color: #ccc;
     border-color: #ccc;
   }
 
   &:focus {
-    color: #fff;
+    color: #fff!important;
     background-color: #ccc;
     border-color: #ccc;
   }
 }
 .btn-outline-primary {
-  color: #5cb85c;
+  color: #5cb85c!important;
   background-image: none;
   background-color: transparent;
   border-color: #5cb85c;
 
   &:hover {
-    color: #fff;
+    color: #fff!important;
     background-color: #5cb85c;
     border-color: #5cb85c;
   }
 
   &:focus {
-    color: #fff;
+    color: #fff!important;
     background-color: #5cb85c;
     border-color: #5cb85c;
+  }
+}
+.btn-outline-danger {
+  color: #b85c5c;
+  background-image: none;
+  background-color: transparent;
+  border-color: #b85c5c;
+  &:hover {
+    color: #fff;
+    background-color: #b85c5c;
+    border-color: #b85c5c;
+  }
+  &:focus {
+    color: #fff;
+    background-color: #b85c5c;
+    border-color: #b85c5c;
   }
 }

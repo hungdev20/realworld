@@ -5,3 +5,5 @@ export {default as getDetailArticle} from './getDetailArticle';
 export {default as commentsArticle} from './commentsArticle';
 export {default as deleteCommentArticle} from './deleteCommentArticle';
 export {default as followAuthorArticle} from './followAuthorArticle';
+export {default as deleteArticle} from './deleteArticle';
+export {default as editArticle} from './editArticle';

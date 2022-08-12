@@ -3,13 +3,18 @@ import axiosConfig from "../axiosConfig";
 export default async function fetchArticles(data: any) {
   const AUTH_TOKEN = localStorage.getItem("token");
   let arg = "";
-  data.tab === "yourFeed" ? (arg = "articles/feed") : (arg = "articles");
+  if (data.tab === "yourFeed" || data.tab === "globalFeed") {
+    arg = "articles?"
+  } else if (data.tab === "myArticles") {
+    arg = `articles?author=${data.author}&`
+  } else if (data.tab === "favoritedArticles") {
+    arg = `articles?favorited=${data.author}&`
+  }
   let paramTypeTag = "";
-  data.tag != "" ? ((paramTypeTag = `&tag=${data.tag}`) && (arg = "articles")) : (paramTypeTag = "");
-
+  data.tag != "" ? ((paramTypeTag = `&tag=${data.tag}`) && (arg = "articles?")) : (paramTypeTag = "");
   return await axiosConfig({
     method: "get",
-    url: `/${arg}?limit=10&offset=0${paramTypeTag}`,
+    url: `/${arg}limit=10&offset=0${paramTypeTag}`,
     headers: {
       Authorization: "Token " + (AUTH_TOKEN ? AUTH_TOKEN.toString() : ""),
     },

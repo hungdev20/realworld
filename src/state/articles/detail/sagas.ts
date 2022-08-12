@@ -9,11 +9,11 @@ import {
 } from "./constants";
 interface Res {
   status: number;
-  data: object;
+  data: object; 
 }
 
 function* detailArticleApi(payload: string) {
-
+ 
   const res: Res = yield call(getDetailArticle, payload);
   return res;
 }

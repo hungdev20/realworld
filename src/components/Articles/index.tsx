@@ -11,7 +11,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { requestFetchArticles } from "../../state/articles/actions"
 import { favoriteArticleRequest } from "../../state/articles/favourites/actions"
-function Articles() {
+import moment from "moment";
+function Articles(props: any) {
     const params = useParams();
     let user: string = params.user!;
     const cx = classNames.bind(styles);
@@ -21,17 +22,19 @@ function Articles() {
     const tabs = ["yourFeed", "globalFeed", "myArticles", "favoritedArticles"];
     let typeDefault;
     if (user) {
-        token ? typeDefault = "yourFeed" : typeDefault = "globalFeed";
-    } else {
         typeDefault = "myArticles"
+    } else {
+        token ? typeDefault = "yourFeed" : typeDefault = "globalFeed";
     }
     const [type, setType] = useState(typeDefault);
     const payload = {
         tab: type,
-        tag: ""
+        tag: "",
+        author: user ? props.author : ""
     }
     //Get list of articles
     const articles = useSelector((state: any) => state.articles.data);
+
     useEffect(() => {
         dispatch(requestFetchArticles(payload));
     }, [])
@@ -39,11 +42,10 @@ function Articles() {
     return (
         <div className={cx("feed-toggle")}>
             <ul className={cx("nav")}>
-
-                {token ?
+                {user ?
                     <>
                         <li
-                            key="yourFeed"
+                            key="myArticles"
                             className={cx("nav-item")}
                         >
                             <Link
@@ -51,16 +53,17 @@ function Articles() {
                                 className={cx("nav-link")}
                                 onClick={() => {
                                     {
-                                        setType("yourFeed");
+                                        setType("myArticles");
                                         dispatch(requestFetchArticles({
-                                            tab: "yourFeed",
-                                            tag: ""
+                                            tab: "myArticles",
+                                            tag: "",
+                                            author: props.author
                                         }))
                                     }
                                 }}
 
                                 style={
-                                    type === tabs[0]
+                                    type === tabs[2]
                                         ? {
                                             background: "#fff",
                                             borderBottom: "2px solid #5cb85c",
@@ -69,9 +72,78 @@ function Articles() {
                                         : {}
                                 }
                             >
-                                Your Feed
+                                My Articles
                             </Link>
                         </li>
+                        <li
+                            key="favoritedArticles"
+                            className={cx("nav-item")}
+                        >
+                            <Link
+                                to=""
+                                className={cx("nav-link")}
+                                onClick={() => {
+                                    {
+                                        setType("favoritedArticles");
+                                        dispatch(requestFetchArticles({
+                                            tab: "favoritedArticles",
+                                            tag: "",
+                                            author: props.author
+                                        }))
+                                    }
+                                }}
+
+                                style={
+                                    type === tabs[3]
+                                        ? {
+                                            background: "#fff",
+                                            borderBottom: "2px solid #5cb85c",
+                                            color: "#5cb85c",
+                                        }
+                                        : {}
+                                }
+                            >
+                                Favorited Articles
+                            </Link>
+                        </li>
+                    </>
+
+                    :
+
+                    <>
+                        {token ?
+                            <li
+                                key="yourFeed"
+                                className={cx("nav-item")}
+                            >
+                                <Link
+                                    to=""
+                                    className={cx("nav-link")}
+                                    onClick={() => {
+                                        {
+                                            setType("yourFeed");
+                                            dispatch(requestFetchArticles({
+                                                tab: "yourFeed",
+                                                tag: ""
+                                            }))
+                                        }
+                                    }}
+
+                                    style={
+                                        type === tabs[0]
+                                            ? {
+                                                background: "#fff",
+                                                borderBottom: "2px solid #5cb85c",
+                                                color: "#5cb85c",
+                                            }
+                                            : {}
+                                    }
+                                >
+                                    Your Feed
+                                </Link>
+                            </li>
+                            : ''
+                        }
                         <li
                             key="globalFeed"
                             className={cx("nav-item")}
@@ -102,9 +174,8 @@ function Articles() {
                                 Global Feed
                             </Link>
                         </li>
-                    </>
-                    : ''
 
+                    </>
                 }
             </ul>
             {
@@ -117,7 +188,7 @@ function Articles() {
 
                     :
                     <>
-                        {articles != [] ?
+                        {articles.length > 0 ?
                             articles.map((article: any, index: number) => (
                                 <div className={cx("article")} key={index}>
                                     <div className={cx("article-preview")}>
@@ -139,26 +210,40 @@ function Articles() {
                                                     >
                                                         {article.author.username}
                                                     </Link>
-                                                    <span className={cx("date")}>{article.created_at}</span>
+                                                    <span className={cx("date")}>{moment(article.createdAt).format("MMMM D, YYYY")}</span>
                                                 </div>
                                             </div>
                                             <div className={cx("favorite-btn")}>
-                                                <button
-                                                    className={
-                                                        article.favorited ? cx("favorited") : undefined
-                                                    }
-                                                    onClick={() => {
-                                                        dispatch(favoriteArticleRequest({
-                                                            slug: article.slug,
-                                                            favorited: article.favorited
-                                                        }))
-                                                    }}
-                                                >
-                                                    <FontAwesomeIcon icon={faPropIcon} />
-                                                    <span className={cx("count-like")}>
-                                                        {article.favoritesCount}
-                                                    </span>
-                                                </button>
+                                                {token ?
+
+                                                    <button
+                                                        className={
+                                                            cx("btn-favor", article.favorited ? "favorited" : undefined)
+                                                        }
+                                                        onClick={() => {
+                                                            dispatch(favoriteArticleRequest({
+                                                                slug: article.slug,
+                                                                favorited: article.favorited
+                                                            }))
+                                                        }}
+                                                    >
+                                                        <FontAwesomeIcon icon={faPropIcon} />
+                                                        <span className={cx("count-like")}>
+                                                            {article.favoritesCount}
+                                                        </span>
+                                                    </button>
+                                                    :
+                                                    <Link to="/register"
+                                                        className={
+                                                            cx("btn-favor", article.favorited ? "favorited" : undefined)
+                                                        }
+                                                    >
+                                                        <FontAwesomeIcon icon={faPropIcon} />
+                                                        <span className={cx("count-like")}>
+                                                            {article.favoritesCount}
+                                                        </span>
+                                                    </Link>
+                                                }
                                             </div>
                                         </div>
                                         <Link to={"/article/" + article.slug} className={cx("preview-link")}>

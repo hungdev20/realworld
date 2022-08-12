@@ -8,6 +8,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { updateSettingsRequest, fetchSettingsRequest } from "../../state/settings/actions"
+import { LOGOUT_REQUEST } from "../../state/login/constants"
+
 function Settings() {
     interface infoUser {
         username: string;
@@ -16,9 +18,9 @@ function Settings() {
         bio: string;
         email: string;
     } 
+    const navigate = useNavigate();
     const cx = classNames.bind(styles);
     const dispatch = useDispatch();
-    const navigate = useNavigate();
     const infoUser = useSelector((state: any) => state.settings.data.user);
     const [image, setImage] = useState(infoUser != undefined ? infoUser.image : "");
     const [username, setUsername] = useState(infoUser != undefined ? infoUser.username : "");
@@ -27,7 +29,7 @@ function Settings() {
     const [password, setPassword] = useState(infoUser != undefined ? infoUser.password : "");
     const requestStatus = useSelector((state: any) => state.settings.requesting);
     const errorMessages = useSelector((state: any) => state.settings.errors.errors);
-    
+
     let errors: any = [];
     if (errorMessages != undefined) {
         errors = Object.entries(errorMessages);
@@ -127,7 +129,15 @@ function Settings() {
                                         Update Settings
                                     </button>
                                 }
+                                <div style={{ clear: "both" }}></div>
                             </Form>
+                            <div className={cx("line-separate")}></div>
+                            <button className={cx("btn-outline-danger", "btn-logout")}
+                                onClick={() => dispatch({ type: LOGOUT_REQUEST, navigate })}
+                            >
+                                Or click here to logout
+                            </button>
+                            
                         </Col>
                     </Row>
                 </div>

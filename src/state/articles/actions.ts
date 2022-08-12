@@ -1,8 +1,9 @@
-import { FETCH_ARTICLES_REQUEST, ADD_ARTICLE_REQUEST } from "./constants";
+import { FETCH_ARTICLES_REQUEST, DELETE_ARTICLE_REQUEST } from "./constants";
 
 interface Payload {
   tab: string;
   tag: string;
+  author?: string
 }
 export interface AddArticlePayload {
   title: string;
@@ -16,12 +17,14 @@ export const requestFetchArticles = (payload: Payload) => {
     payload
   };
 };
-export const requestAddArticle = (payload: AddArticlePayload) => {
+
+export const deleteArticleRequest = (payload: string, navigate: any) => {
   return {
-    type: ADD_ARTICLE_REQUEST,
-    payload
-  };
-};
+    type: DELETE_ARTICLE_REQUEST,
+    payload,
+    navigate
+  }
+}
 
 
 

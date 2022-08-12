@@ -2,13 +2,7 @@ import {
   FETCH_ARTICLES_REQUEST,
   FETCH_ARTICLES_SUCCESS,
   FETCH_ARTICLES_ERRORS,
-  ADD_ARTICLE_REQUEST,
-  EDIT_ARTICLE_REQUEST,
   DELETE_ARTICLE_REQUEST,
-  ADD_ARTICLE_SUCCESS,
-  ADD_ARTICLE_ERRORS,
-  EDIT_ARTICLE_SUCCESS,
-  EDIT_ARTICLE_ERRORS,
   DELETE_ARTICLE_SUCCESS,
   DELETE_ARTICLE_ERRORS
 } from "./constants";
@@ -53,30 +47,6 @@ const articlesReducer = (state = initialState, action: Actions) => {
         messages: "",
       };
     case FETCH_ARTICLES_ERRORS:
-      return {
-        requesting: false,
-        success: false,
-        errors: action.error,
-        data: [],
-        messages: "",
-      };
-    case ADD_ARTICLE_REQUEST:
-      return {
-        requesting: true,
-        success: false,
-        errors: {},
-        data: [],
-        messages: "",
-      };
-    case ADD_ARTICLE_SUCCESS:
-      return {
-        requesting: false,
-        success: true,
-        errors: {},
-        data: [],
-        messages: "",
-      };
-    case ADD_ARTICLE_ERRORS:
       return {
         requesting: false,
         success: false,

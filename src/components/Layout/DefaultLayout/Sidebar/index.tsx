@@ -26,7 +26,7 @@ function Sidebar({ children }: { children: any }) {
             className={cx("tag-default", "tag-pill", "tag-item")}
             onClick={() => {
               {
-                dispatch(requestFetchArticles({
+                dispatch(requestFetchArticles({ 
                   tab: children,
                   tag: tag
                 }))
