@@ -11,10 +11,10 @@ import addCommentWatcher from "./state/articles/comments/addCommentSagas";
 import deleteCommentWatcher from "./state/articles/comments/deleteCommentSagas";
 import followAuthorWatcher from "./state/articles/follow/sagas";
 import fetchProfileUserWatcher from "./state/user/sagas";
-import {addTagWatcher} from "./state/articles/publish"
+import {addTagWatcher} from "./state/articles/tags"
 import {publishArticleWatcher} from "./state/articles/publish"
 import {editArticleWatcher} from "./state/articles/publish"
-import {removeTagWatcher} from "./state/articles/publish"
+import {removeTagWatcher} from "./state/articles/tags"
 import { all } from "redux-saga/effects";
 
 export default function* IndexSaga() {

@@ -1,5 +1,5 @@
 import { call, put,takeEvery } from "redux-saga/effects";
-import getInfoUser from "../../apis/getInfoUser";
+import getInfoUser from "../../apis/user/getInfoUser";
 import {
   FETCH_SETTINGS_REQUESTING,
   FETCH_SETTINGS_SUCCESS,

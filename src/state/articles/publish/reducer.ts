@@ -1,8 +1,4 @@
 import {
-    ADD_TAG_REQUEST,
-    ADD_TAG_SUCCESS,
-    REMOVE_TAG_REQUEST,
-    REMOVE_TAG_SUCCESS,
     ADD_ARTICLE_REQUEST,
     ADD_ARTICLE_SUCCESS,
     ADD_ARTICLE_ERRORS,
@@ -27,37 +23,11 @@ export interface Actions {
 }
 const publishArticleReducer = (state = initialState, action: Actions) => {
     switch (action.type) {
-        case ADD_TAG_REQUEST:
-            return {
-                tagList: [],
-                tag: action.tag,
-                errors: {},
-                requesting: true
-            };
-        case ADD_TAG_SUCCESS:
-            return {
-                tagList: action.tagList,
-                tag: "",
-                errors: {},
-                requesting: false
-            };
-        case REMOVE_TAG_REQUEST:
+        case ADD_ARTICLE_REQUEST:
             return {
                 tagList: [],
                 tag: '',
                 errors: {},
-                requesting: true
-            };
-        case REMOVE_TAG_SUCCESS:
-            return {
-                tagList: action.tagList,
-                tag: "",
-                errors: {},
-                requesting: false
-            };
-        case ADD_ARTICLE_REQUEST:
-            return {
-                ...state,
                 requesting: true
             };
         case ADD_ARTICLE_SUCCESS:
@@ -68,6 +38,7 @@ const publishArticleReducer = (state = initialState, action: Actions) => {
         case ADD_ARTICLE_ERRORS:
             return {
                 ...state,
+                requesting: false,
                 errors: action.error
             };
         case EDIT_ARTICLE_REQUEST:
@@ -83,6 +54,7 @@ const publishArticleReducer = (state = initialState, action: Actions) => {
         case EDIT_ARTICLE_ERRORS:
             return {
                 ...state,
+                requesting: false,
                 errors: action.error
             };
         default:

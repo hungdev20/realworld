@@ -170,37 +170,37 @@ li.tag-outline {
 }
 
 .btn-outline-secondary {
-  color: #ccc!important;
+  color: #ccc !important;
   background-image: none;
   background-color: transparent;
   border-color: #ccc;
 
   &:hover {
-    color: #fff!important;
+    color: #fff !important;
     background-color: #ccc;
     border-color: #ccc;
   }
 
   &:focus {
-    color: #fff!important;
+    color: #fff !important;
     background-color: #ccc;
     border-color: #ccc;
   }
 }
 .btn-outline-primary {
-  color: #5cb85c!important;
+  color: #5cb85c !important;
   background-image: none;
   background-color: transparent;
   border-color: #5cb85c;
 
   &:hover {
-    color: #fff!important;
+    color: #fff !important;
     background-color: #5cb85c;
     border-color: #5cb85c;
   }
 
   &:focus {
-    color: #fff!important;
+    color: #fff !important;
     background-color: #5cb85c;
     border-color: #5cb85c;
   }
@@ -220,4 +220,8 @@ li.tag-outline {
     background-color: #b85c5c;
     border-color: #b85c5c;
   }
+}
+
+.action {
+  margin-left: 2px;
 }

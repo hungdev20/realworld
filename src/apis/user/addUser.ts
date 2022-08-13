@@ -1,4 +1,4 @@
-import axiosConfig from "./axiosConfig";
+import axiosConfig from "../axiosConfig";
 
 export default async function addUser(data: any) {
   return await axiosConfig({

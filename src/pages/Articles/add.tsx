@@ -9,7 +9,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { requestAddArticle, editArticleRequest } from "../../state/articles/publish/actions";
-import { addTagRequest, removeTagRequest } from "../../state/articles/publish/actions";
+import { addTagRequest, removeTagRequest } from "../../state/articles/tags/actions";
 import { fetchDetailArticleRequest } from "../../state/articles/detail/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -34,11 +34,14 @@ function AddArticle() {
     const [description, setDescription] = useState("");
     const [tag, setTag] = useState("")
     const [tagList, setTagList] = useState([]);
+
+    const tagArticleState = useSelector((state: any) => state.addTagArticle);    
     const publishArticleState = useSelector((state: any) => state.publishArticle);
     const detailArticleState = useSelector((state: any) => state.detailArticle);
     const detailArticle = useSelector((state: any) => state.detailArticle.data.article);
     let requestStatus = true;
-    slug ? requestStatus = publishArticleState.requesting : requestStatus = detailArticleState.requesting;
+    slug ? requestStatus = detailArticleState.requesting : requestStatus = publishArticleState.requesting;
+
 
     const errorMessages = useSelector((state: any) => state.publishArticle.errors.errors);
     let errors: any = [];
@@ -50,45 +53,46 @@ function AddArticle() {
             ev.preventDefault();
             dispatch(addTagRequest({
                 tag: ev.target.value,
-                tagList: slug ? detailArticle.tagList : publishArticleState.tagList,
+                tagList: tagArticleState.tagList,
                 navigate: navigate
             }))
-            setTagList(slug ? detailArticle.tagList : publishArticleState.tagList);
+            setTagList(tagArticleState.tagList);
             setTag("")
         }
     }
 
     const handleRemoveTag = (index: number) => {
         dispatch(removeTagRequest({
-            tagList: slug ? detailArticle.tagList : publishArticleState.tagList,
+            tagList: tagArticleState.tagList,
             navigate: navigate,
             index
         }))
     }
     const handlePublishArticle = (e: any) => {
+
         e.preventDefault();
         const payload = {
             title,
             description,
             body,
-            tagList
+            tagList,
+            navigate
         }
-        dispatch(requestAddArticle(payload, navigate));
+        dispatch(requestAddArticle(payload));
     };
     const handleUpdateArticle = (e: any) => {
         e.preventDefault();
-        let detail = detailArticle;
-        detail.body = body ? body : detailArticle.body;
-        detail.description = description ? description : detailArticle.description;
-        detail.tagList = tagList === [] ? tagList : detailArticle.tagList;
-        detail.title = title ? title : detailArticle.title;
-        detail.updatedAt = "2022-08-11T10:26:16.366Z";
+        let payload = {
+            article: detailArticle,
+            navigate
+        }
+        payload.article.body = body ? body : detailArticle.body;
+        payload.article.description = description ? description : detailArticle.description;
+        payload.article.tagList = tagList === [] ? tagList : detailArticle.tagList;
+        payload.article.title = title ? title : detailArticle.title;
+        payload.article.updatedAt = "2022-08-11T10:26:16.366Z";
 
-        const payload = detail;
-        console.log(payload);
-
-
-        dispatch(editArticleRequest(payload, navigate));
+        dispatch(editArticleRequest(payload));
     };
     return (
         <div className={cx("wrapper")}>
@@ -142,7 +146,7 @@ function AddArticle() {
                                         onKeyDown={(ev) => ev.key === 'Enter' && ev.preventDefault()}
                                         onKeyUp={(e) => handleAddTag(e)}
                                     />
-                                    {slug ?
+                                    {/* {slug ?
 
                                         detailArticle ?
                                             <div className={cx("tag-list")}>
@@ -162,25 +166,25 @@ function AddArticle() {
                                             </div>
                                             : ""
 
-                                        :
+                                        : */}
 
-                                        publishArticleState.tagList ?
-                                            <div className={cx("tag-list")}>
-                                                {publishArticleState.tagList.map((tag: string, index: number) => (
-                                                    <span
-                                                        key={index}
-                                                        className={cx("tag", "tag-default", "tag-pill")}
+                                    {tagArticleState.tagList ?
+                                        <div className={cx("tag-list")}>
+                                            {tagArticleState.tagList.map((tag: string, index: number) => (
+                                                <span
+                                                    key={index}
+                                                    className={cx("tag", "tag-default", "tag-pill")}
 
-                                                    >
-                                                        <FontAwesomeIcon icon={faPropIcon}
-                                                            onClick={() => handleRemoveTag(index)}
-                                                        />
-                                                        {tag}
-                                                    </span>
-                                                ))}
+                                                >
+                                                    <FontAwesomeIcon icon={faPropIcon}
+                                                        onClick={() => handleRemoveTag(index)}
+                                                    />
+                                                    {tag}
+                                                </span>
+                                            ))}
 
-                                            </div>
-                                            : ""
+                                        </div>
+                                        : ""
 
 
                                     }

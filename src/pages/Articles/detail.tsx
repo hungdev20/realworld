@@ -26,9 +26,10 @@ function DetailArticle() {
     const token = Boolean(localStorage.getItem("token"));
     const [comment, setComment] = useState("");
     const [commentPayload, setCommentPayload] = useState(comment);
+    const [follow, setFollow] = useState(false)
     const faPropIcon = faHeart as IconProp;
     const faPropIcon1 = faPlus as IconProp;
-    const faPropIcon2 = faTrashCan as IconProp; 
+    const faPropIcon2 = faTrashCan as IconProp;
     const faPropIcon3 = faPen as IconProp;
     const params = useParams();
     const dispatch = useDispatch();
@@ -72,6 +73,7 @@ function DetailArticle() {
             method,
             param
         }))
+        setFollow(!follow)
     }
     useEffect(() => {
         dispatch(fetchDetailArticleRequest(slug))
@@ -122,7 +124,7 @@ function DetailArticle() {
                                             disabled
                                         >
                                             <FontAwesomeIcon icon={faPropIcon1} />
-                                            <span>
+                                            <span className={cx("action")}>
                                                 {detailArticle.author.following ?
                                                     "Unfollow " + detailArticle.author.username
                                                     : "Follow " + detailArticle.author.username
@@ -138,7 +140,7 @@ function DetailArticle() {
                                                     className={cx("btn", "follow", "btn-sm", "btn-outline-secondary")}
                                                 >
                                                     <FontAwesomeIcon icon={faPropIcon3} />
-                                                    <span>
+                                                    <span className={cx("action")}>
                                                         Edit Article
                                                     </span>
                                                 </Link>
@@ -151,7 +153,7 @@ function DetailArticle() {
                                                             : "btn-outline-secondary")}
                                                 >
                                                     <FontAwesomeIcon icon={faPropIcon1} />
-                                                    <span>
+                                                    <span className={cx("action")}>
                                                         {detailArticle.author.following ?
                                                             "Unfollow " + detailArticle.author.username
                                                             : "Follow " + detailArticle.author.username
@@ -168,7 +170,7 @@ function DetailArticle() {
                                                         : "btn-outline-secondary")}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon1} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     {detailArticle.author.following ?
                                                         "Unfollow " + detailArticle.author.username
                                                         : "Follow " + detailArticle.author.username
@@ -183,7 +185,7 @@ function DetailArticle() {
                                             className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
                                         >
                                             <FontAwesomeIcon icon={faPropIcon} />
-                                            <span>
+                                            <span className={cx("action")}>
                                                 {detailArticle.favorited ?
                                                     "Unfavorite Article"
                                                     : "Favorite Article"
@@ -204,7 +206,7 @@ function DetailArticle() {
                                                     }}
                                                 >
                                                     <FontAwesomeIcon icon={faPropIcon2} />
-                                                    <span>
+                                                    <span className={cx("action")}>
                                                         Delete Article
                                                     </span>
 
@@ -221,7 +223,7 @@ function DetailArticle() {
                                                     }}
                                                 >
                                                     <FontAwesomeIcon icon={faPropIcon} />
-                                                    <span>
+                                                    <span className={cx("action")}>
                                                         {detailArticle.favorited ?
                                                             "Unfavorite Article"
                                                             : "Favorite Article"
@@ -236,7 +238,7 @@ function DetailArticle() {
                                                 className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     {detailArticle.favorited ?
                                                         "Unfavorite Article"
                                                         : "Favorite Article"
@@ -310,7 +312,7 @@ function DetailArticle() {
                                         disabled
                                     >
                                         <FontAwesomeIcon icon={faPropIcon1} />
-                                        <span>
+                                        <span className={cx("action")}>
                                             {detailArticle.author.following ?
                                                 "Unfollow " + detailArticle.author.username
                                                 : "Follow " + detailArticle.author.username
@@ -326,7 +328,7 @@ function DetailArticle() {
                                                 className={cx("btn", "follow", "btn-sm", "btn-outline-secondary")}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon3} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     Edit Article
                                                 </span>
                                             </Link>
@@ -339,7 +341,7 @@ function DetailArticle() {
                                                         : "btn-outline-secondary")}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon1} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     {detailArticle.author.following ?
                                                         "Unfollow " + detailArticle.author.username
                                                         : "Follow " + detailArticle.author.username
@@ -356,7 +358,7 @@ function DetailArticle() {
                                                     : "btn-outline-secondary")}
                                         >
                                             <FontAwesomeIcon icon={faPropIcon1} />
-                                            <span>
+                                            <span className={cx("action")}>
                                                 {detailArticle.author.following ?
                                                     "Unfollow " + detailArticle.author.username
                                                     : "Follow " + detailArticle.author.username
@@ -371,7 +373,7 @@ function DetailArticle() {
                                         className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
                                     >
                                         <FontAwesomeIcon icon={faPropIcon} />
-                                        <span>
+                                        <span className={cx("action")}>
                                             {detailArticle.favorited ?
                                                 "Unfavorite Article"
                                                 : "Favorite Article"
@@ -392,7 +394,7 @@ function DetailArticle() {
                                                 }}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon2} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     Delete Article
                                                 </span>
 
@@ -409,7 +411,7 @@ function DetailArticle() {
                                                 }}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     {detailArticle.favorited ?
                                                         "Unfavorite Article"
                                                         : "Favorite Article"
@@ -424,7 +426,7 @@ function DetailArticle() {
                                             className={cx("btn", "favorite", "btn-sm", detailArticle.favorited === true ? "btn-primary" : "btn-outline-primary")}
                                         >
                                             <FontAwesomeIcon icon={faPropIcon} />
-                                            <span>
+                                            <span className={cx("action")}>
                                                 {detailArticle.favorited ?
                                                     "Unfavorite Article"
                                                     : "Favorite Article"

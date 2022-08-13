@@ -5,14 +5,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-const cx = classNames.bind(styles);
+
 function Header() {
+  const cx = classNames.bind(styles);
+
   let activeClassName = "active";
   const token = Boolean(localStorage.getItem("token"));
   const username = localStorage.getItem("username");
   const faPropIcon = faPenToSquare as IconProp;
   const faPropIcon1 = faGear as IconProp;
-  const dispatch = useDispatch();
+  
   return (
     <header className={cx("wrapper")}>
       <div className={cx("container")}>

@@ -2,6 +2,8 @@
 
 import classNames from "classnames/bind";
 import styles from "./Articles.module.scss";
+import moment from "moment";
+
 import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
@@ -11,34 +13,39 @@ import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { requestFetchArticles } from "../../state/articles/actions"
 import { favoriteArticleRequest } from "../../state/articles/favourites/actions"
-import moment from "moment";
+
 function Articles(props: any) {
+    const cx = classNames.bind(styles);
+    const dispatch = useDispatch();
     const params = useParams();
     let user: string = params.user!;
-    const cx = classNames.bind(styles);
     const faPropIcon = faHeart as IconProp;
-    const dispatch = useDispatch();
     const token = Boolean(localStorage.getItem("token"));
     const tabs = ["yourFeed", "globalFeed", "myArticles", "favoritedArticles"];
+
     let typeDefault;
     if (user) {
         typeDefault = "myArticles"
     } else {
         token ? typeDefault = "yourFeed" : typeDefault = "globalFeed";
     }
+
     const [type, setType] = useState(typeDefault);
     const payload = {
         tab: type,
         tag: "",
         author: user ? props.author : ""
     }
+
     //Get list of articles
     const articles = useSelector((state: any) => state.articles.data);
 
     useEffect(() => {
         dispatch(requestFetchArticles(payload));
     }, [])
-    const requesting = useSelector((state: any) => state.articles.requesting);
+
+    const requesting = useSelector((state: any) => state.articles.requesting);   
+     
     return (
         <div className={cx("feed-toggle")}>
             <ul className={cx("nav")}>

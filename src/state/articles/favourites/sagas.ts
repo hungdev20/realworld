@@ -28,7 +28,7 @@ function* favoriteFlow({ payload }: ReturnType<typeof favoriteArticleRequest>) {
 //     yield put({ type: FETCH_ARTICLES_SUCCESS, data: res.data });
 //   } else {
 //     yield put({ type: FETCH_ARTICLES_ERRORS, error: res });
-//   }
+//   } 
 }
 
 function* favoriteWatcher() {

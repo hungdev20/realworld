@@ -1,7 +1,7 @@
 
 import { takeLatest, call, put } from "redux-saga/effects";
 import { SIGNUP_REQUESTING, SIGNUP_SUCCESS, SIGNUP_ERROR } from "./constants";
-import addUser from "../../apis/addUser";
+import addUser from "../../apis/user/addUser";
 function* signupApi(
   username: string,
   email: string,

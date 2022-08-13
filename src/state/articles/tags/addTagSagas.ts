@@ -1,4 +1,4 @@
-import { call, takeEvery, take, put } from "redux-saga/effects";
+import { takeEvery, put } from "redux-saga/effects";
 import { addTagRequest } from "./actions"
 import {
   ADD_TAG_REQUEST,

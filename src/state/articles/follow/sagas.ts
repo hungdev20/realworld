@@ -25,10 +25,6 @@ function* followAuthorFlow({ payload }: ReturnType<typeof followAuthorRequest>) 
   const res: Res = yield call(followAuthorApi, payload.username, payload.method);
   if (res.status === 200) {
     yield put({ type: FOLLOW_AUTHOR_SUCCESS });
-    if (payload.param) {
-
-      yield put({ type: FETCH_DETAIL_ARTICLE_REQUEST, payload: payload.param });
-    }
   } else {
     yield put({ type: FOLLOW_AUTHOR_ERRORS, error: res });
   }

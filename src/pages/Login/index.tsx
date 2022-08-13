@@ -65,7 +65,7 @@ function Login() {
               <Form.Control
                 size="lg"
                 type="password"
-                placeholder="Password"
+                placeholder="Password" 
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Form.Group>

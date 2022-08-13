@@ -10,6 +10,7 @@ import { deleteCommentReducer } from "./state/articles/comments";
 import { detailArticleReducer } from "./state/articles/detail";
 import { followAuthorReducer } from "./state/articles/follow";
 import { publishArticleReducer } from "./state/articles/publish";
+import { addTagArticleReducer } from "./state/articles/tags";
 
 import { favoriteArticlesReducer } from "./state/articles/favourites";
 import { profileUserReducer } from "./state/user";
@@ -41,6 +42,7 @@ const rootReducer = combineReducers({
   deleteCommentArticle: deleteCommentReducer,
   fetchProfileUser: profileUserReducer,
   publishArticle: publishArticleReducer,
+  addTagArticle: addTagArticleReducer,
   // articles: persistReducer(articlesPersistConfig, articlesReducer)
   articles: articlesReducer
 });

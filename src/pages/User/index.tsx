@@ -56,7 +56,7 @@ function User() {
                                     {username === profile.username ?
                                         <Link to="/settings" className={cx("settings", "btn-sm", "btn-outline-secondary")}>
                                             <FontAwesomeIcon icon={faPropIcon} />
-                                            <span className={cx("text-action")}>
+                                            <span className={cx("action")}>
                                                 Edit Profile Settings
                                             </span>
                                         </Link>

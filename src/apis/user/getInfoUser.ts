@@ -1,4 +1,4 @@
-import axiosConfig from "./axiosConfig";
+import axiosConfig from "../axiosConfig";
 
 export default async function getInfoUser(method = "get", data = {}) {
     const AUTH_TOKEN = localStorage.getItem("token");
