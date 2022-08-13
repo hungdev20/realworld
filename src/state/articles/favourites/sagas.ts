@@ -1,4 +1,4 @@
-import { call, put, fork, take, takeEvery } from "redux-saga/effects";
+import { call, takeEvery } from "redux-saga/effects";
 import {favoriteArticle} from "../../../apis/articles";
 import {
     LIKE_ARTICLE_SUCCESS,

@@ -1,4 +1,4 @@
-import { call, takeEvery, take, put } from "redux-saga/effects";
+import { call, takeEvery, put } from "redux-saga/effects";
 import { followAuthorArticle } from "../../../apis/articles";
 import { followAuthorRequest } from "./actions"
 import {

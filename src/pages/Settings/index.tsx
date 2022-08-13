@@ -3,6 +3,7 @@ import styles from "./Settings.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
@@ -22,11 +23,13 @@ function Settings() {
     const cx = classNames.bind(styles);
     const dispatch = useDispatch();
     const infoUser = useSelector((state: any) => state.settings.data.user);
+
     const [image, setImage] = useState(infoUser != undefined ? infoUser.image : "");
     const [username, setUsername] = useState(infoUser != undefined ? infoUser.username : "");
     const [bio, setBio] = useState(infoUser != undefined ? infoUser.bio : "");
     const [email, setEmail] = useState(infoUser != undefined ? infoUser.email : "");
     const [password, setPassword] = useState(infoUser != undefined ? infoUser.password : "");
+
     const requestStatus = useSelector((state: any) => state.settings.requesting);
     const errorMessages = useSelector((state: any) => state.settings.errors.errors);
 
@@ -34,6 +37,7 @@ function Settings() {
     if (errorMessages != undefined) {
         errors = Object.entries(errorMessages);
     }
+
     const handleUpdateSettings = (e: any) => {
         e.preventDefault();
         const payload = {
@@ -45,6 +49,7 @@ function Settings() {
         }
         dispatch(updateSettingsRequest(payload, navigate));
     };
+    
     useEffect(() => {
         dispatch(fetchSettingsRequest())
     }, [])

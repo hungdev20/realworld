@@ -1,4 +1,4 @@
-import { call, takeEvery, take, put } from "redux-saga/effects";
+import { call, takeEvery, put } from "redux-saga/effects";
 import { getDetailArticle } from "../../../apis/articles";
 import { fetchDetailArticleRequest } from "./actions"
 import {ADD_TAG_SUCCESS} from "../tags/constants"
@@ -15,9 +15,7 @@ interface Res {
 
 function* detailArticleApi(payload: string) {
  
-  const res: Res = yield call(getDetailArticle, payload);
-  console.log(res);
-  
+  const res: Res = yield call(getDetailArticle, payload);  
   return res;
 }
 function* detailArticleFlow({payload}: ReturnType<typeof fetchDetailArticleRequest>) {

@@ -1,26 +1,32 @@
 import classNames from "classnames/bind";
 import styles from "./Register.module.scss";
 import Form from "react-bootstrap/Form";
+
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
+
 import requestSignup from "../../state/signup/actions"
 const cx = classNames.bind(styles);
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [password, setPassword] = useState(""); 
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
+
   const requestStatus = useSelector((state: any) => state.signup.requesting);
   const errorMessages = useSelector((state: any) => state.signup.errors.errors);
+
   let errors: any = [];
   if (errorMessages != undefined) {
     errors = Object.entries(errorMessages);
   }
+
   const handleSignup = (e: any) => {
     e.preventDefault();
     const payload = {
@@ -30,6 +36,7 @@ function Register() {
     }
     dispatch(requestSignup(payload, navigate));
   };
+  
   return (
     <div className={cx("wrapper")}>
       <div className={cx("auth-page")}>

@@ -2,6 +2,7 @@ import classNames from "classnames/bind";
 import styles from "./User.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
@@ -19,10 +20,11 @@ function User() {
     const cx = classNames.bind(styles);
     const faPropIcon = faGear as IconProp;
     const faPropIcon1 = faPlus as IconProp;
+
     const dispatch = useDispatch();
     const params = useParams();
-    let user: string = params.user!;
 
+    let user: string = params.user!;
     const profile = useSelector((state: any) => state.fetchProfileUser.data.profile);
 
     const handleFollowAuthor = (username: string, following: boolean) => {
@@ -33,9 +35,11 @@ function User() {
             method
         }))
     }
+
     useEffect(() => {
         dispatch(fetchProfileUserRequest(user))
     }, [user])
+    
     return (
         <div className={cx("wrapper")}>
             {profile ?

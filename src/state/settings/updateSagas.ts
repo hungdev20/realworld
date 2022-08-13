@@ -5,7 +5,7 @@ import {
     UPDATE_SETTINGS_SUCCESS,
     UPDATE_SETTINGS_ERRORS
 } from "./constants";
-import { updateSettingsRequest, payloadUser } from "./actions"
+import { payloadUser } from "./actions"
 interface Res {
     status: number;
     data: object;
@@ -19,6 +19,7 @@ function* updateSettingsApi(payload: payloadUser) {
     const res: Res = yield call(getInfoUser, method, data);
     return res;
 }
+
 function* updateSettingsFlow(payload: payloadUser, navigate: any) {
     const res: Res = yield call(updateSettingsApi, payload);
     if (res.status === 200) {

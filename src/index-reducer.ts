@@ -14,24 +14,13 @@ import { addTagArticleReducer } from "./state/articles/tags";
 
 import { favoriteArticlesReducer } from "./state/articles/favourites";
 import { profileUserReducer } from "./state/user";
-import storage from 'redux-persist/lib/storage';
-import { persistReducer } from 'redux-persist';
-import { combineReducers } from "redux";
 
-const articlesPersistConfig = {
-  key: 'articles',
-  storage: storage,
-};
-const settingsPersistConfig = {
-  key: 'settings',
-  storage: storage,
-};
+import { combineReducers } from "redux";
 
 const rootReducer = combineReducers({
   signup: signupReducer,
   login: loginReducer,
   client: clientReducer,
-  // settings: persistReducer(settingsPersistConfig, settingsReducer),
   settings: settingsReducer,
   favorites: favoriteArticlesReducer,
   detailArticle: detailArticleReducer,
@@ -43,7 +32,6 @@ const rootReducer = combineReducers({
   fetchProfileUser: profileUserReducer,
   publishArticle: publishArticleReducer,
   addTagArticle: addTagArticleReducer,
-  // articles: persistReducer(articlesPersistConfig, articlesReducer)
   articles: articlesReducer
 });
 

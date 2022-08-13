@@ -1,14 +1,15 @@
 import classNames from "classnames/bind";
 import styles from "./Articles.module.scss";
-import { Link, useParams } from "react-router-dom";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 import Card from 'react-bootstrap/Card';
+import moment from "moment";
 
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchDetailArticleRequest } from "../../state/articles/detail/actions"
 import { fetchCommentsRequest, addCommentRequest, deleteCommentRequest } from "../../state/articles/comments/actions"
 import { followAuthorRequest } from "../../state/articles/follow/actions"
@@ -18,15 +19,15 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart, faPen, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import moment from "moment";
 
 function DetailArticle() {
     const cx = classNames.bind(styles);
     const username = localStorage.getItem("username");
     const token = Boolean(localStorage.getItem("token"));
+
     const [comment, setComment] = useState("");
-    const [commentPayload, setCommentPayload] = useState(comment);
-    const [follow, setFollow] = useState(false)
+    const [follow, setFollow] = useState(false);
+
     const faPropIcon = faHeart as IconProp;
     const faPropIcon1 = faPlus as IconProp;
     const faPropIcon2 = faTrashCan as IconProp;
@@ -53,7 +54,6 @@ function DetailArticle() {
             param: slug,
             body: comment
         }
-        // setCommentPayload(comment)
         dispatch(addCommentRequest(payload))
         setComment("")
     };
@@ -75,6 +75,7 @@ function DetailArticle() {
         }))
         setFollow(!follow)
     }
+    
     useEffect(() => {
         dispatch(fetchDetailArticleRequest(slug))
     }, [])
@@ -82,7 +83,7 @@ function DetailArticle() {
 
     useEffect(() => {
         dispatch(fetchCommentsRequest(slug))
-    }, [commentPayload])
+    }, [])
 
     return (
         <div className={cx("article-page")}>

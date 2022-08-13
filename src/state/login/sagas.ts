@@ -1,4 +1,4 @@
-import { take, fork, cancel, call, put, cancelled } from "redux-saga/effects";
+import { take, fork, call, put } from "redux-saga/effects";
 import checkLogin from "../../apis/checkLogin";
 
 import {
@@ -22,7 +22,7 @@ function* loginApi(email: string, password: string) {
       email: email,
       password: password,
     },
-  }; 
+  };
 
   const res: Res = yield call(checkLogin, data);
   return res;
@@ -30,8 +30,8 @@ function* loginApi(email: string, password: string) {
 
 function* logout(navigate: any) {
   yield put(unsetClient());
- 
-  localStorage.removeItem("token"); 
+
+  localStorage.removeItem("token");
   localStorage.removeItem("username");
   navigate("/login");
 }
@@ -39,7 +39,7 @@ function* logout(navigate: any) {
 function* loginFlow(email: string, password: string, navigate: any) {
   const res: Res = yield call(loginApi, email, password);
   if (res.status === 200) {
-    
+
     yield put(setClient(res.token));
 
     yield put({ type: LOGIN_SUCCESS });
@@ -47,7 +47,7 @@ function* loginFlow(email: string, password: string, navigate: any) {
     localStorage.setItem("token", res.token);
     localStorage.setItem("username", res.username);
     navigate("/");
-  } else {    
+  } else {
     yield put({ type: LOGIN_ERROR, error: res });
   }
 }

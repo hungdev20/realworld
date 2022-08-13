@@ -5,9 +5,9 @@ import Col from "react-bootstrap/Col";
 
 import Sidebar from "../../components/Layout/DefaultLayout/Sidebar";
 import Articles from "../../components/Articles"
-const cx = classNames.bind(styles);
 
 function Home() {
+  const cx = classNames.bind(styles);
   let type = "";
 
   return (

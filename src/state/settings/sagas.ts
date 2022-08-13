@@ -17,6 +17,7 @@ function* getSettingsApi() {
   const res: Res = yield call(getInfoUser);    
   return res;
 }
+
 function* getSettingsFlow() {
   
   const res: Res = yield call(getSettingsApi);

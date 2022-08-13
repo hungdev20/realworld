@@ -1,4 +1,3 @@
-// src/signup/actions.js
 
 import { SIGNUP_REQUESTING } from "./constants";
 

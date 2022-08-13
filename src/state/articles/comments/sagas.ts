@@ -1,4 +1,4 @@
-import { call, takeEvery, take, put } from "redux-saga/effects";
+import { call, takeEvery, put } from "redux-saga/effects";
 import { commentsArticle } from "../../../apis/articles";
 import { fetchCommentsRequest } from "./actions"
 

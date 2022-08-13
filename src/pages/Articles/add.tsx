@@ -3,6 +3,7 @@ import styles from "./Articles.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
+
 import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -16,11 +17,12 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 
 function AddArticle() {
-    const faPropIcon = faXmark as IconProp;
     const cx = classNames.bind(styles);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
+    
+    const faPropIcon = faXmark as IconProp;
 
     let slug: string = params.slug!;
     useEffect(() => {
@@ -39,6 +41,7 @@ function AddArticle() {
     const publishArticleState = useSelector((state: any) => state.publishArticle);
     const detailArticleState = useSelector((state: any) => state.detailArticle);
     const detailArticle = useSelector((state: any) => state.detailArticle.data.article);
+
     let requestStatus = true;
     slug ? requestStatus = detailArticleState.requesting : requestStatus = publishArticleState.requesting;
 
@@ -68,6 +71,7 @@ function AddArticle() {
             index
         }))
     }
+
     const handlePublishArticle = (e: any) => {
 
         e.preventDefault();
@@ -80,6 +84,7 @@ function AddArticle() {
         }
         dispatch(requestAddArticle(payload));
     };
+
     const handleUpdateArticle = (e: any) => {
         e.preventDefault();
         let payload = {
@@ -94,6 +99,7 @@ function AddArticle() {
 
         dispatch(editArticleRequest(payload));
     };
+    
     return (
         <div className={cx("wrapper")}>
             <div className={cx("editor-page")}>

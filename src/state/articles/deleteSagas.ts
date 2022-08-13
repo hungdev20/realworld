@@ -1,4 +1,4 @@
-import { takeLatest, call, put, fork, take, takeEvery } from "redux-saga/effects";
+import { call, put, fork, take } from "redux-saga/effects";
 import { deleteArticle } from "../../apis/articles";
 import {
     DELETE_ARTICLE_REQUEST,

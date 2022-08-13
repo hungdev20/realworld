@@ -2,19 +2,23 @@
 import classNames from "classnames/bind";
 import styles from "./Login.module.scss";
 import Form from "react-bootstrap/Form";
+
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../../state/login/actions"
+import { loginRequest } from "../../state/login/actions";
+
 const cx = classNames.bind(styles);
 
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
+
   const requestStatus = useSelector((state: any) => state.login.requesting);
   const errorMessages = useSelector((state: any) => state.login.errors.errors);
 
@@ -22,6 +26,7 @@ function Login() {
   if (errorMessages != undefined) {
     errors = Object.entries(errorMessages);
   }
+
   const handleLogin = (e: any) => {
     e.preventDefault();
 
@@ -31,6 +36,7 @@ function Login() {
     }
     dispatch(loginRequest(payload, navigate));
   };
+
   return (
     <div className={cx("wrapper")}>
       <div className={cx("auth-page")}>
@@ -65,7 +71,7 @@ function Login() {
               <Form.Control
                 size="lg"
                 type="password"
-                placeholder="Password" 
+                placeholder="Password"
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Form.Group>

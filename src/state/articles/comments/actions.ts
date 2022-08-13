@@ -1,4 +1,9 @@
-import { FETCH_COMMENTS_REQUEST, ADD_COMMENT_REQUEST, DELETE_COMMENT_REQUEST } from "./constants";
+import {
+    FETCH_COMMENTS_REQUEST,
+    ADD_COMMENT_REQUEST,
+    DELETE_COMMENT_REQUEST
+} from "./constants";
+
 export interface PayloadAddComment {
     param: string,
     body: string
