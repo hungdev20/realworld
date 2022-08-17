@@ -82,6 +82,11 @@
     background-color: #449d44 !important;
     border-color: #419641 !important;
   }
+
+  &:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
 }
 .favorite-btn button.favorited {
   color: #fff;

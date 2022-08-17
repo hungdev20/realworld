@@ -15,6 +15,8 @@ import { fetchProfileUserRequest } from "../../state/user/actions"
 import Articles from "../../components/Articles"
 
 function User() {
+    const [follow, setFollow] = useState<any>(null);
+
     const username = localStorage.getItem("username");
     const token = Boolean(localStorage.getItem("token"));
     const cx = classNames.bind(styles);
@@ -26,6 +28,7 @@ function User() {
 
     let user: string = params.user!;
     const profile = useSelector((state: any) => state.fetchProfileUser.data.profile);
+    const requestFollowAuthorStatus = useSelector((state: any) => state.followAuthorArticle.requesting);
 
     const handleFollowAuthor = (username: string, following: boolean) => {
         let method = "post";
@@ -34,15 +37,19 @@ function User() {
             username,
             method
         }))
+        setFollow(!following)
     }
+    useEffect(() => {
+        setFollow(profile ? profile.following : follow)
+    }, [profile])
 
     useEffect(() => {
         dispatch(fetchProfileUserRequest(user))
     }, [user])
-    
+
     return (
         <div className={cx("wrapper")}>
-            {profile ?
+            {profile && follow !== null ?
                 <div className={cx("profile-page")}>
 
                     <div className={cx("user-info")}>
@@ -68,14 +75,15 @@ function User() {
 
                                         token ?
                                             <button
-                                                onClick={() => handleFollowAuthor(profile.username, profile.following)}
-                                                className={cx("btn", "follow", "btn-sm", "settings",
-                                                    profile.following ? "btn-secondary"
+                                                onClick={() => handleFollowAuthor(profile.username, follow)}
+                                                className={cx("follow", "btn-sm", "settings",
+                                                    follow && requestFollowAuthorStatus === false ? "btn-secondary"
                                                         : "btn-outline-secondary")}
+                                                disabled={requestFollowAuthorStatus}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon1} />
-                                                <span>
-                                                    {profile.following ?
+                                                <span className={cx("action")}>
+                                                    {follow && requestFollowAuthorStatus === false ?
                                                         "Unfollow " + profile.username
                                                         : "Follow " + profile.username
                                                     }
@@ -84,13 +92,12 @@ function User() {
 
                                             :
                                             <Link to="/register"
-                                                onClick={() => handleFollowAuthor(profile.username, profile.following)}
-                                                className={cx("btn", "follow", "btn-sm", "settings",
+                                                className={cx("follow", "btn-sm", "settings",
                                                     profile.following ? "btn-secondary"
                                                         : "btn-outline-secondary")}
                                             >
                                                 <FontAwesomeIcon icon={faPropIcon1} />
-                                                <span>
+                                                <span className={cx("action")}>
                                                     {profile.following ?
                                                         "Unfollow " + profile.username
                                                         : "Follow " + profile.username

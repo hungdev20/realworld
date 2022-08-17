@@ -20,7 +20,7 @@ function Settings() {
         email: string;
     } 
     const navigate = useNavigate();
-    const cx = classNames.bind(styles);
+    const cx = classNames.bind(styles); 
     const dispatch = useDispatch();
     const infoUser = useSelector((state: any) => state.settings.data.user);
 

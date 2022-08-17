@@ -21,27 +21,27 @@ function AddArticle() {
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
-    
-    const faPropIcon = faXmark as IconProp;
 
-    let slug: string = params.slug!;
-    useEffect(() => {
-        if (slug) {
-            dispatch(fetchDetailArticleRequest(slug))
-        }
-    }, [slug])
+    const faPropIcon = faXmark as IconProp;
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
     const [description, setDescription] = useState("");
     const [tag, setTag] = useState("")
     const [tagList, setTagList] = useState([]);
+    let slug: string = params.slug!;
+    useEffect(() => {
+        if (slug) {
+            dispatch(fetchDetailArticleRequest(slug))
+        }
+    }, [slug]) 
 
-    const tagArticleState = useSelector((state: any) => state.addTagArticle);    
+    let tagArticleState = useSelector((state: any) => state.addTagArticle);
     const publishArticleState = useSelector((state: any) => state.publishArticle);
+
     const detailArticleState = useSelector((state: any) => state.detailArticle);
     const detailArticle = useSelector((state: any) => state.detailArticle.data.article);
-
+  
     let requestStatus = true;
     slug ? requestStatus = detailArticleState.requesting : requestStatus = publishArticleState.requesting;
 
@@ -87,19 +87,22 @@ function AddArticle() {
 
     const handleUpdateArticle = (e: any) => {
         e.preventDefault();
-        let payload = {
-            article: detailArticle,
-            navigate
-        }
-        payload.article.body = body ? body : detailArticle.body;
-        payload.article.description = description ? description : detailArticle.description;
-        payload.article.tagList = tagList === [] ? tagList : detailArticle.tagList;
-        payload.article.title = title ? title : detailArticle.title;
-        payload.article.updatedAt = "2022-08-11T10:26:16.366Z";
+        if (slug && detailArticle !== "") {
+            let payload = {
+                article: detailArticle,
+                navigate
+            }
 
-        dispatch(editArticleRequest(payload));
+            payload.article.body = body ? body : detailArticle.body;
+            payload.article.description = description ? description : detailArticle.description;
+            payload.article.tagList = tagList === [] ? tagList : detailArticle.tagList;
+            payload.article.title = title ? title : detailArticle.title;
+            payload.article.updatedAt = "2022-08-11T10:26:16.366Z";
+
+            dispatch(editArticleRequest(payload));
+        }
     };
-    
+
     return (
         <div className={cx("wrapper")}>
             <div className={cx("editor-page")}>
@@ -123,7 +126,7 @@ function AddArticle() {
                                         size="lg"
                                         type="text"
                                         placeholder="Article Title"
-                                        defaultValue={detailArticle ? detailArticle.title : ""}
+                                        defaultValue={(detailArticle && slug) ? detailArticle.title : ""}
                                         onChange={(event) => setTitle(event.target.value)}
                                     />
                                 </Form.Group>
@@ -131,14 +134,14 @@ function AddArticle() {
                                     <Form.Control
                                         type="text"
                                         placeholder="What's this article body?"
-                                        defaultValue={detailArticle ? detailArticle.body : ""}
+                                        defaultValue={(detailArticle && slug) ? detailArticle.body : ""}
                                         onChange={(event) => setBody(event.target.value)}
                                     />
                                 </Form.Group>
                                 <Form.Group className="mb-3" controlId="description">
                                     <Form.Control
                                         placeholder="Write your article (in markdown)"
-                                        defaultValue={detailArticle ? detailArticle.description : ""}
+                                        defaultValue={(detailArticle && slug) ? detailArticle.description : ""}
                                         onChange={(event) => setDescription(event.target.value)}
                                         as="textarea"
                                         rows={8} />
@@ -152,28 +155,7 @@ function AddArticle() {
                                         onKeyDown={(ev) => ev.key === 'Enter' && ev.preventDefault()}
                                         onKeyUp={(e) => handleAddTag(e)}
                                     />
-                                    {/* {slug ?
-
-                                        detailArticle ?
-                                            <div className={cx("tag-list")}>
-                                                {detailArticle.tagList.map((tag: string, index: number) => (
-                                                    <span
-                                                        key={index}
-                                                        className={cx("tag", "tag-default", "tag-pill")}
-
-                                                    >
-                                                        <FontAwesomeIcon icon={faPropIcon}
-                                                            onClick={() => handleRemoveTag(index)}
-                                                        />
-                                                        {tag}
-                                                    </span>
-                                                ))}
-
-                                            </div>
-                                            : ""
-
-                                        : */}
-
+ 
                                     {tagArticleState.tagList ?
                                         <div className={cx("tag-list")}>
                                             {tagArticleState.tagList.map((tag: string, index: number) => (

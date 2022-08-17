@@ -6,21 +6,31 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 
+import { SET_STATE_DEFAULT } from "../../../../state/articles/detail/constants";
+import { SET_TAG_DEFAULT } from "../../../../state/articles/tags/constants";
+
 function Header() {
   const cx = classNames.bind(styles);
+  const dispatch = useDispatch();
 
   let activeClassName = "active";
   const token = Boolean(localStorage.getItem("token"));
   const username = localStorage.getItem("username");
   const faPropIcon = faPenToSquare as IconProp;
   const faPropIcon1 = faGear as IconProp;
-  
+
   return (
     <header className={cx("wrapper")}>
       <div className={cx("container")}>
         <div className={cx("inner")}>
           <div className={cx("navbar-brand")}>
-            <Link to="/">conduit</Link>
+            <Link to="/"
+              onClick={() => {
+                {
+                  dispatch({ type: SET_STATE_DEFAULT })
+                }
+              }}
+            >conduit</Link>
           </div>
           <ul className={cx("navbar-nav")}>
             <li className={cx("nav-item")}>
@@ -28,6 +38,11 @@ function Header() {
                 className={({ isActive }) =>
                   isActive ? cx(activeClassName) : undefined
                 }
+                onClick={() => {
+                  {
+                    dispatch({ type: SET_STATE_DEFAULT })
+                  }
+                }}
                 to="/"
               >
                 Home
@@ -42,6 +57,12 @@ function Header() {
                       isActive ? cx(activeClassName) : undefined
                     }
                     to="/editor"
+                    onClick={() => {
+                      {
+                        dispatch({ type: SET_TAG_DEFAULT })
+                        dispatch({ type: SET_STATE_DEFAULT })
+                      }
+                    }}
                   >
                     New Article
                   </NavLink>

@@ -3,7 +3,8 @@ import { FAVORITE_ARTICLE_REQUEST } from "./constants";
 
 interface Payload {
     slug: string;
-    favorited: boolean
+    favorited: boolean, 
+    detail?: boolean
 }
 export const favoriteArticleRequest = (payload: Payload) => {
     return {

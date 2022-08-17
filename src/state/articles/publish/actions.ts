@@ -3,7 +3,7 @@ import { ADD_ARTICLE_REQUEST, EDIT_ARTICLE_REQUEST} from "./constants";
 export interface AddArticlePayload {
     title: string;
     body: string;
-    description: string;
+    description: string; 
     tagList: object;
     navigate: any;
 }

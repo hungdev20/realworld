@@ -8,11 +8,12 @@ import { Link, useParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux'
-import { requestFetchArticles } from "../../state/articles/actions"
-import { favoriteArticleRequest } from "../../state/articles/favourites/actions"
+import { useSelector } from 'react-redux';
+import { requestFetchArticles } from "../../state/articles/actions";
+import { favoriteArticleRequest } from "../../state/articles/favourites/actions";
+import { SET_STATE_DEFAULT } from "../../state/articles/detail/constants";
 
 function Articles(props: any) {
     const cx = classNames.bind(styles);
@@ -23,29 +24,41 @@ function Articles(props: any) {
     const token = Boolean(localStorage.getItem("token"));
     const tabs = ["yourFeed", "globalFeed", "myArticles", "favoritedArticles"];
 
+    //set Type for each tab
     let typeDefault;
     if (user) {
         typeDefault = "myArticles"
     } else {
         token ? typeDefault = "yourFeed" : typeDefault = "globalFeed";
     }
-
+    
     const [type, setType] = useState(typeDefault);
+    const [activeId, setActiveId] = useState<any>(null);
+
+    //Get list of articles
+    const articleState = useSelector((state: any) => state.articles)
+    const articles = articleState.data;
+    
     const payload = {
         tab: type,
         tag: "",
         author: user ? props.author : ""
     }
-
-    //Get list of articles
-    const articles = useSelector((state: any) => state.articles.data);
-
     useEffect(() => {
         dispatch(requestFetchArticles(payload));
     }, [])
 
-    const requesting = useSelector((state: any) => state.articles.requesting);   
-     
+    const requesting = articleState.requesting;
+    const favoriteArticleState = useSelector((state: any) => state.favorites)
+    const favoriteRequestStatus = favoriteArticleState.requesting;
+    let detailArticle = useSelector((state: any) => state.detailArticle.data.article);
+    
+    if (detailArticle) {
+        if (detailArticle.slug === articles[activeId].slug) {
+            articles[activeId] = detailArticle
+        }
+    }
+
     return (
         <div className={cx("feed-toggle")}>
             <ul className={cx("nav")}>
@@ -66,6 +79,8 @@ function Articles(props: any) {
                                             tag: "",
                                             author: props.author
                                         }))
+                                        setActiveId(null)
+                                        dispatch({ type: SET_STATE_DEFAULT })
                                     }
                                 }}
 
@@ -97,6 +112,9 @@ function Articles(props: any) {
                                             tag: "",
                                             author: props.author
                                         }))
+                                        setActiveId(null)
+                                        dispatch({ type: SET_STATE_DEFAULT })
+
                                     }
                                 }}
 
@@ -133,6 +151,9 @@ function Articles(props: any) {
                                                 tab: "yourFeed",
                                                 tag: ""
                                             }))
+                                            setActiveId(null)
+                                            dispatch({ type: SET_STATE_DEFAULT })
+
                                         }
                                     }}
 
@@ -165,6 +186,10 @@ function Articles(props: any) {
                                             tab: "globalFeed",
                                             tag: ""
                                         }))
+                                        setActiveId(null)
+                                        dispatch({ type: SET_STATE_DEFAULT })
+
+
                                     }
                                 }}
 
@@ -196,87 +221,269 @@ function Articles(props: any) {
                     :
                     <>
                         {articles.length > 0 ?
-                            articles.map((article: any, index: number) => (
-                                <div className={cx("article")} key={index}>
-                                    <div className={cx("article-preview")}>
-                                        <div className={cx("article-meta")}>
-                                            <div className={cx("wp-info")}>
-                                                <Link
-                                                    to={"/@" + article.author.username}
-                                                    className={cx("profile")}
-                                                >
-                                                    <img
-                                                        src={article.author.image}
-                                                        alt={article.author.username}
-                                                    />
-                                                </Link>
-                                                <div className={cx("info")}>
-                                                    <Link
-                                                        to={"/@" + article.author.username}
-                                                        className={cx("author")}
-                                                    >
-                                                        {article.author.username}
-                                                    </Link>
-                                                    <span className={cx("date")}>{moment(article.createdAt).format("MMMM D, YYYY")}</span>
-                                                </div>
-                                            </div>
-                                            <div className={cx("favorite-btn")}>
-                                                {token ?
+                            articles.map((article: any, index: any) => (
+                                detailArticle ?
+                                    detailArticle.slug === article.slug ?
 
-                                                    <button
-                                                        className={
-                                                            cx("btn-favor", article.favorited ? "favorited" : undefined)
+
+                                        <div className={cx("article")} key={index} id={index} >
+                                            <div className={cx("article-preview")}>
+                                                <div className={cx("article-meta")}>
+                                                    <div className={cx("wp-info")}>
+                                                        <Link
+                                                            to={"/@" + detailArticle.author.username}
+                                                            className={cx("profile")}
+                                                        >
+                                                            <img
+                                                                src={detailArticle.author.image}
+                                                                alt={detailArticle.author.username}
+                                                            />
+                                                        </Link>
+                                                        <div className={cx("info")}>
+                                                            <Link
+                                                                to={"/@" + detailArticle.author.username}
+                                                                className={cx("author")}
+                                                            >
+                                                                {detailArticle.author.username}
+                                                            </Link>
+                                                            <span className={cx("date")}>{moment(detailArticle.createdAt).format("MMMM D, YYYY")}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className={cx("favorite-btn")}>
+                                                        {token ?
+
+                                                            <button
+                                                                className={
+                                                                    cx("btn-favor", detailArticle.favorited ? "favorited" : undefined
+                                                                    )
+                                                                }
+                                                                onClick={() => {
+                                                                    dispatch(favoriteArticleRequest({
+                                                                        slug: article.slug,
+                                                                        favorited: article.favorited,
+                                                                        detail: true
+                                                                    }))
+                                                                    setActiveId(index)
+
+                                                                }}
+                                                                disabled={activeId === index && favoriteRequestStatus}
+                                                            >
+                                                                <FontAwesomeIcon icon={faPropIcon} />
+                                                                <span className={cx("count-like")}>
+                                                                    {detailArticle.favoritesCount}
+                                                                </span>
+                                                            </button>
+                                                            :
+                                                            <Link to="/register"
+                                                                className={
+                                                                    cx("btn-favor", detailArticle.favorited ? "favorited" : undefined)
+                                                                }
+                                                            >
+                                                                <FontAwesomeIcon icon={faPropIcon} />
+                                                                <span className={cx("count-like")}>
+                                                                    {detailArticle.favoritesCount}
+                                                                </span>
+                                                            </Link>
                                                         }
-                                                        onClick={() => {
-                                                            dispatch(favoriteArticleRequest({
-                                                                slug: article.slug,
-                                                                favorited: article.favorited
-                                                            }))
-                                                        }}
-                                                    >
-                                                        <FontAwesomeIcon icon={faPropIcon} />
-                                                        <span className={cx("count-like")}>
-                                                            {article.favoritesCount}
-                                                        </span>
-                                                    </button>
-                                                    :
-                                                    <Link to="/register"
-                                                        className={
-                                                            cx("btn-favor", article.favorited ? "favorited" : undefined)
-                                                        }
-                                                    >
-                                                        <FontAwesomeIcon icon={faPropIcon} />
-                                                        <span className={cx("count-like")}>
-                                                            {article.favoritesCount}
-                                                        </span>
-                                                    </Link>
-                                                }
+                                                    </div>
+                                                </div>
+                                                <Link to={"/article/" + detailArticle.slug} className={cx("preview-link")}>
+                                                    <h1 className={cx("title")}>{detailArticle.title}</h1>
+                                                    <p className={cx("description")}>{detailArticle.description}</p>
+                                                    <div className={cx("actions")}>
+                                                        <span className={cx("read-more")}>Read more...</span>
+                                                        <ul className={cx("tag-list")}>
+                                                            {detailArticle.tagList.map((tag: string, index: number) => (
+                                                                <li
+                                                                    key={index}
+                                                                    className={cx(
+                                                                        "tag-default",
+                                                                        "tag-pill",
+                                                                        "tag-outline"
+                                                                    )}
+                                                                >
+                                                                    {tag}
+                                                                </li>
+
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </Link>
                                             </div>
                                         </div>
-                                        <Link to={"/article/" + article.slug} className={cx("preview-link")}>
-                                            <h1 className={cx("title")}>{article.title}</h1>
-                                            <p className={cx("description")}>{article.description}</p>
-                                            <div className={cx("actions")}>
-                                                <span className={cx("read-more")}>Read more...</span>
-                                                <ul className={cx("tag-list")}>
-                                                    {article.tagList.map((tag: string, index: number) => (
-                                                        <li
-                                                            key={index}
-                                                            className={cx(
-                                                                "tag-default",
-                                                                "tag-pill",
-                                                                "tag-outline"
-                                                            )}
+                                        :
+                                        <div className={cx("article")} key={index} id={index}>
+                                            <div className={cx("article-preview")}>
+                                                <div className={cx("article-meta")}>
+                                                    <div className={cx("wp-info")}>
+                                                        <Link
+                                                            to={"/@" + article.author.username}
+                                                            className={cx("profile")}
                                                         >
-                                                            {tag}
-                                                        </li>
+                                                            <img
+                                                                src={article.author.image}
+                                                                alt={article.author.username}
+                                                            />
+                                                        </Link>
+                                                        <div className={cx("info")}>
+                                                            <Link
+                                                                to={"/@" + article.author.username}
+                                                                className={cx("author")}
+                                                            >
+                                                                {article.author.username}
+                                                            </Link>
+                                                            <span className={cx("date")}>{moment(article.createdAt).format("MMMM D, YYYY")}</span>
+                                                        </div>
+                                                    </div>
+                                                    <div className={cx("favorite-btn")}>
+                                                        {token ?
+                                                        
+                                                            <button
+                                                                className={
+                                                                    cx("btn-favor", article.favorited ? "favorited" : undefined
+                                                                    )
+                                                                }
+                                                                onClick={() => {
+                                                                    dispatch(favoriteArticleRequest({
+                                                                        slug: article.slug,
+                                                                        favorited: article.favorited,
+                                                                        detail: true
+                                                                    }))
+                                                                    setActiveId(index)
 
-                                                    ))}
-                                                </ul>
+                                                                }}
+                                                                disabled={activeId === index && favoriteRequestStatus}
+                                                            >
+                                                                <FontAwesomeIcon icon={faPropIcon} />
+                                                                <span className={cx("count-like")}>
+                                                                    {article.favoritesCount}
+                                                                </span>
+                                                            </button>
+                                                            :
+                                                            <Link to="/register"
+                                                                className={
+                                                                    cx("btn-favor", article.favorited ? "favorited" : undefined)
+                                                                }
+                                                            >
+                                                                <FontAwesomeIcon icon={faPropIcon} />
+                                                                <span className={cx("count-like")}>
+                                                                    {article.favoritesCount}
+                                                                </span>
+                                                            </Link>
+                                                        }
+                                                    </div>
+                                                </div>
+                                                <Link to={"/article/" + article.slug} className={cx("preview-link")}>
+                                                    <h1 className={cx("title")}>{article.title}</h1>
+                                                    <p className={cx("description")}>{article.description}</p>
+                                                    <div className={cx("actions")}>
+                                                        <span className={cx("read-more")}>Read more...</span>
+                                                        <ul className={cx("tag-list")}>
+                                                            {article.tagList.map((tag: string, index: number) => (
+                                                                <li
+                                                                    key={index}
+                                                                    className={cx(
+                                                                        "tag-default",
+                                                                        "tag-pill",
+                                                                        "tag-outline"
+                                                                    )}
+                                                                >
+                                                                    {tag}
+                                                                </li>
+
+                                                            ))}
+                                                        </ul>
+                                                    </div>
+                                                </Link>
                                             </div>
-                                        </Link>
+                                        </div>
+                                    :
+
+                                    <div className={cx("article")} key={index} id={index}>
+                                        <div className={cx("article-preview")}>
+                                            <div className={cx("article-meta")}>
+                                                <div className={cx("wp-info")}>
+                                                    <Link
+                                                        to={"/@" + article.author.username}
+                                                        className={cx("profile")}
+                                                    >
+                                                        <img
+                                                            src={article.author.image}
+                                                            alt={article.author.username}
+                                                        />
+                                                    </Link>
+                                                    <div className={cx("info")}>
+                                                        <Link
+                                                            to={"/@" + article.author.username}
+                                                            className={cx("author")}
+                                                        >
+                                                            {article.author.username}
+                                                        </Link>
+                                                        <span className={cx("date")}>{moment(article.createdAt).format("MMMM D, YYYY")}</span>
+                                                    </div>
+                                                </div>
+                                                <div className={cx("favorite-btn")}>
+                                                    {token ?
+                                                       
+                                                        <button
+                                                            className={
+                                                                cx("btn-favor", article.favorited ? "favorited" : undefined
+                                                                )
+                                                            }
+                                                            onClick={() => {
+                                                                dispatch(favoriteArticleRequest({
+                                                                    slug: article.slug,
+                                                                    favorited: article.favorited,
+                                                                    detail: true
+                                                                }))
+                                                                setActiveId(index)
+
+                                                            }}
+                                                            disabled={activeId === index && favoriteRequestStatus}
+                                                        >
+                                                            <FontAwesomeIcon icon={faPropIcon} />
+                                                            <span className={cx("count-like")}>
+                                                                {article.favoritesCount}
+                                                            </span>
+                                                        </button>
+                                                        :
+                                                        <Link to="/register"
+                                                            className={
+                                                                cx("btn-favor", article.favorited ? "favorited" : undefined)
+                                                            }
+                                                        >
+                                                            <FontAwesomeIcon icon={faPropIcon} />
+                                                            <span className={cx("count-like")}>
+                                                                {article.favoritesCount}
+                                                            </span>
+                                                        </Link>
+                                                    }
+                                                </div>
+                                            </div>
+                                            <Link to={"/article/" + article.slug} className={cx("preview-link")}>
+                                                <h1 className={cx("title")}>{article.title}</h1>
+                                                <p className={cx("description")}>{article.description}</p>
+                                                <div className={cx("actions")}>
+                                                    <span className={cx("read-more")}>Read more...</span>
+                                                    <ul className={cx("tag-list")}>
+                                                        {article.tagList.map((tag: string, index: number) => (
+                                                            <li
+                                                                key={index}
+                                                                className={cx(
+                                                                    "tag-default",
+                                                                    "tag-pill",
+                                                                    "tag-outline"
+                                                                )}
+                                                            >
+                                                                {tag}
+                                                            </li>
+
+                                                        ))}
+                                                    </ul>
+                                                </div>
+                                            </Link>
+                                        </div>
                                     </div>
-                                </div>
                             ))
 
                             :
@@ -297,3 +504,4 @@ function Articles(props: any) {
 }
 
 export default Articles;
+

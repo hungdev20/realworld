@@ -1,7 +1,8 @@
 import {
     FETCH_DETAIL_ARTICLE_SUCCESS,
     FETCH_DETAIL_ARTICLE_ERRORS,
-    FETCH_DETAIL_ARTICLE_REQUEST
+    FETCH_DETAIL_ARTICLE_REQUEST,
+    SET_STATE_DEFAULT
 } from "./constants";
 
 const initialState: object = {
@@ -38,6 +39,13 @@ const detailArticleReducer = (state = initialState, action: Actions) => {
                 requesting: false,
                 success: false,
                 errors: action.error,
+                data: {}
+            };
+        case SET_STATE_DEFAULT:
+            return {
+                requesting: false,
+                success: false,
+                errors: {},
                 data: {}
             };
         default:

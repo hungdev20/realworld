@@ -8,18 +8,22 @@ import Articles from "../../components/Articles"
 
 function Home() {
   const cx = classNames.bind(styles);
-  let type = "";
+  const token = Boolean(localStorage.getItem("token"));
 
   return (
-    <div className={cx("wrapper")}> 
+    <div className={cx("wrapper")}>
       <div className={cx("home-page")}>
-        <div className={cx("banner")}>
-          <div className={cx("container")}>
-            <h1 className={cx("logo-font")}>conduit</h1>
-            <p>A place to share the knowledge</p>
+        {token ?
+          ""
+          :
+          <div className={cx("banner")}>
+            <div className={cx("container")}>
+              <h1 className={cx("logo-font")}>conduit</h1>
+              <p>A place to share the knowledge</p>
+            </div>
           </div>
-        </div>
 
+        }
         <div className={cx("container", "page")}>
           <Row>
             <Col md={9}>
@@ -27,7 +31,7 @@ function Home() {
               />
             </Col>
             <Col md={3}>
-              <Sidebar>{type}</Sidebar>
+              <Sidebar />
             </Col>
           </Row>
         </div>

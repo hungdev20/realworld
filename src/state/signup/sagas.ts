@@ -1,6 +1,7 @@
 
 import { takeLatest, call, put } from "redux-saga/effects";
 import { SIGNUP_REQUESTING, SIGNUP_SUCCESS, SIGNUP_ERROR } from "./constants";
+import { LOGIN_REQUESTING } from "../login/constants"
 import addUser from "../../apis/user/addUser";
 function* signupApi(
   username: string,
@@ -9,34 +10,43 @@ function* signupApi(
   navigate: any
 ) {
   const data = {
-    user: { 
-      email: email,
-      password: password,
-      username: username,
+    user: {
+      email,
+      password,
+      username,
     },
   };
-  const res: object | number = yield call(addUser, data);
 
-  if (res === 200) {
+  interface Res {
+    status: number;
+    data: object;
+  }
+  const res: Res = yield call(addUser, data);
+
+  if (res.status === 200) {
     yield put({ type: SIGNUP_SUCCESS, email });
-    navigate("/");
+    yield put({
+      type: LOGIN_REQUESTING, payload: {
+        email,
+        password
+      },
+      navigate
+    })
   } else {
     yield put({ type: SIGNUP_ERROR, error: res });
   }
 }
 
 function* signupFlow(action: any) {
-  
+
   const { payload, navigate } = action;
-  try {
-    yield call(
-      signupApi,
-      payload.username,
-      payload.email,
-      payload.password,
-      navigate
-    );
-  } catch (error) {}
+  yield call(
+    signupApi,
+    payload.username,
+    payload.email,
+    payload.password,
+    navigate
+  );
 }
 
 function* signupWatcher() {

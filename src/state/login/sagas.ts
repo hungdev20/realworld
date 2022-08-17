@@ -40,7 +40,7 @@ function* loginFlow(email: string, password: string, navigate: any) {
   const res: Res = yield call(loginApi, email, password);
   if (res.status === 200) {
 
-    yield put(setClient(res.token));
+    yield put(setClient(res.token)); 
 
     yield put({ type: LOGIN_SUCCESS });
 

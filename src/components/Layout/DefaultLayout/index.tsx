@@ -1,16 +1,14 @@
-import classNames from "classnames";
-import styles from "./DefaultLayout.module.scss";
+
 import Header from "./Header";
 import Footer from "./Footer";
 
 function DefaultLayout({ children }: { children: any }) {
-  const cx = classNames.bind(styles);
-  
+
   return (
-    <div className={cx("wrapper")} style={{ position: "relative" }}>
+    <div className="wrapper" style={{ position: "relative" }}>
       <Header />
-      <div className={cx("wp-content")}>
-        <div className={cx("content")}>{children}</div>
+      <div className="wp-content" style={{ minHeight: "560px" }}>
+        <div className="content">{children}</div>
       </div>
       <Footer />
     </div>

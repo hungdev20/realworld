@@ -2,9 +2,6 @@ import {
   FETCH_ARTICLES_REQUEST,
   FETCH_ARTICLES_SUCCESS,
   FETCH_ARTICLES_ERRORS,
-  DELETE_ARTICLE_REQUEST,
-  DELETE_ARTICLE_SUCCESS,
-  DELETE_ARTICLE_ERRORS
 } from "./constants";
 
 const initialState: object = {
@@ -54,6 +51,7 @@ const articlesReducer = (state = initialState, action: Actions) => {
         data: [],
         messages: "",
       };
+    
     default:
       return state;
   }

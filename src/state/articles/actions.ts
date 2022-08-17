@@ -11,6 +11,11 @@ export interface AddArticlePayload {
   description: string;
   tagList: object;
 }
+
+export interface DeleteArticlePayload {
+  slug: string;
+  navigate: any
+}
 export const requestFetchArticles = (payload: Payload) => {
   return {
     type: FETCH_ARTICLES_REQUEST,
@@ -18,11 +23,10 @@ export const requestFetchArticles = (payload: Payload) => {
   };
 };
 
-export const deleteArticleRequest = (payload: string, navigate: any) => {
+export const deleteArticleRequest = (payload: DeleteArticlePayload) => {
   return {
     type: DELETE_ARTICLE_REQUEST,
     payload,
-    navigate
   }
 }
 

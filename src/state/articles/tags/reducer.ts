@@ -3,6 +3,7 @@ import {
     ADD_TAG_SUCCESS,
     REMOVE_TAG_REQUEST,
     REMOVE_TAG_SUCCESS,
+    SET_TAG_DEFAULT
 } from "./constants";
 
 const initialState: object = {
@@ -14,7 +15,7 @@ const initialState: object = {
 
 export interface Actions {
     type: string;
-    tag: string;
+    tag: string; 
     tagList: object;
     error?: any;
 
@@ -24,7 +25,7 @@ const addTagArticleReducer = (state = initialState, action: Actions) => {
         case ADD_TAG_REQUEST:
             return {
                 tagList: [],
-                tag: action.tag, 
+                tag: action.tag,
                 errors: {},
                 requesting: true
             };
@@ -48,6 +49,13 @@ const addTagArticleReducer = (state = initialState, action: Actions) => {
                 tag: "",
                 errors: {},
                 requesting: false
+            };
+        case SET_TAG_DEFAULT:
+            return {
+                tagList: [],
+                tag: '',
+                errors: {},
+                requesting: false,
             };
         default:
             return state;

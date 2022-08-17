@@ -4,7 +4,7 @@ import {
     ADD_ARTICLE_ERRORS,
     EDIT_ARTICLE_REQUEST,
     EDIT_ARTICLE_ERRORS,
-    EDIT_ARTICLE_SUCCESS
+    EDIT_ARTICLE_SUCCESS,
 } from "./constants";
 
 const initialState: object = {
@@ -57,6 +57,7 @@ const publishArticleReducer = (state = initialState, action: Actions) => {
                 requesting: false,
                 errors: action.error
             };
+       
         default:
             return state;
     }

@@ -33,7 +33,7 @@ function Register() {
       username: username,
       email: email,
       password: password
-    }
+    } 
     dispatch(requestSignup(payload, navigate));
   };
   

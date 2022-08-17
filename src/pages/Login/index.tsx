@@ -27,7 +27,7 @@ function Login() {
     errors = Object.entries(errorMessages);
   }
 
-  const handleLogin = (e: any) => {
+  const handleLogin = (e: any) => { 
     e.preventDefault();
 
     const payload = {
