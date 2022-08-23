@@ -9,13 +9,14 @@ import {
 } from "./constants";
 import { FETCH_DETAIL_ARTICLE_REQUEST } from "../detail/constants"
 import { favoriteArticleRequest } from "./actions"
+import {Article} from "../../interface";
 
 interface Res {
   status: number;
-  data: any;
+  data: Article;
 }
 
-function* favoriteArticlesApi(favorited: boolean, slug: string) {
+function* favoriteArticlesApi(favorited: boolean, slug: string|undefined) {
   const payload = {
     favorited,
     slug,
@@ -27,7 +28,7 @@ function* favoriteArticlesApi(favorited: boolean, slug: string) {
 function* favoriteFlow({ payload }: ReturnType<typeof favoriteArticleRequest>) {
 
   const res: Res = yield call(favoriteArticlesApi, payload.favorited, payload.slug);
-  const favorited = res.data.article.favorited;
+  const favorited = res?.data?.article?.favorited;
 
 
   if (res.status === 200) {

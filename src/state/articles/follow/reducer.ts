@@ -4,7 +4,13 @@ import {
     FOLLOW_AUTHOR_ERRORS
 } from "./constants";
 
-const initialState: object = {
+export interface FollowAuthorState {
+    requesting: boolean;
+    success: boolean;
+    errors: object;
+}
+
+const initialState: FollowAuthorState = {
     requesting: false,
     success: false,
     errors: {}

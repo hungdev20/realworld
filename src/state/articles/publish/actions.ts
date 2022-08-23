@@ -1,14 +1,14 @@
-import { ADD_ARTICLE_REQUEST, EDIT_ARTICLE_REQUEST} from "./constants";
+import { ADD_ARTICLE_REQUEST, EDIT_ARTICLE_REQUEST } from "./constants";
 
 export interface AddArticlePayload {
     title: string;
     body: string;
-    description: string; 
+    description: string;
     tagList: object;
     navigate: any;
 }
 export interface PayloadEditArticle {
-    article: any;
+    article: object | undefined;
     navigate: any;
 }
 

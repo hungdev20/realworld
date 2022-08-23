@@ -1,14 +1,10 @@
 import axiosConfig from "../axiosConfig";
 
-export default async function deleteArticle(data: string) {
-    const AUTH_TOKEN = localStorage.getItem("token");
+export default async function deleteArticle(data: string | undefined) {
 
     return await axiosConfig({
         method: "delete",
-        url: `/articles/${data}`,
-        headers: {
-            Authorization: "Token " + (AUTH_TOKEN ? AUTH_TOKEN.toString() : ""),
-        }
+        url: `/articles/${data}`
     })
         .then(function (response) {
             return response;

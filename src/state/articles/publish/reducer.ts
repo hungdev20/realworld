@@ -5,29 +5,33 @@ import {
     EDIT_ARTICLE_REQUEST,
     EDIT_ARTICLE_ERRORS,
     EDIT_ARTICLE_SUCCESS,
-} from "./constants";
+} from "./constants"; 
 
-const initialState: object = {
+export interface PublishArticleState {
+    tagList: object;
+    tag: string;
+    errors: object;
+    requesting: boolean;
+}
+const initialState: PublishArticleState = {
     tagList: [],
     tag: '',
     errors: {},
     requesting: false,
 };
 
-export interface Actions {
+export interface PayloadPublishArticle {
     type: string;
     tag: string;
-    tagList: object;
+    tagList: string[];
     error?: any;
 
 }
-const publishArticleReducer = (state = initialState, action: Actions) => {
+const publishArticleReducer = (state = initialState, action: PayloadPublishArticle) => {
     switch (action.type) {
         case ADD_ARTICLE_REQUEST:
             return {
-                tagList: [],
-                tag: '',
-                errors: {},
+                ...state,
                 requesting: true
             };
         case ADD_ARTICLE_SUCCESS:
@@ -57,7 +61,7 @@ const publishArticleReducer = (state = initialState, action: Actions) => {
                 requesting: false,
                 errors: action.error
             };
-       
+
         default:
             return state;
     }

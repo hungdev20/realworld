@@ -7,15 +7,18 @@ import {
   FETCH_DETAIL_ARTICLE_SUCCESS,
   FETCH_DETAIL_ARTICLE_ERRORS
 
-} from "./constants";
+} from "./constants"; 
+
+import {Article} from "../../interface";
+
 interface Res {
-  status: number;
-  data: any; 
+  status: number; 
+  data: Article;  
 }
 
 function* detailArticleApi(payload: string) {
  
-  const res: Res = yield call(getDetailArticle, payload);  
+  const res: Res = yield call(getDetailArticle, payload);    
   return res;
 }
 function* detailArticleFlow({payload}: ReturnType<typeof fetchDetailArticleRequest>) {
@@ -23,7 +26,7 @@ function* detailArticleFlow({payload}: ReturnType<typeof fetchDetailArticleReque
   const res: Res = yield call(detailArticleApi, payload);
   if (res.status === 200) {
     yield put({ type: FETCH_DETAIL_ARTICLE_SUCCESS, data: res.data });
-    yield put({ type: ADD_TAG_SUCCESS, tagList: res.data.article.tagList });
+    yield put({ type: ADD_TAG_SUCCESS, tagList:res.data.article ? res.data.article.tagList : [] });
 
   } else {
     yield put({ type: FETCH_DETAIL_ARTICLE_ERRORS, error: res });

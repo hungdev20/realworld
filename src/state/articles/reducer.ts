@@ -4,7 +4,15 @@ import {
   FETCH_ARTICLES_ERRORS,
 } from "./constants";
 
-const initialState: object = {
+export interface ListArticleState {
+  requesting: boolean;
+  success: boolean;
+  errors: object;
+  messages: string;
+  data: object;
+}
+
+const initialState: ListArticleState = {
   requesting: false,
   success: false,
   errors: {},
@@ -17,6 +25,7 @@ export interface Actions {
   data?: object;
   error?: any;
 }
+
 const articlesReducer = (state = initialState, action: Actions) => {
   switch (action.type) {
     case FETCH_ARTICLES_REQUEST:

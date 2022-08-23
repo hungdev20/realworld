@@ -3,18 +3,26 @@ import {
     FETCH_COMMENTS_ERRORS,
     FETCH_COMMENTS_REQUEST
 } from "./constants";
+import {ResponseComments} from "./sagas";
 
-const initialState: object = {
+export interface ListCommentState {
+    requesting: boolean;
+    success: boolean;
+    errors: object;
+    data: ResponseComments;
+}
+
+const initialState: ListCommentState = {
     requesting: false,
     success: false,
     errors: {},
-    data: []
+    data: {}
 };
 
 export interface Actions {
     type: string;
-    data?: object,
-    error?: any;
+    data?: ResponseComments,
+    error?: object;
 
 }
 const fetchCommentsReducer = (state = initialState, action: Actions) => {

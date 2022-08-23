@@ -2,7 +2,13 @@ import {
     DELETE_COMMENT_REQUEST,
 } from "./constants";
 
-const initialState: object = {
+export interface DeleteCommentState {
+    requesting: boolean;
+    success: boolean;
+    errors: object;
+}
+
+const initialState: DeleteCommentState = {
     requesting: false,
     success: false,
     errors: {},

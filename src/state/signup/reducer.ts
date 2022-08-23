@@ -1,16 +1,29 @@
 import { SIGNUP_REQUESTING, SIGNUP_SUCCESS, SIGNUP_ERROR } from "./constants";
 
-const initialState = {
+export interface Errors {
+  email?: string[];
+  password?: string[];
+  username?: string[];
+}
+
+export interface SignUpState {
+  requesting: boolean;
+  success: boolean;
+  errors: Errors;
+  messages: object;
+}
+
+const initialState: SignUpState = {
   requesting: false,
   success: false,
   errors: {},
   messages: [],
 };
- 
+
 export interface Actions {
   type: string;
   email?: string;
-  error?: any;
+  error?: Errors;
 }
 function signupReducer(state = initialState, action: Actions) {
   switch (action.type) {

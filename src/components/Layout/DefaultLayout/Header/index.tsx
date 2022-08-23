@@ -75,7 +75,7 @@ function Header() {
                     }
                     to="/settings"
                   >
-                    Settings
+                    Settings 
                   </NavLink>
                 </li>
                 <li className={cx("nav-item")}>
@@ -112,7 +112,6 @@ function Header() {
                   </NavLink>
                 </li>
               </>
-
             }
           </ul>
         </div>

@@ -1,4 +1,4 @@
-import { call, put,takeEvery } from "redux-saga/effects";
+import { call, put, takeEvery } from "redux-saga/effects";
 import getInfoUser from "../../apis/user/getInfoUser";
 import {
   FETCH_SETTINGS_REQUESTING,
@@ -7,24 +7,36 @@ import {
 
 } from "./constants";
 
+export interface DataSettings {
+  user?: {
+    username?: string;
+    email?: string;
+    bio?: string;
+    image?: string;
+    token?: string;
+    password?: string;
+  }
+}
+
 interface Res {
   status: number;
-  data: object;
+  data: DataSettings;
+  errors: any;
 }
 
 function* getSettingsApi() {
 
-  const res: Res = yield call(getInfoUser);    
+  const res: Res = yield call(getInfoUser);
   return res;
 }
 
 function* getSettingsFlow() {
-  
+
   const res: Res = yield call(getSettingsApi);
   if (res.status === 200) {
     yield put({ type: FETCH_SETTINGS_SUCCESS, data: res.data });
   } else {
-    yield put({ type:   FETCH_SETTINGS_ERRORS, error: res });
+    yield put({ type: FETCH_SETTINGS_ERRORS, error: res.errors });
   }
 }
 

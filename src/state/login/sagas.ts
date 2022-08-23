@@ -9,12 +9,13 @@ import {
 } from "./constants";
 
 import { setClient, unsetClient } from "../client/actions";
+import {Errors} from "./reducer";
 
-import { CLIENT_UNSET } from "../client/constants";
 interface Res {
   status: number;
   username: string;
   token: string;
+  errors: Errors;
 }
 function* loginApi(email: string, password: string) {
   const data = {
@@ -48,7 +49,7 @@ function* loginFlow(email: string, password: string, navigate: any) {
     localStorage.setItem("username", res.username);
     navigate("/");
   } else {
-    yield put({ type: LOGIN_ERROR, error: res });
+    yield put({ type: LOGIN_ERROR, error: res.errors });
   }
 }
 

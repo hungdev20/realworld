@@ -6,7 +6,14 @@ import {
   FAVORITE_ARTICLE_REQUEST,
 } from "./constants";
 
-const initialState: object = {
+export interface FavoriteArticleState {
+  requesting: boolean;
+  success: boolean;
+  errors: object;
+  favorited: boolean;
+}
+
+const initialState: FavoriteArticleState = {
   requesting: false,
   success: false,
   errors: {},

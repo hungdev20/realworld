@@ -4,7 +4,13 @@ import {
     DELETE_ARTICLE_ERRORS
 } from "./constants";
 
-const initialState: object = {
+export interface DeleteArticleState {
+    requesting: boolean;
+    success: boolean;
+    errors: object;
+}
+
+const initialState: DeleteArticleState = {
     requesting: false,
     success: false,
     errors: {}
@@ -21,21 +27,21 @@ const deleteArticleReducer = (state = initialState, action: Actions) => {
                 requesting: true,
                 success: false,
                 errors: {},
-               
+
             };
         case DELETE_ARTICLE_SUCCESS:
             return {
                 requesting: false,
                 success: true,
                 errors: {},
-            
+
             };
         case DELETE_ARTICLE_ERRORS:
             return {
                 requesting: false,
                 success: false,
                 errors: action.error,
-              
+
             };
         default:
             return state;

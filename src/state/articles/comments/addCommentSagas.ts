@@ -8,9 +8,15 @@ import {
     FETCH_COMMENTS_REQUEST
 
 } from "./constants";
+
+export interface Errors {
+    body?: string[];
+}
+
 interface Res {
     status: number;
     data: object;
+    errors: Errors;
 }
 
 function* addCommentApi(param: string, body: string) {
@@ -29,7 +35,7 @@ function* addCommentFlow({ payload }: ReturnType<typeof addCommentRequest>) {
         yield put({ type: ADD_COMMENT_SUCCESS });
         yield put({ type: FETCH_COMMENTS_REQUEST, payload: payload.param });
     } else {
-        yield put({ type: ADD_COMMENT_ERRORS, error: res });
+        yield put({ type: ADD_COMMENT_ERRORS, error: res.errors });
     }
 }
 

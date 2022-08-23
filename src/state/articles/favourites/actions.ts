@@ -2,8 +2,8 @@ import { FAVORITE_ARTICLE_REQUEST } from "./constants";
 
 
 interface Payload {
-    slug: string;
-    favorited: boolean, 
+    slug: string | undefined;
+    favorited: boolean,
     detail?: boolean
 }
 export const favoriteArticleRequest = (payload: Payload) => {

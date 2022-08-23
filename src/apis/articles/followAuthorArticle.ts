@@ -1,6 +1,6 @@
 import axiosConfig from "../axiosConfig";
 
-export default async function followAuthorArticle(username: string,method = "post" ) {
+export default async function followAuthorArticle(username: string | undefined, method = "post") {
     const AUTH_TOKEN = localStorage.getItem("token");
 
     return await axiosConfig({

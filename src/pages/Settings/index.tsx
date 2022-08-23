@@ -6,10 +6,12 @@ import Form from "react-bootstrap/Form";
 
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux'
+import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { updateSettingsRequest, fetchSettingsRequest } from "../../state/settings/actions"
-import { LOGOUT_REQUEST } from "../../state/login/constants"
+import { updateSettingsRequest, fetchSettingsRequest } from "../../state/settings/actions";
+import { LOGOUT_REQUEST } from "../../state/login/constants";
+import { IrootReducer } from "../../index-reducer";
+
 
 function Settings() {
     interface infoUser {
@@ -20,9 +22,9 @@ function Settings() {
         email: string;
     } 
     const navigate = useNavigate();
-    const cx = classNames.bind(styles); 
+    const cx = classNames.bind(styles);  
     const dispatch = useDispatch();
-    const infoUser = useSelector((state: any) => state.settings.data.user);
+    const infoUser = useSelector((state: IrootReducer) => state.settings.data.user);
 
     const [image, setImage] = useState(infoUser != undefined ? infoUser.image : "");
     const [username, setUsername] = useState(infoUser != undefined ? infoUser.username : "");
@@ -30,8 +32,8 @@ function Settings() {
     const [email, setEmail] = useState(infoUser != undefined ? infoUser.email : "");
     const [password, setPassword] = useState(infoUser != undefined ? infoUser.password : "");
 
-    const requestStatus = useSelector((state: any) => state.settings.requesting);
-    const errorMessages = useSelector((state: any) => state.settings.errors.errors);
+    const requestStatus = useSelector((state: IrootReducer) => state.settings.requesting);
+    const errorMessages = useSelector((state: IrootReducer) => state.settings.errors);
 
     let errors: any = [];
     if (errorMessages != undefined) {

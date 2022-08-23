@@ -11,14 +11,17 @@ import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
 import { fetchDetailArticleRequest } from "../../state/articles/detail/actions"
-import { fetchCommentsRequest, addCommentRequest, deleteCommentRequest } from "../../state/articles/comments/actions"
+import { fetchCommentsRequest, addCommentRequest, deleteCommentRequest } from "../../state/articles/comments/actions";
+import { IrootReducer } from "../../index-reducer";
 import { followAuthorRequest } from "../../state/articles/follow/actions"
 import { favoriteArticleRequest } from "../../state/articles/favourites/actions"
 import { deleteArticleRequest } from "../../state/articles/actions"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart, faPen, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
+import { SET_STATE_DEFAULT } from "../../state/articles/detail/constants";
+
 
 function DetailArticle() {
     const params = useParams();
@@ -36,13 +39,13 @@ function DetailArticle() {
     const faPropIcon3 = faPen as IconProp;
     let slug: string = params.slug!;
 
-    const detailArticle = useSelector((state: any) => state.detailArticle.data.article);
-    const commentsOfArticle = useSelector((state: any) => state.commentsArticle.data.comments);
-    const requestStatus = useSelector((state: any) => state.addCommentArticle.requesting);
-    const requestFollowAuthorStatus = useSelector((state: any) => state.followAuthorArticle.requesting);
-    const requestFavorite = useSelector((state: any) => state.favorites.requesting);
-    const requestDelete = useSelector((state: any) => state.deleteArticle.requesting);
-    const errorMessages = useSelector((state: any) => state.addCommentArticle.errors.errors);
+    const detailArticle = useSelector((state: IrootReducer) => state.detailArticle.data.article);
+    const commentsOfArticle = useSelector((state: IrootReducer) => state.commentsArticle.data.comments);
+    const requestStatus = useSelector((state: IrootReducer) => state.addCommentArticle.requesting);
+    const requestFollowAuthorStatus = useSelector((state: IrootReducer) => state.followAuthorArticle.requesting);
+    const requestFavorite = useSelector((state: IrootReducer) => state.favorites.requesting);
+    const requestDelete = useSelector((state: IrootReducer) => state.deleteArticle.requesting);
+    const errorMessages = useSelector((state: IrootReducer) => state.addCommentArticle.errors);
 
     const [follow, setFollow] = useState<any>(null);
     const [favorited, setFavorited] = useState<any>(null);
@@ -53,7 +56,7 @@ function DetailArticle() {
     }
 
     useEffect(() => {
-        setFollow(detailArticle ? detailArticle.author.following : follow)
+        setFollow(detailArticle ? detailArticle?.author?.following : follow)
     }, [detailArticle])
 
     useEffect(() => {
@@ -70,14 +73,13 @@ function DetailArticle() {
         setComment("")
     };
 
-    const handleDeleteComment = (slug: string, id: number) => {
+    const handleDeleteComment = (slug: string | undefined, id: number) => {
         dispatch(deleteCommentRequest({
             param: slug,
             id: id
         }))
     }
-
-    const handleFollowAuthor = (username: string, following: boolean, param: string) => {
+    const handleFollowAuthor = (username: string | undefined, following: boolean, param: string | undefined) => {
         let method = "post";
         following ? method = "delete" : method = "post";
         dispatch(followAuthorRequest({
@@ -109,26 +111,26 @@ function DetailArticle() {
                             </h1>
                             <div className={cx("article-actions")}>
                                 <Link
-                                    to={"/@" + detailArticle.author.username}
+                                    to={"/@" + detailArticle?.author?.username}
                                     className={cx("avatar")}
                                 >
                                     <img
-                                        src={detailArticle.author.image}
-                                        alt={detailArticle.author.username}
+                                        src={detailArticle?.author?.image}
+                                        alt={detailArticle?.author?.username}
                                     />
                                 </Link>
                                 <div className={cx("info")}>
                                     <Link
-                                        to={"/@" + detailArticle.author.username}
+                                        to={"/@" + detailArticle?.author?.username}
                                         className={cx("author")}
                                     >
-                                        {detailArticle.author.username}
+                                        {detailArticle?.author?.username}
                                     </Link>
                                     <span className={cx("date")}>{moment(detailArticle.createdAt).format("MMMM D, YYYY")}</span>
                                 </div>
                                 <div className={cx("actions-btn")}>
                                     {token ?
-                                        detailArticle.author.username === username ?
+                                        detailArticle?.author?.username === username ?
                                             <Link to={"/editor/" + detailArticle.slug}
                                                 className={cx("btn", "follow", "btn-sm", "btn-outline-secondary")}
                                             >
@@ -140,7 +142,7 @@ function DetailArticle() {
 
                                             :
                                             <button
-                                                onClick={() => handleFollowAuthor(detailArticle.author.username, follow, detailArticle.slug)}
+                                                onClick={() => handleFollowAuthor(detailArticle?.author?.username, follow, detailArticle?.slug)}
                                                 className={cx("follow", "btn-sm",
                                                     follow && requestFollowAuthorStatus === false ? "btn-secondary"
                                                         : "btn-outline-secondary")}
@@ -149,8 +151,8 @@ function DetailArticle() {
                                                 <FontAwesomeIcon icon={faPropIcon1} />
                                                 <span className={cx("action")}>
                                                     {follow && requestFollowAuthorStatus === false ?
-                                                        "Unfollow " + detailArticle.author.username
-                                                        : "Follow " + detailArticle.author.username
+                                                        "Unfollow " + detailArticle?.author?.username
+                                                        : "Follow " + detailArticle?.author?.username
                                                     }
                                                 </span>
                                             </button>
@@ -158,16 +160,15 @@ function DetailArticle() {
                                         :
 
                                         <Link to="/register"
-                                            onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
                                             className={cx("follow", "btn-sm",
-                                                detailArticle.author.following ? "btn-secondary"
+                                                detailArticle?.author?.following ? "btn-secondary"
                                                     : "btn-outline-secondary")}
                                         >
                                             <FontAwesomeIcon icon={faPropIcon1} />
                                             <span className={cx("action")}>
-                                                {detailArticle.author.following ?
-                                                    "Unfollow " + detailArticle.author.username
-                                                    : "Follow " + detailArticle.author.username
+                                                {detailArticle?.author?.following ?
+                                                    "Unfollow " + detailArticle?.author?.username
+                                                    : "Follow " + detailArticle?.author?.username
                                                 }
                                             </span>
                                         </Link>
@@ -176,14 +177,15 @@ function DetailArticle() {
 
 
                                     {token ?
-                                        detailArticle.author.username === username ?
+                                        detailArticle?.author?.username === username ?
                                             <button
                                                 className={cx("favorite", "btn-sm", "btn-outline-danger")}
                                                 onClick={() => {
                                                     dispatch(deleteArticleRequest({
-                                                        slug: detailArticle.slug,
+                                                        slug: detailArticle?.slug,
                                                         navigate
-                                                    }))
+                                                    }));
+                                                    dispatch({ type: SET_STATE_DEFAULT })
                                                 }}
                                                 disabled={requestDelete}
                                             >
@@ -199,7 +201,7 @@ function DetailArticle() {
 
                                                 onClick={() => {
                                                     dispatch(favoriteArticleRequest({
-                                                        slug: detailArticle.slug,
+                                                        slug: detailArticle?.slug,
                                                         favorited: favorited,
 
                                                     }))
@@ -248,19 +250,22 @@ function DetailArticle() {
                                         {detailArticle.body}
                                     </div>
                                     <ul className={cx("tag-list")}>
-                                        {detailArticle.tagList.map((tag: string, index: number) => (
-                                            <li
-                                                key={index}
-                                                className={cx(
-                                                    "tag-default",
-                                                    "tag-pill",
-                                                    "tag-outline"
-                                                )}
-                                            >
-                                                {tag}
-                                            </li>
+                                        {detailArticle.tagList ?
+                                            detailArticle.tagList.map((tag: string, index: number) => (
+                                                <li
+                                                    key={index}
+                                                    className={cx(
+                                                        "tag-default",
+                                                        "tag-pill",
+                                                        "tag-outline"
+                                                    )}
+                                                >
+                                                    {tag}
+                                                </li>
 
-                                        ))}
+                                            ))
+                                            : ""
+                                        }
 
                                     </ul>
                                 </Col>
@@ -269,20 +274,20 @@ function DetailArticle() {
                         <hr />
                         <div className={cx("article-actions")}>
                             <Link
-                                to={"/@" + detailArticle.author.username}
+                                to={"/@" + detailArticle?.author?.username}
                                 className={cx("avatar")}
                             >
                                 <img
-                                    src={detailArticle.author.image}
-                                    alt={detailArticle.author.username}
+                                    src={detailArticle?.author?.image}
+                                    alt={detailArticle?.author?.username}
                                 />
                             </Link>
                             <div className={cx("info")}>
                                 <Link
-                                    to={"/@" + detailArticle.author.username}
+                                    to={"/@" + detailArticle?.author?.username}
                                     className={cx("author")}
                                 >
-                                    {detailArticle.author.username}
+                                    {detailArticle?.author?.username}
                                 </Link>
                                 <span className={cx("date")}>{moment(detailArticle.createdAt).format("MMMM D, YYYY")}</span>
                             </div>
@@ -290,9 +295,8 @@ function DetailArticle() {
 
 
                                 {token ?
-                                    detailArticle.author.username === username ?
+                                    detailArticle?.author?.username === username ?
                                         <Link to={"/editor/" + detailArticle.slug}
-                                            onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
                                             className={cx("follow", "btn-sm", "btn-outline-secondary")}
                                         >
                                             <FontAwesomeIcon icon={faPropIcon3} />
@@ -303,7 +307,7 @@ function DetailArticle() {
 
                                         :
                                         <button
-                                            onClick={() => handleFollowAuthor(detailArticle.author.username, follow, detailArticle.slug)}
+                                            onClick={() => handleFollowAuthor(detailArticle?.author?.username, follow, detailArticle.slug)}
                                             className={cx("follow", "btn-sm",
                                                 follow && requestFollowAuthorStatus === false ? "btn-secondary"
                                                     : "btn-outline-secondary")}
@@ -312,8 +316,8 @@ function DetailArticle() {
                                             <FontAwesomeIcon icon={faPropIcon1} />
                                             <span className={cx("action")}>
                                                 {follow && requestFollowAuthorStatus === false ?
-                                                    "Unfollow " + detailArticle.author.username
-                                                    : "Follow " + detailArticle.author.username
+                                                    "Unfollow " + detailArticle?.author?.username
+                                                    : "Follow " + detailArticle?.author?.username
                                                 }
                                             </span>
                                         </button>
@@ -321,30 +325,30 @@ function DetailArticle() {
                                     :
 
                                     <Link to="/register"
-                                        onClick={() => handleFollowAuthor(detailArticle.author.username, detailArticle.author.following, detailArticle.slug)}
                                         className={cx("follow", "btn-sm",
-                                            detailArticle.author.following ? "btn-secondary"
+                                            detailArticle?.author?.following ? "btn-secondary"
                                                 : "btn-outline-secondary")}
                                     >
                                         <FontAwesomeIcon icon={faPropIcon1} />
                                         <span className={cx("action")}>
-                                            {detailArticle.author.following ?
-                                                "Unfollow " + detailArticle.author.username
-                                                : "Follow " + detailArticle.author.username
+                                            {detailArticle?.author?.following ?
+                                                "Unfollow " + detailArticle?.author?.username
+                                                : "Follow " + detailArticle?.author?.username
                                             }
                                         </span>
                                     </Link>
 
                                 }
                                 {token ?
-                                    detailArticle.author.username === username ?
+                                    detailArticle?.author?.username === username ?
                                         <button
                                             className={cx("favorite", "btn-sm", "btn-outline-danger")}
                                             onClick={() => {
                                                 dispatch(deleteArticleRequest({
                                                     slug: detailArticle.slug,
                                                     navigate
-                                                }))
+                                                }));
+                                                dispatch({ type: SET_STATE_DEFAULT })
                                             }}
                                             disabled={requestDelete}
                                         >
@@ -424,7 +428,7 @@ function DetailArticle() {
 
                                                 </Card.Body>
                                                 <Card.Footer>
-                                                    <img className={cx("comment-author-img")} src={detailArticle.author.image} alt="" />
+                                                    <img className={cx("comment-author-img")} src={detailArticle?.author?.image} alt="" />
                                                     <button className={cx("post-comment", "btn-sm", "btn-primary")}
                                                         disabled={requestStatus}
                                                     >
@@ -459,7 +463,7 @@ function DetailArticle() {
                                                             <span className={cx("date-posted")}>{moment(comment.createdAt).format("MMMM D, YYYY")}</span>
                                                             {comment.author.username === username ?
                                                                 <span className={cx("mod-options")}
-                                                                    onClick={() => handleDeleteComment(detailArticle.slug, comment.id)}
+                                                                    onClick={() => handleDeleteComment(detailArticle?.slug, comment.id)}
                                                                 >
                                                                     <FontAwesomeIcon icon={faPropIcon2} />
                                                                 </span>

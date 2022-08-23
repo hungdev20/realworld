@@ -10,10 +10,9 @@ import {
 
 interface Res {
   status: number;
-  data: object;
 }
 
-function* followAuthorApi(username: string, method: string) {
+function* followAuthorApi(username: string | undefined, method: string) {
 
   const res: Res = yield call(followAuthorArticle, username, method);
   return res;
@@ -22,7 +21,7 @@ function* followAuthorFlow({ payload }: ReturnType<typeof followAuthorRequest>) 
 
   const res: Res = yield call(followAuthorApi, payload.username, payload.method);
   if (res.status === 200) {
-    yield put({ type: FOLLOW_AUTHOR_SUCCESS }); 
+    yield put({ type: FOLLOW_AUTHOR_SUCCESS });
   } else {
     yield put({ type: FOLLOW_AUTHOR_ERRORS, error: res });
   }

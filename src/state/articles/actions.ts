@@ -13,7 +13,7 @@ export interface AddArticlePayload {
 }
 
 export interface DeleteArticlePayload {
-  slug: string;
+  slug: string| undefined;
   navigate: any
 }
 export const requestFetchArticles = (payload: Payload) => {

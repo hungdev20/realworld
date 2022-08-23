@@ -223,7 +223,7 @@ function Articles(props: any) {
                         {articles.length > 0 ?
                             articles.map((article: any, index: any) => (
                                 detailArticle ?
-                                    detailArticle.slug === article.slug ?
+                                    detailArticle.slug === article.slug ? 
 
 
                                         <div className={cx("article")} key={index} id={index} >

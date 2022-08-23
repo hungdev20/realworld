@@ -1,6 +1,6 @@
 import axiosConfig from "../axiosConfig";
 
-export default async function deleteCommentArticle(param: string, id: number) {
+export default async function deleteCommentArticle(param: string | undefined, id: number) {
     const AUTH_TOKEN = localStorage.getItem("token");
 
     return await axiosConfig({

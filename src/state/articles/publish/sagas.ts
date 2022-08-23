@@ -8,9 +8,17 @@ import {
 
 } from "./constants";
 import { AddArticlePayload } from "./actions"
+
+interface Data { 
+    article: {
+        slug: string
+    }
+}
+
 interface Res {
     status: number;
-    data: any;
+    data: Data;
+    errors: object; 
 }
 
 function* publishArticleApi(payload: AddArticlePayload) {
@@ -29,10 +37,10 @@ function* publishArticleFlow({ payload }: ReturnType<typeof requestAddArticle>) 
 
     const res: Res = yield call(publishArticleApi, payload);
     if (res.status === 200) {
-        yield put({ type: ADD_ARTICLE_SUCCESS, data: res.data });
+        yield put({ type: ADD_ARTICLE_SUCCESS });
         payload.navigate("/article/" + res.data.article.slug)
     } else {
-        yield put({ type: ADD_ARTICLE_ERRORS, error: res });
+        yield put({ type: ADD_ARTICLE_ERRORS, error: res.errors });
     }
 }
 

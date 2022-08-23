@@ -5,14 +5,13 @@ import {
     DELETE_COMMENT_REQUEST,
     FETCH_COMMENTS_REQUEST
 } from "./constants";
-interface Res {
+interface Res { 
     status: number;
     data: object;
 }
 
-function* deleteCommentApi(param: string, id: number) {
+function* deleteCommentApi(param: string| undefined, id: number) {
     const res: Res = yield call(deleteCommentArticle, param, id);
-    console.log(res);
     return res;
 }
 function* deleteCommentFlow({ payload }: ReturnType<typeof deleteCommentRequest>) {

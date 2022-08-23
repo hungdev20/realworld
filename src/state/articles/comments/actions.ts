@@ -9,7 +9,7 @@ export interface PayloadAddComment {
     body: string
 }
 export interface PayloadDeleteComment {
-    param: string,
+    param: string | undefined,
     id: number
 }
 export const fetchCommentsRequest = (payload: string) => {

@@ -1,14 +1,26 @@
 import { LOGIN_REQUESTING, LOGIN_SUCCESS, LOGIN_ERROR } from "./constants";
 
-const initialState = {
+
+export interface Errors {
+  email?: string[];
+  password?: string[];
+}
+export interface LoginState {
+  requesting: boolean;
+  successful: boolean;
+  errors: Errors;
+  messages: object;
+}
+
+const initialState: LoginState = {
   requesting: false,
   successful: false,
   messages: [],
-  errors: [],
+  errors: {},
 };
 export interface Actions {
   type: string;
-  error?: any;
+  error?: Errors;
 }
 const loginReducer = function loginReducer(state = initialState, action: Actions) {
   switch (action.type) {
@@ -18,13 +30,13 @@ const loginReducer = function loginReducer(state = initialState, action: Actions
         requesting: true,
         successful: false,
         messages: [{ body: "Logging in...", time: new Date() }],
-        errors: [],
+        errors: {},
       };
 
     // Successful?  Reset the login state.
     case LOGIN_SUCCESS:
       return {
-        errors: [],
+        errors: {},
         messages: [],
         requesting: false,
         successful: true,

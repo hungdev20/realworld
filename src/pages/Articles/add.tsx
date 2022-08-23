@@ -15,6 +15,7 @@ import { fetchDetailArticleRequest } from "../../state/articles/detail/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { IrootReducer } from "../../index-reducer";
 
 function AddArticle() {
     const cx = classNames.bind(styles);
@@ -28,25 +29,21 @@ function AddArticle() {
     const [body, setBody] = useState("");
     const [description, setDescription] = useState("");
     const [tag, setTag] = useState("")
-    const [tagList, setTagList] = useState([]);
+    const [tagList, setTagList] = useState<string[]>([]);
     let slug: string = params.slug!;
     useEffect(() => {
         if (slug) {
             dispatch(fetchDetailArticleRequest(slug))
         }
-    }, [slug]) 
+    }, [slug])
 
-    let tagArticleState = useSelector((state: any) => state.addTagArticle);
-    const publishArticleState = useSelector((state: any) => state.publishArticle);
+    const tagArticleState = useSelector((state: IrootReducer) => state.addTagArticle);
+    const publishArticleState = useSelector((state: IrootReducer) => state.publishArticle);
+    const detailArticle = useSelector((state: IrootReducer) => state.detailArticle.data.article);
 
-    const detailArticleState = useSelector((state: any) => state.detailArticle);
-    const detailArticle = useSelector((state: any) => state.detailArticle.data.article);
-  
-    let requestStatus = true;
-    slug ? requestStatus = detailArticleState.requesting : requestStatus = publishArticleState.requesting;
+    const requestStatus = publishArticleState.requesting;    
 
-
-    const errorMessages = useSelector((state: any) => state.publishArticle.errors.errors);
+    const errorMessages = useSelector((state: IrootReducer) => state.publishArticle.errors);
     let errors: any = [];
     if (errorMessages != undefined) {
         errors = Object.entries(errorMessages);
@@ -93,11 +90,11 @@ function AddArticle() {
                 navigate
             }
 
-            payload.article.body = body ? body : detailArticle.body;
-            payload.article.description = description ? description : detailArticle.description;
-            payload.article.tagList = tagList === [] ? tagList : detailArticle.tagList;
-            payload.article.title = title ? title : detailArticle.title;
-            payload.article.updatedAt = "2022-08-11T10:26:16.366Z";
+            payload!.article!.body = body ? body : detailArticle?.body;
+            payload!.article!.description = description ? description : detailArticle?.description;
+            payload!.article!.tagList = tagList === [] ? tagList : detailArticle?.tagList;
+            payload!.article!.title = title ? title : detailArticle?.title;
+            payload!.article!.updatedAt = "2022-08-11T10:26:16.366Z";
 
             dispatch(editArticleRequest(payload));
         }
@@ -155,7 +152,7 @@ function AddArticle() {
                                         onKeyDown={(ev) => ev.key === 'Enter' && ev.preventDefault()}
                                         onKeyUp={(e) => handleAddTag(e)}
                                     />
- 
+
                                     {tagArticleState.tagList ?
                                         <div className={cx("tag-list")}>
                                             {tagArticleState.tagList.map((tag: string, index: number) => (
@@ -177,17 +174,10 @@ function AddArticle() {
 
                                     }
                                 </Form.Group>
-                                {requestStatus ?
-                                    <button className={cx("add-article", "btn-lg")}
-                                        disabled>
-                                        Publish Article
-                                    </button>
-                                    :
-                                    <button className={cx("add-article", "btn-lg")}>
-                                        Publish Article
-                                    </button>
-                                }
-
+                                <button className={cx("add-article", "btn-lg")}
+                                    disabled={requestStatus}>
+                                    Publish Article
+                                </button>
                             </Form>
                         </Col>
                     </Row>
@@ -199,7 +189,4 @@ function AddArticle() {
 
 export default AddArticle;
 
-function moment(arg0: Date): any {
-    throw new Error("Function not implemented.");
-}
 

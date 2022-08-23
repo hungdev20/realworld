@@ -1,11 +1,24 @@
 import {
     FETCH_DETAIL_ARTICLE_SUCCESS,
-    FETCH_DETAIL_ARTICLE_ERRORS,
+    FETCH_DETAIL_ARTICLE_ERRORS, 
     FETCH_DETAIL_ARTICLE_REQUEST,
     SET_STATE_DEFAULT
 } from "./constants";
+import { Article } from "../../interface";
 
-const initialState: object = {
+interface Errors {
+    title?: string[];
+    description?: string[]; 
+    body?: string[];
+}
+export interface DetailArticleState {
+    requesting: boolean;
+    success: boolean;
+    errors: Errors;
+    data: Article
+}
+
+const initialState: DetailArticleState = {
     requesting: false,
     success: false,
     errors: {},
@@ -14,8 +27,8 @@ const initialState: object = {
 
 export interface Actions {
     type: string;
-    data?: object,
-    error?: any;
+    error?: Errors;
+    data?: Article;
 
 }
 const detailArticleReducer = (state = initialState, action: Actions) => {
@@ -32,7 +45,7 @@ const detailArticleReducer = (state = initialState, action: Actions) => {
                 requesting: false,
                 success: true,
                 errors: {},
-                data: (action.data)
+                data: action.data
             };
         case FETCH_DETAIL_ARTICLE_ERRORS:
             return {

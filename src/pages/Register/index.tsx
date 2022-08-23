@@ -7,6 +7,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
+import { IrootReducer } from "../../index-reducer";
+
 
 import requestSignup from "../../state/signup/actions"
 const cx = classNames.bind(styles);
@@ -19,8 +21,8 @@ function Register() {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
-  const requestStatus = useSelector((state: any) => state.signup.requesting);
-  const errorMessages = useSelector((state: any) => state.signup.errors.errors);
+  const requestStatus = useSelector((state: IrootReducer) => state.signup.requesting);
+  const errorMessages = useSelector((state: IrootReducer) => state.signup.errors);
 
   let errors: any = [];
   if (errorMessages != undefined) {
@@ -77,7 +79,7 @@ function Register() {
 
             <Form.Group className="mb-3" controlId="formBasicPassword">
               <Form.Control
-                size="lg"
+                size="lg" 
                 type="password"
                 placeholder="Password"
                 onChange={(event) => setPassword(event.target.value)}

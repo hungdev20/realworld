@@ -7,14 +7,25 @@ import {
     FETCH_PROFILE_USER_ERRORS
 
 } from "./constants";
+
+export interface ResponseUser {
+    profile?: {
+        username?: string;
+        bio?: string;
+        image?: string;
+        following: boolean;
+    }
+}
+
 interface Res {
     status: number;
-    data: object;
+    data: ResponseUser;
+    errors: object;
 }
 
 function* fetchProfileUserApi(payload: string) {
 
-    const res: Res = yield call(fetchProfileUser, payload);    
+    const res: Res = yield call(fetchProfileUser, payload);
     return res;
 }
 function* fetchProfileUserFlow({ payload }: ReturnType<typeof fetchProfileUserRequest>) {
@@ -23,7 +34,7 @@ function* fetchProfileUserFlow({ payload }: ReturnType<typeof fetchProfileUserRe
     if (res.status === 200) {
         yield put({ type: FETCH_PROFILE_USER_SUCCESS, data: res.data });
     } else {
-        yield put({ type: FETCH_PROFILE_USER_ERRORS, error: res });
+        yield put({ type: FETCH_PROFILE_USER_ERRORS, error: res.errors });
     }
 }
 

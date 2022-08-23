@@ -1,6 +1,11 @@
 import { CLIENT_SET, CLIENT_UNSET } from "./constants";
 
-const initialState = {
+export interface ClientState {
+  id: any;
+  token: any;
+}
+
+const initialState: ClientState = {
   id: null,
   token: null,
 };

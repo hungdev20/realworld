@@ -9,6 +9,8 @@ import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { loginRequest } from "../../state/login/actions";
+import { IrootReducer } from "../../index-reducer";
+
 
 const cx = classNames.bind(styles);
 
@@ -19,8 +21,8 @@ function Login() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const requestStatus = useSelector((state: any) => state.login.requesting);
-  const errorMessages = useSelector((state: any) => state.login.errors.errors);
+  const requestStatus = useSelector((state: IrootReducer) => state.login.requesting);
+  const errorMessages = useSelector((state: IrootReducer) => state.login.errors);
 
   let errors: any = [];
   if (errorMessages != undefined) {

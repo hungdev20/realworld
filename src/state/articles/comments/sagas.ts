@@ -8,9 +8,29 @@ import {
   FETCH_COMMENTS_ERRORS
 
 } from "./constants";
+
+export interface ResponseComments {
+  comments?: [
+    {
+      author?: {
+        username?: string;
+        bio?: string;
+        image?: string;
+        following?: boolean;
+      },
+      id: number;
+      body: string;
+      createdAt: string;
+      updatedAt: string;
+    }
+  ]
+}
+
+
 interface Res {
   status: number;
-  data: object;
+  data: ResponseComments;
+  errors: object;
 }
 
 function* fetchCommentsApi(payload: string) {
@@ -24,7 +44,7 @@ function* fetchCommentsFlow({ payload }: ReturnType<typeof fetchCommentsRequest>
   if (res.status === 200) {
     yield put({ type: FETCH_COMMENTS_SUCCESS, data: res.data });
   } else {
-    yield put({ type: FETCH_COMMENTS_ERRORS, error: res });
+    yield put({ type: FETCH_COMMENTS_ERRORS, error: res.errors });
   }
 }
 

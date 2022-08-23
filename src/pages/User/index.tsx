@@ -10,8 +10,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { followAuthorRequest } from "../../state/articles/follow/actions"
-import { fetchProfileUserRequest } from "../../state/user/actions"
+import { followAuthorRequest } from "../../state/articles/follow/actions";
+import { fetchProfileUserRequest } from "../../state/user/actions";
+import { IrootReducer } from "../../index-reducer";
+
 import Articles from "../../components/Articles"
 
 function User() {
@@ -27,10 +29,10 @@ function User() {
     const params = useParams();
 
     let user: string = params.user!;
-    const profile = useSelector((state: any) => state.fetchProfileUser.data.profile);
-    const requestFollowAuthorStatus = useSelector((state: any) => state.followAuthorArticle.requesting);
+    const profile = useSelector((state: IrootReducer) => state.fetchProfileUser.data.profile);
+    const requestFollowAuthorStatus = useSelector((state: IrootReducer) => state.followAuthorArticle.requesting);
 
-    const handleFollowAuthor = (username: string, following: boolean) => {
+    const handleFollowAuthor = (username: string | undefined, following: boolean) => {
         let method = "post";
         following ? method = "delete" : method = "post";
         dispatch(followAuthorRequest({
@@ -75,7 +77,7 @@ function User() {
 
                                         token ?
                                             <button
-                                                onClick={() => handleFollowAuthor(profile.username, follow)}
+                                                onClick={() => handleFollowAuthor(profile?.username, follow)}
                                                 className={cx("follow", "btn-sm", "settings",
                                                     follow && requestFollowAuthorStatus === false ? "btn-secondary"
                                                         : "btn-outline-secondary")}

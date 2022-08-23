@@ -3,8 +3,16 @@ import {
     FETCH_PROFILE_USER_SUCCESS,
     FETCH_PROFILE_USER_ERRORS
 } from "./constants";
+import {ResponseUser} from "./sagas";
 
-const initialState: object = {
+export interface UserState {
+    requesting: boolean;
+    success: boolean;
+    errors: object;
+    data: ResponseUser;
+}
+
+const initialState: UserState = {
     requesting: false,
     success: false,
     errors: {},
@@ -13,8 +21,8 @@ const initialState: object = {
 
 export interface Actions {
     type: string;
-    data?: object,
-    error?: any;
+    data?: ResponseUser,
+    error?: object;
 
 }
 const profileUserReducer = (state = initialState, action: Actions) => {

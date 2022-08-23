@@ -3,6 +3,8 @@ import { takeLatest, call, put } from "redux-saga/effects";
 import { SIGNUP_REQUESTING, SIGNUP_SUCCESS, SIGNUP_ERROR } from "./constants";
 import { LOGIN_REQUESTING } from "../login/constants"
 import addUser from "../../apis/user/addUser";
+import {Errors} from "./reducer";
+
 function* signupApi(
   username: string,
   email: string,
@@ -20,6 +22,7 @@ function* signupApi(
   interface Res {
     status: number;
     data: object;
+    errors: Errors;
   }
   const res: Res = yield call(addUser, data);
 
@@ -33,7 +36,7 @@ function* signupApi(
       navigate
     })
   } else {
-    yield put({ type: SIGNUP_ERROR, error: res });
+    yield put({ type: SIGNUP_ERROR, error: res.errors });
   }
 }
 

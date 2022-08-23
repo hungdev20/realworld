@@ -12,7 +12,7 @@ interface Res {
   data: object;
 }
 
-function* deleteArticleApi(payload: string) {
+function* deleteArticleApi(payload: string| undefined) {
 
   const res: Res = yield call(deleteArticle, payload);
   return res;

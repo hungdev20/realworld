@@ -4,7 +4,12 @@ import {
     ADD_COMMENT_ERRORS
 } from "./constants";
 
-const initialState: object = {
+export interface AddCommentState {
+    requesting: boolean;
+    success: boolean;
+    errors: object;
+}
+const initialState: AddCommentState = {
     requesting: false,
     success: false,
     errors: {},

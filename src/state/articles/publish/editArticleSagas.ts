@@ -9,13 +9,17 @@ import {
 
 } from "./constants";
 
-
+interface Article{
+    article: {
+        slug: string,
+    }
+}
 interface Res {
     status: number;
-    data: any;
+    data: Article;
 }
 
-function* editArticleApi(payload: object) {
+function* editArticleApi(payload: any) { 
     const data = {
         article: payload
     };

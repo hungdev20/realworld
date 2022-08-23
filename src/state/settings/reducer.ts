@@ -6,9 +6,17 @@ import {
     UPDATE_SETTINGS_SUCCESS,
     UPDATE_SETTINGS_ERRORS
 } from "./constants";
-import { payloadUser } from "./actions";
 
-const initialState = {
+import {DataSettings} from "./sagas";
+
+export interface SettingsState { 
+    requesting: boolean;
+    successful: boolean;
+    errors: object;
+    data: DataSettings;
+}
+
+const initialState: SettingsState = {
     requesting: false,
     successful: false,
     data: {},
@@ -17,7 +25,7 @@ const initialState = {
 export interface Actions {
     type: string;
     error?: any;
-    data?: any;
+    data?: DataSettings;
 }
 const settingsReducer = (state = initialState, action: Actions) => {
     switch (action.type) {
@@ -29,7 +37,6 @@ const settingsReducer = (state = initialState, action: Actions) => {
                 errors: [],
             };
 
-        // Successful?  Reset the login state.
         case FETCH_SETTINGS_SUCCESS:
             return {
                 errors: [],
