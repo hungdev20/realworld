@@ -8,6 +8,7 @@ import { useDispatch } from "react-redux";
 
 import { SET_STATE_DEFAULT } from "../../../../state/articles/detail/constants";
 import { SET_TAG_DEFAULT } from "../../../../state/articles/tags/constants";
+import { SET_STATE_PUBLISH_DEFAULT } from "../../../../state/articles/publish/constants";
 
 function Header() {
   const cx = classNames.bind(styles);
@@ -59,8 +60,8 @@ function Header() {
                     to="/editor"
                     onClick={() => {
                       {
+                        dispatch({ type: SET_STATE_PUBLISH_DEFAULT })
                         dispatch({ type: SET_TAG_DEFAULT })
-                        dispatch({ type: SET_STATE_DEFAULT })
                       }
                     }}
                   >
@@ -75,7 +76,7 @@ function Header() {
                     }
                     to="/settings"
                   >
-                    Settings 
+                    Settings
                   </NavLink>
                 </li>
                 <li className={cx("nav-item")}>

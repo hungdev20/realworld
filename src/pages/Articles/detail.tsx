@@ -112,6 +112,11 @@ function DetailArticle() {
                             <div className={cx("article-actions")}>
                                 <Link
                                     to={"/@" + detailArticle?.author?.username}
+                                    onClick={() => {
+                                        {
+                                            dispatch({ type: SET_STATE_DEFAULT })
+                                        }
+                                    }}
                                     className={cx("avatar")}
                                 >
                                     <img
@@ -122,6 +127,11 @@ function DetailArticle() {
                                 <div className={cx("info")}>
                                     <Link
                                         to={"/@" + detailArticle?.author?.username}
+                                        onClick={() => {
+                                            {
+                                                dispatch({ type: SET_STATE_DEFAULT })
+                                            }
+                                        }}
                                         className={cx("author")}
                                     >
                                         {detailArticle?.author?.username}
@@ -275,6 +285,11 @@ function DetailArticle() {
                         <div className={cx("article-actions")}>
                             <Link
                                 to={"/@" + detailArticle?.author?.username}
+                                onClick={() => {
+                                    {
+                                        dispatch({ type: SET_STATE_DEFAULT })
+                                    }
+                                }}
                                 className={cx("avatar")}
                             >
                                 <img
@@ -285,6 +300,11 @@ function DetailArticle() {
                             <div className={cx("info")}>
                                 <Link
                                     to={"/@" + detailArticle?.author?.username}
+                                    onClick={() => {
+                                        {
+                                            dispatch({ type: SET_STATE_DEFAULT })
+                                        }
+                                    }}
                                     className={cx("author")}
                                 >
                                     {detailArticle?.author?.username}

@@ -44,6 +44,8 @@ function AddArticle() {
     const requestStatus = publishArticleState.requesting;    
 
     const errorMessages = useSelector((state: IrootReducer) => state.publishArticle.errors);
+    console.log(errorMessages);
+    
     let errors: any = [];
     if (errorMessages != undefined) {
         errors = Object.entries(errorMessages);

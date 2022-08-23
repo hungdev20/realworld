@@ -50,7 +50,7 @@ function User() {
     }, [user])
 
     return (
-        <div className={cx("wrapper")}>
+        <div className={cx("wrapper")}> 
             {profile && follow !== null ?
                 <div className={cx("profile-page")}>
 

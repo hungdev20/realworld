@@ -5,7 +5,8 @@ import {
     EDIT_ARTICLE_REQUEST,
     EDIT_ARTICLE_ERRORS,
     EDIT_ARTICLE_SUCCESS,
-} from "./constants"; 
+    SET_STATE_PUBLISH_DEFAULT
+} from "./constants";
 
 export interface PublishArticleState {
     tagList: object;
@@ -60,6 +61,13 @@ const publishArticleReducer = (state = initialState, action: PayloadPublishArtic
                 ...state,
                 requesting: false,
                 errors: action.error
+            };
+        case SET_STATE_PUBLISH_DEFAULT:
+            return {
+                tagList: [],
+                tag: '',
+                errors: {},
+                requesting: false,
             };
 
         default:
