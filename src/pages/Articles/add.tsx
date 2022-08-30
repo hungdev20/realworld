@@ -13,7 +13,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import useArticle from "../../hooks/useArticle";
 
-function AddArticle() {
+const AddArticle = () => {
     const cx = classNames.bind(styles);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -29,7 +29,7 @@ function AddArticle() {
         publishArticleState,
         detailArticle,
         errorPublishArticle
-    } = useArticle() 
+    } = useArticle()
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
