@@ -4,7 +4,7 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
 import Sidebar from "../../Layout/DefaultLayout/Sidebar";
-import Articles from "../../components/Articles"
+import Articles from "../../components/Articles";
 
 function Home() {
   const cx = classNames.bind(styles);
