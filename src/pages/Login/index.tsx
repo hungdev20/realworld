@@ -6,10 +6,8 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { IrootReducer } from "../../index-reducer";
-import useCustomHook from "../../hooks/useCustomHook";
+import useArticle from "../../hooks/useArticle";
 
 
 const cx = classNames.bind(styles);
@@ -17,17 +15,14 @@ const cx = classNames.bind(styles);
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const { loginRequest} = useCustomHook();
+  const { loginRequest, errorLogin, requestLoginStatus } = useArticle();
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const requestStatus = useSelector((state: IrootReducer) => state.login.requesting);
-  const errorMessages = useSelector((state: IrootReducer) => state.login.errors);
-
   let errors: any = [];
-  if (errorMessages != undefined) {
-    errors = Object.entries(errorMessages);
+  if (errorLogin != undefined) {
+    errors = Object.entries(errorLogin);
   }
 
   const handleLogin = (e: any) => {
@@ -81,7 +76,7 @@ function Login() {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Form.Group>
-            {requestStatus ?
+            {requestLoginStatus ?
               <button className={cx("btn-login", "btn-lg", "btn-primary")}
                 disabled
               >Sign in</button>

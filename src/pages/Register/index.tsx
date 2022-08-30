@@ -5,27 +5,22 @@ import Form from "react-bootstrap/Form";
 import { Link } from "react-router-dom";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
-import { IrootReducer } from "../../index-reducer";
-import useCustomHook from "../../hooks/useCustomHook";
+import useArticle from "../../hooks/useArticle";
 const cx = classNames.bind(styles);
 
 function Register() {
   const dispatch = useDispatch();
   const navigate = useNavigate(); 
-  const { requestSignup} = useCustomHook();
+  const { requestSignup, requestSignupStatus, errorSignup} = useArticle();
 
   const [password, setPassword] = useState("");  
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
-  const requestStatus = useSelector((state: IrootReducer) => state.signup.requesting);
-  const errorMessages = useSelector((state: IrootReducer) => state.signup.errors);
-
   let errors: any = [];
-  if (errorMessages != undefined) {
-    errors = Object.entries(errorMessages);
+  if (errorSignup != undefined) {
+    errors = Object.entries(errorSignup);
   }
 
   const handleSignup = (e: any) => {
@@ -84,7 +79,7 @@ function Register() {
                 onChange={(event) => setPassword(event.target.value)}
               />
             </Form.Group>
-            {requestStatus ?
+            {requestSignupStatus ?
               <button className={cx("btn-register", "btn-lg")}
                 disabled
               >Sign up</button>

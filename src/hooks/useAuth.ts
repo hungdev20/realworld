@@ -9,6 +9,6 @@ const useAuth = () => {
         isAuthenticated = true;
     }
     return isAuthenticated;
-}
+} 
 
 export default useAuth;

@@ -4,17 +4,15 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import Form from "react-bootstrap/Form";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
 import { LOGOUT_REQUEST } from "../../state/login/constants";
-import { IrootReducer } from "../../index-reducer";
-import useCustomHook from "../../hooks/useCustomHook";
+import useArticle from "../../hooks/useArticle";
 
 
 function Settings() {
-    const { updateSettingsRequest} = useCustomHook();
+    const { updateSettingsRequest, requestSettingsStatus, errorSettings, infoUser } = useArticle();
 
     interface infoUser {
         username: string;
@@ -26,7 +24,6 @@ function Settings() {
     const navigate = useNavigate();
     const cx = classNames.bind(styles);
     const dispatch = useDispatch();
-    const infoUser = useSelector((state: IrootReducer) => state.user.data.user);
     const prevUsername = infoUser?.username;
     const [image, setImage] = useState(infoUser != undefined ? infoUser.image : "");
     const [username, setUsername] = useState(infoUser != undefined ? infoUser.username : "");
@@ -34,12 +31,10 @@ function Settings() {
     const [email, setEmail] = useState(infoUser != undefined ? infoUser.email : "");
     const [password, setPassword] = useState(infoUser != undefined ? infoUser.password : "");
 
-    const requestStatus = useSelector((state: IrootReducer) => state.settings.requesting);
-    const errorMessages = useSelector((state: IrootReducer) => state.settings.errors);
 
     let errors: any = [];
-    if (errorMessages != undefined) {
-        errors = Object.entries(errorMessages); 
+    if (errorSettings != undefined) {
+        errors = Object.entries(errorSettings);
     }
 
     const handleUpdateSettings = (e: any) => {
@@ -124,7 +119,7 @@ function Settings() {
                                         )}
                                     />
                                 </Form.Group>
-                                {requestStatus ?
+                                {requestSettingsStatus ?
                                     <button className={cx("update-settings", "btn-lg")}
                                         disabled
                                     >

@@ -8,6 +8,7 @@ import Articles from "../../components/Articles";
 
 function Home() {
   const cx = classNames.bind(styles);
+  
   const token = Boolean(localStorage.getItem("token"));
 
   return (

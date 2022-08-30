@@ -16,7 +16,7 @@ import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart, faPen, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { SET_STATE_DEFAULT } from "../../state/articles/detail/constants";
-import useCustomHook from "../../hooks/useCustomHook";
+import useArticle from "../../hooks/useArticle";
 
 
 function DetailArticle() {
@@ -32,7 +32,15 @@ function DetailArticle() {
         fetchDetailArticleRequest,
         followAuthorRequest,
         favoriteArticleRequest,
-    } = useCustomHook()
+        detailArticle,
+        commentsOfArticle,
+        requestAddCommentStatus,
+        requestFollowAuthorStatus,
+        requestFavorite,
+        requestDelete,
+        errorCommentArticle
+
+    } = useArticle()
 
     const userInfo = useSelector((state: IrootReducer) => state.user.data.user);
     const username = userInfo?.username; const token = Boolean(localStorage.getItem("token"));
@@ -44,20 +52,12 @@ function DetailArticle() {
     const faPropIcon3 = faPen as IconProp;
     let slug: string = params.slug!;
 
-    const detailArticle = useSelector((state: IrootReducer) => state.detailArticle.data.article);
-    const commentsOfArticle = useSelector((state: IrootReducer) => state.commentsArticle.data.comments);
-    const requestStatus = useSelector((state: IrootReducer) => state.addCommentArticle.requesting);
-    const requestFollowAuthorStatus = useSelector((state: IrootReducer) => state.followAuthorArticle.requesting);
-    const requestFavorite = useSelector((state: IrootReducer) => state.favorites.requesting);
-    const requestDelete = useSelector((state: IrootReducer) => state.deleteArticle.requesting);
-    const errorMessages = useSelector((state: IrootReducer) => state.addCommentArticle.errors);
-
     const [follow, setFollow] = useState<any>(null);
     const [favorited, setFavorited] = useState<any>(null);
 
     let errors: any = [];
-    if (errorMessages != undefined) {
-        errors = Object.entries(errorMessages);
+    if (errorCommentArticle != undefined) {
+        errors = Object.entries(errorCommentArticle);
     }
 
     useEffect(() => {
@@ -459,7 +459,7 @@ function DetailArticle() {
                                                 <Card.Footer>
                                                     <img className={cx("comment-author-img")} src={detailArticle?.author?.image} alt="" />
                                                     <button className={cx("post-comment", "btn-sm", "btn-primary")}
-                                                        disabled={requestStatus}
+                                                        disabled={requestAddCommentStatus}
                                                     >
                                                         Post Comment
                                                     </button>

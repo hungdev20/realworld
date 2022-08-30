@@ -12,7 +12,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { SET_STATE_DEFAULT } from "../../state/articles/detail/constants";
 import { IrootReducer } from "../../index-reducer";
-import useCustomHook from "../../hooks/useCustomHook";
+import useArticle from "../../hooks/useArticle";
 
 function Articles(props: any) {
     const cx = classNames.bind(styles);
@@ -23,7 +23,7 @@ function Articles(props: any) {
     const token = Boolean(localStorage.getItem("token"));
     const tabs = ["yourFeed", "globalFeed", "myArticles", "favoritedArticles"];
 
-    const { requestFetchArticles, favoriteArticleRequest } = useCustomHook();
+    const { requestFetchArticles, favoriteArticleRequest } = useArticle();
     //set Type for each tab
     let typeDefault;
     if (user) {

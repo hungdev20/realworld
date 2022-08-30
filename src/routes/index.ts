@@ -1,7 +1,8 @@
 import Home from "../pages/Home";
 import Register from "../pages/Register";
 import Login from "../pages/Login";
-import { AddArticle, DetailArticle } from "../pages/Articles";
+import AddArticle from "../pages/Articles/Add";
+import DetailArticle from "../pages/Articles/Detail";
 import User from "../pages/User";
 import Settings from "../pages/Settings";
 

@@ -10,7 +10,7 @@ const AuthGuard = ({ children }: { children: any }) => {
     }
 
     return <>{children}</>;
-}
+} 
 
 AuthGuard.propTypes = {
     children: PropTypes.node,

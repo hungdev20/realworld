@@ -5,21 +5,18 @@ import Col from "react-bootstrap/Col";
 
 import { Link, useParams } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { IrootReducer } from "../../index-reducer";
-import useCustomHook from "../../hooks/useCustomHook";
+import useArticle from "../../hooks/useArticle";
 import Articles from "../../components/Articles"
 
 function User() {
     const [follow, setFollow] = useState<any>(null);
-    const { fetchProfileUserRequest, followAuthorRequest } = useCustomHook();
+    const { fetchProfileUserRequest, followAuthorRequest, profile, requestFollowAuthorStatus, infoUser } = useArticle();
 
-    const userInfo = useSelector((state: IrootReducer) => state.user.data.user);
-    const username = userInfo?.username;
+    const username = infoUser?.username;
     const token = Boolean(localStorage.getItem("token"));
     const cx = classNames.bind(styles);
     const faPropIcon = faGear as IconProp;
@@ -29,8 +26,6 @@ function User() {
     const params = useParams();
 
     let user: string = params.user!;
-    const profile = useSelector((state: IrootReducer) => state.fetchProfileUser.data.profile);
-    const requestFollowAuthorStatus = useSelector((state: IrootReducer) => state.followAuthorArticle.requesting);
 
     const handleFollowAuthor = (username: string | undefined, following: boolean) => {
         let method = "post";
