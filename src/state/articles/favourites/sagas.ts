@@ -31,6 +31,7 @@ function* favoriteArticlesApi(favorited: boolean, slug: string | undefined) {
   };
 
   const res: Res = yield call(favoriteArticle, payload);
+  console.log(res);
 
   return res;
 }

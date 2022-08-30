@@ -24,7 +24,7 @@ function* updateSettingsApi(email?: string, username?: string, bio?: string, ima
             bio,
             image,
             password
-        } 
+        }
     };
     const res: Res = yield call(actionUser, method, data);
     return res;
@@ -35,10 +35,8 @@ function* updateSettingsFlow({ payload }: ReturnType<typeof updateSettingsReques
     if (res.status === 200) {
         yield put({ type: UPDATE_SETTINGS_SUCCESS, data: res.data });
         yield put({ type: ACTION_USER_SUCCESS, data: res.data });
-        // yield put({ type: SET_STATE_USER_DEFAULT });
-        if (payload?.username !== payload?.prevUsername) {
-            localStorage.removeItem("token");
-        }
+        localStorage.setItem("token", res.data?.user?.token ? res.data?.user?.token : "");
+       
         payload.navigate("/@" + res.data?.user?.username)
     } else {
         yield put({ type: UPDATE_SETTINGS_ERRORS, error: res });
