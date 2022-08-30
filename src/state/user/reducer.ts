@@ -1,56 +1,64 @@
 import {
-    FETCH_PROFILE_USER_REQUEST,
-    FETCH_PROFILE_USER_SUCCESS,
-    FETCH_PROFILE_USER_ERRORS
+    ACTION_USER_REQUESTING,
+    ACTION_USER_SUCCESS,
+    ACTION_USER_ERROR,
+    SET_STATE_USER_DEFAULT
 } from "./constants";
-import {ResponseUser} from "./sagas";
+import { User } from "../type";
 
 export interface UserState {
     requesting: boolean;
     success: boolean;
     errors: object;
-    data: ResponseUser;
+    data: User;
 }
 
 const initialState: UserState = {
     requesting: false,
     success: false,
     errors: {},
-    data: {}
+    data: {},
 };
 
 export interface Actions {
     type: string;
-    data?: ResponseUser,
-    error?: object;
-
+    data?: User;
+    error?: any;
 }
-const profileUserReducer = (state = initialState, action: Actions) => {
+
+const actionUserReducer = (state = initialState, action: Actions) => {
     switch (action.type) {
-        case FETCH_PROFILE_USER_REQUEST:
+        case ACTION_USER_REQUESTING:
             return {
                 requesting: true,
                 success: false,
                 errors: {},
-                data: {}
+                data: {},
             };
-        case FETCH_PROFILE_USER_SUCCESS:
+        case ACTION_USER_SUCCESS:
             return {
                 requesting: false,
                 success: true,
                 errors: {},
-                data: (action.data)
+                data: (action.data ? action.data : undefined),
             };
-        case FETCH_PROFILE_USER_ERRORS:
+        case ACTION_USER_ERROR:
             return {
                 requesting: false,
                 success: false,
                 errors: action.error,
-                data: {}
+                data: {},
+            };
+        case SET_STATE_USER_DEFAULT:
+            return {
+                requesting: false,
+                success: false,
+                errors: {},
+                data: {},
             };
         default:
             return state;
     }
 };
 
-export default profileUserReducer;
+export default actionUserReducer;

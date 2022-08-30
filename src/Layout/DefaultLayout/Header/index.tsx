@@ -4,21 +4,35 @@ import { Link, NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPenToSquare } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
 
-import { SET_STATE_DEFAULT } from "../../../../state/articles/detail/constants";
-import { SET_TAG_DEFAULT } from "../../../../state/articles/tags/constants";
-import { SET_STATE_PUBLISH_DEFAULT } from "../../../../state/articles/publish/constants";
+import { IrootReducer } from "../../../index-reducer";
+import { actionUserRequest } from "../../../state/user/actions";
+import { SET_STATE_DEFAULT } from "../../../state/articles/detail/constants";
+import { SET_TAG_DEFAULT } from "../../../state/articles/tags/constants";
+import { SET_STATE_PUBLISH_DEFAULT } from "../../../state/articles/publish/constants";
 
 function Header() {
   const cx = classNames.bind(styles);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   let activeClassName = "active";
   const token = Boolean(localStorage.getItem("token"));
-  const username = localStorage.getItem("username");
   const faPropIcon = faPenToSquare as IconProp;
   const faPropIcon1 = faGear as IconProp;
+  const user = useSelector((state: IrootReducer) => state.user.data?.user);
+  const username = user?.username;
+  useEffect(() => {
+    if (token) {
+      dispatch(actionUserRequest({
+        method: "get",
+        navigate
+      }))
+    }
+  }, [])
 
   return (
     <header className={cx("wrapper")}>
@@ -49,7 +63,7 @@ function Header() {
                 Home
               </NavLink>
             </li>
-            {token ?
+            {username && token ?
               <>
                 <li className={cx("nav-item")}>
                   <FontAwesomeIcon icon={faPropIcon} />
@@ -75,6 +89,12 @@ function Header() {
                       isActive ? cx(activeClassName) : undefined
                     }
                     to="/settings"
+                    onClick={() => {
+                      {
+                        dispatch({ type: SET_STATE_PUBLISH_DEFAULT })
+                        dispatch({ type: SET_TAG_DEFAULT })
+                      }
+                    }}
                   >
                     Settings
                   </NavLink>
@@ -85,6 +105,11 @@ function Header() {
                       isActive ? cx(activeClassName) : undefined
                     }
                     to={"/@" + username}
+                    onClick={() => {
+                      {
+                        dispatch({ type: SET_STATE_DEFAULT })
+                      }
+                    }}
                   >
                     {username}
                   </NavLink>

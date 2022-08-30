@@ -7,11 +7,7 @@ export default async function checkLogin(data: any) {
     data: data,
   })
     .then(function (response) {
-      return {
-        status: response.status,
-        username: response.data.user.username,
-        token: response.data.user.token,
-      };
+      return response;
     })
     .catch(function (error) {
       return error.response.data;

@@ -9,21 +9,26 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { requestAddArticle, editArticleRequest } from "../../state/articles/publish/actions";
-import { addTagRequest, removeTagRequest } from "../../state/articles/tags/actions";
 import { fetchDetailArticleRequest } from "../../state/articles/detail/actions";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { IrootReducer } from "../../index-reducer";
+import useCustomHook from "../../hooks/useCustomHook";
 
 function AddArticle() {
     const cx = classNames.bind(styles);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const params = useParams();
-
     const faPropIcon = faXmark as IconProp;
+
+    const { requestAddArticle,
+        editArticleRequest,
+        addTagRequest,
+        removeTagRequest,
+        fetchDetailArticleRequest
+    } = useCustomHook()
 
     const [title, setTitle] = useState("");
     const [body, setBody] = useState("");
@@ -41,11 +46,9 @@ function AddArticle() {
     const publishArticleState = useSelector((state: IrootReducer) => state.publishArticle);
     const detailArticle = useSelector((state: IrootReducer) => state.detailArticle.data.article);
 
-    const requestStatus = publishArticleState.requesting;    
+    const requestStatus = publishArticleState.requesting;
 
     const errorMessages = useSelector((state: IrootReducer) => state.publishArticle.errors);
-    console.log(errorMessages);
-    
     let errors: any = [];
     if (errorMessages != undefined) {
         errors = Object.entries(errorMessages);

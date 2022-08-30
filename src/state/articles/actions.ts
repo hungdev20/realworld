@@ -1,11 +1,11 @@
-import { FETCH_ARTICLES_REQUEST, DELETE_ARTICLE_REQUEST } from "./constants";
+import { FETCH_ARTICLES_REQUEST, DELETE_ARTICLE_REQUEST } from "./constants"; 
 
 interface Payload {
   tab: string;
   tag: string;
-  author?: string
+  author?: string;
 }
-export interface AddArticlePayload {
+export interface AddArticlePayload { 
   title: string;
   body: string;
   description: string;

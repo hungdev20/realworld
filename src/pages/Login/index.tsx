@@ -8,8 +8,8 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { loginRequest } from "../../state/login/actions";
 import { IrootReducer } from "../../index-reducer";
+import useCustomHook from "../../hooks/useCustomHook";
 
 
 const cx = classNames.bind(styles);
@@ -17,6 +17,7 @@ const cx = classNames.bind(styles);
 function Login() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const { loginRequest} = useCustomHook();
 
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
@@ -29,14 +30,17 @@ function Login() {
     errors = Object.entries(errorMessages);
   }
 
-  const handleLogin = (e: any) => { 
+  const handleLogin = (e: any) => {
     e.preventDefault();
 
     const payload = {
       email: email,
-      password: password
+      password: password,
+      navigate
     }
-    dispatch(loginRequest(payload, navigate));
+    console.log(payload);
+
+    dispatch(loginRequest(payload));
   };
 
   return (

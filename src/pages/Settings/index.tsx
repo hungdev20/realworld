@@ -8,24 +8,26 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux';
 import { useNavigate } from "react-router-dom";
-import { updateSettingsRequest, fetchSettingsRequest } from "../../state/settings/actions";
 import { LOGOUT_REQUEST } from "../../state/login/constants";
 import { IrootReducer } from "../../index-reducer";
+import useCustomHook from "../../hooks/useCustomHook";
 
 
 function Settings() {
+    const { updateSettingsRequest} = useCustomHook();
+
     interface infoUser {
         username: string;
         password: string;
         image: string;
         bio: string;
         email: string;
-    } 
+    }
     const navigate = useNavigate();
-    const cx = classNames.bind(styles);  
+    const cx = classNames.bind(styles);
     const dispatch = useDispatch();
-    const infoUser = useSelector((state: IrootReducer) => state.settings.data.user);
-
+    const infoUser = useSelector((state: IrootReducer) => state.user.data.user);
+    const prevUsername = infoUser?.username;
     const [image, setImage] = useState(infoUser != undefined ? infoUser.image : "");
     const [username, setUsername] = useState(infoUser != undefined ? infoUser.username : "");
     const [bio, setBio] = useState(infoUser != undefined ? infoUser.bio : "");
@@ -37,7 +39,7 @@ function Settings() {
 
     let errors: any = [];
     if (errorMessages != undefined) {
-        errors = Object.entries(errorMessages);
+        errors = Object.entries(errorMessages); 
     }
 
     const handleUpdateSettings = (e: any) => {
@@ -47,14 +49,12 @@ function Settings() {
             username,
             bio,
             image,
-            password
+            password,
+            prevUsername,
+            navigate
         }
-        dispatch(updateSettingsRequest(payload, navigate));
+        dispatch(updateSettingsRequest(payload));
     };
-    
-    useEffect(() => {
-        dispatch(fetchSettingsRequest())
-    }, [])
 
     return (
         <div className={cx("wrapper")}>
@@ -144,7 +144,7 @@ function Settings() {
                             >
                                 Or click here to logout
                             </button>
-                            
+
                         </Col>
                     </Row>
                 </div>

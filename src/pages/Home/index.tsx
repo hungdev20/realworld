@@ -3,7 +3,7 @@ import styles from "./Home.module.scss";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 
-import Sidebar from "../../components/Layout/DefaultLayout/Sidebar";
+import Sidebar from "../../Layout/DefaultLayout/Sidebar";
 import Articles from "../../components/Articles"
 
 function Home() {

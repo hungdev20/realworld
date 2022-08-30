@@ -1,5 +1,6 @@
 import signupWatcher from "./state/signup/sagas";
 import loginWatcher from "./state/login/sagas";
+import actionUserWatcher from "./state/user/sagas";
 import getSettingsWatcher from "./state/settings/sagas";
 import updateSettingsWatcher from "./state/settings/updateSagas";
 import articlesWatcher from "./state/articles/sagas";
@@ -10,7 +11,7 @@ import fetchCommentsWatcher from "./state/articles/comments/sagas";
 import addCommentWatcher from "./state/articles/comments/addCommentSagas";
 import deleteCommentWatcher from "./state/articles/comments/deleteCommentSagas";
 import followAuthorWatcher from "./state/articles/follow/sagas";
-import fetchProfileUserWatcher from "./state/user/sagas";
+import fetchProfileUserWatcher from "./state/profile/sagas";
 import {addTagWatcher} from "./state/articles/tags"
 import {publishArticleWatcher} from "./state/articles/publish"
 import {editArticleWatcher} from "./state/articles/publish"
@@ -21,6 +22,7 @@ export default function* IndexSaga() {
   yield all([
     signupWatcher(),
     loginWatcher(),
+    actionUserWatcher(),
     articlesWatcher(),
     favoriteWatcher(),
     getSettingsWatcher(),

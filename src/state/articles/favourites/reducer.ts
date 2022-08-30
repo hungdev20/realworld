@@ -41,7 +41,7 @@ const favoriteArticlesReducer = (state = initialState, action: Actions) => {
         ...state,
         requesting: false,
         success: true,
-        favorited: true,
+        favorited: true
       };
     case FAVORITE_ARTICLE_ERRORS:
       return {
@@ -64,7 +64,7 @@ const favoriteArticlesReducer = (state = initialState, action: Actions) => {
         errors: action.error,
         favorited: true,
       };
-   
+
     default:
       return state;
   }

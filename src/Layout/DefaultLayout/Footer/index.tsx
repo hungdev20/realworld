@@ -6,7 +6,7 @@ function Footer() {
   const cx = classNames.bind(styles);
 
   return (
-    
+    <div>
       <footer className={cx("wrapper")}>
         <div className={cx("container")}>
           <Link to="/" className={cx("logo-font")}>
@@ -20,6 +20,7 @@ function Footer() {
 
         </div>
       </footer>
+    </div>
 
   );
 }

@@ -1,7 +1,8 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { publicRoutes, privateRoutes } from "./routes";
 import PrivateRoute from "./pages/PrivateRoute";
-import DefaultLayout from "./components/Layout/DefaultLayout";
+import DefaultLayout from "./Layout/DefaultLayout";
+import AuthGuard from "./components/Guard";
 function App() {
   return (
     <Router>
@@ -18,7 +19,7 @@ function App() {
                   <Layout>
                     <Page />
                   </Layout>
-                }
+                } 
               />
             );
           })}
@@ -31,9 +32,9 @@ function App() {
                 path={route.path}
                 element={
                   <Layout>
-                    <PrivateRoute>
+                    <AuthGuard>
                       <Page />
-                    </PrivateRoute>
+                    </AuthGuard>
                   </Layout>
                 }
               />

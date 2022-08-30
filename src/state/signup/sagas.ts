@@ -1,15 +1,17 @@
 
 import { takeLatest, call, put } from "redux-saga/effects";
 import { SIGNUP_REQUESTING, SIGNUP_SUCCESS, SIGNUP_ERROR } from "./constants";
-import { LOGIN_REQUESTING } from "../login/constants"
-import addUser from "../../apis/user/addUser";
-import {Errors} from "./reducer";
+import { actionUser } from "../../apis/user";
+import { Errors } from "./reducer";
+import { User } from "../type";
+import { NavigateFunction } from "react-router-dom";
+import { ACTION_USER_SUCCESS } from "../user/constants";
 
 function* signupApi(
   username: string,
   email: string,
   password: string,
-  navigate: any
+  navigate: NavigateFunction
 ) {
   const data = {
     user: {
@@ -21,20 +23,16 @@ function* signupApi(
 
   interface Res {
     status: number;
-    data: object;
+    data: User;
     errors: Errors;
   }
-  const res: Res = yield call(addUser, data);
+  const res: Res = yield call(actionUser, "post", data, false);  
 
   if (res.status === 200) {
-    yield put({ type: SIGNUP_SUCCESS, email });
-    yield put({
-      type: LOGIN_REQUESTING, payload: {
-        email,
-        password
-      },
-      navigate
-    })
+    yield put({ type: SIGNUP_SUCCESS });
+    yield put({ type: ACTION_USER_SUCCESS, data: res.data });
+    localStorage.setItem("token", res.data?.user?.token ? res.data?.user?.token : "");
+    navigate("/");
   } else {
     yield put({ type: SIGNUP_ERROR, error: res.errors });
   }

@@ -6,31 +6,36 @@ import Form from "react-bootstrap/Form";
 import Card from 'react-bootstrap/Card';
 import moment from "moment";
 
-import { useDispatch } from "react-redux";
-import { useSelector } from 'react-redux'
+import { useSelector, useDispatch } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { Link, useParams } from "react-router-dom";
-import { fetchDetailArticleRequest } from "../../state/articles/detail/actions"
-import { fetchCommentsRequest, addCommentRequest, deleteCommentRequest } from "../../state/articles/comments/actions";
 import { IrootReducer } from "../../index-reducer";
-import { followAuthorRequest } from "../../state/articles/follow/actions"
-import { favoriteArticleRequest } from "../../state/articles/favourites/actions"
 import { deleteArticleRequest } from "../../state/articles/actions"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faHeart, faPen, faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 import { SET_STATE_DEFAULT } from "../../state/articles/detail/constants";
+import useCustomHook from "../../hooks/useCustomHook";
 
 
 function DetailArticle() {
     const params = useParams();
     const dispatch = useDispatch();
     const navigate = useNavigate();
-
     const cx = classNames.bind(styles);
-    const username = localStorage.getItem("username");
-    const token = Boolean(localStorage.getItem("token"));
+
+    const {
+        deleteCommentRequest,
+        addCommentRequest,
+        fetchCommentsRequest,
+        fetchDetailArticleRequest,
+        followAuthorRequest,
+        favoriteArticleRequest,
+    } = useCustomHook()
+
+    const userInfo = useSelector((state: IrootReducer) => state.user.data.user);
+    const username = userInfo?.username; const token = Boolean(localStorage.getItem("token"));
     const [comment, setComment] = useState("");
 
     const faPropIcon = faHeart as IconProp;
@@ -211,6 +216,7 @@ function DetailArticle() {
 
                                                 onClick={() => {
                                                     dispatch(favoriteArticleRequest({
+                                                        index: 1,
                                                         slug: detailArticle?.slug,
                                                         favorited: favorited,
 
@@ -384,8 +390,11 @@ function DetailArticle() {
 
                                             onClick={() => {
                                                 dispatch(favoriteArticleRequest({
+                                                    index: 1,
                                                     slug: detailArticle.slug,
                                                     favorited: favorited,
+
+
                                                 }))
                                                 setFavorited(!favorited)
                                             }}

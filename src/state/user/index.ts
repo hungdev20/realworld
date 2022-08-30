@@ -1,1 +1,1 @@
-export {default as profileUserReducer} from './reducer';
+export {default as actionUserReducer} from './reducer';

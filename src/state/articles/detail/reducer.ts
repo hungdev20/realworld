@@ -4,7 +4,7 @@ import {
     FETCH_DETAIL_ARTICLE_REQUEST,
     SET_STATE_DEFAULT
 } from "./constants";
-import { Article } from "../../interface";
+import { Article } from "../../type";
 
 interface Errors {
     title?: string[];

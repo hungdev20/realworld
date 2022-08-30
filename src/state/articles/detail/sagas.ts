@@ -9,7 +9,7 @@ import {
 
 } from "./constants"; 
 
-import {Article} from "../../interface";
+import {Article} from "../../type";
 
 interface Res {
   status: number; 

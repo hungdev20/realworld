@@ -1,20 +1,21 @@
-import { take, fork, call, put } from "redux-saga/effects";
+import { takeEvery, take, call, put } from "redux-saga/effects";
 import checkLogin from "../../apis/checkLogin";
-
+import { User } from "../type";
+import { ACTION_USER_SUCCESS } from "../user/constants";
 import {
   LOGIN_REQUESTING,
   LOGIN_SUCCESS,
   LOGIN_ERROR,
   LOGOUT_REQUEST,
 } from "./constants";
-
+import { SET_STATE_USER_DEFAULT } from "../../state/user/constants";
 import { setClient, unsetClient } from "../client/actions";
-import {Errors} from "./reducer";
+import { loginRequest } from "./actions";
+import { Errors } from "./reducer";
 
 interface Res {
   status: number;
-  username: string;
-  token: string;
+  data: User;
   errors: Errors;
 }
 function* loginApi(email: string, password: string) {
@@ -31,23 +32,22 @@ function* loginApi(email: string, password: string) {
 
 function* logout(navigate: any) {
   yield put(unsetClient());
+  yield put({ type: SET_STATE_USER_DEFAULT }); 
 
   localStorage.removeItem("token");
-  localStorage.removeItem("username");
   navigate("/login");
 }
 
-function* loginFlow(email: string, password: string, navigate: any) {
-  const res: Res = yield call(loginApi, email, password);
+function* loginFlow({ payload }: ReturnType<typeof loginRequest>) {
+  const res: Res = yield call(loginApi, payload.email, payload.password);
   if (res.status === 200) {
 
-    yield put(setClient(res.token)); 
+    yield put(setClient(res.data?.user?.token));
 
     yield put({ type: LOGIN_SUCCESS });
-
-    localStorage.setItem("token", res.token);
-    localStorage.setItem("username", res.username);
-    navigate("/");
+    yield put({ type: ACTION_USER_SUCCESS, data: res.data });
+    localStorage.setItem("token", res.data?.user?.token ? res.data?.user?.token : "");
+    payload.navigate("/");
   } else {
     yield put({ type: LOGIN_ERROR, error: res.errors });
   }
@@ -57,8 +57,8 @@ function* loginWatcher() {
   while (true) {
     const isLogin = Boolean(localStorage.getItem("token"));
     if (!isLogin) {
-      const { payload, navigate } = yield take(LOGIN_REQUESTING);
-      yield fork(loginFlow, payload.email, payload.password, navigate);
+      yield takeEvery(LOGIN_REQUESTING, loginFlow);
+      // yield fork(loginFlow, payload.email, payload.password, navigate);
     }
 
     const { navigate } = yield take(LOGOUT_REQUEST);

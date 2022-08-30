@@ -1,9 +1,22 @@
-import { FETCH_PROFILE_USER_REQUEST } from "./constants";
+import { NavigateFunction } from "react-router-dom";
+import { ACTION_USER_REQUESTING } from "./constants";
 
 
-export const fetchProfileUserRequest = (payload: string) => {
-    return {
-        type: FETCH_PROFILE_USER_REQUEST,
-        payload
-    } 
+export interface ActionUserPayload { 
+    username?: string;
+    email?: string;
+    password?: string;
+    method?: string;
+    navigate?: NavigateFunction;
 }
+
+export const actionUserRequest = (payload: ActionUserPayload) => {
+    return {
+        type: ACTION_USER_REQUESTING,
+        payload
+    };
+};
+
+
+
+

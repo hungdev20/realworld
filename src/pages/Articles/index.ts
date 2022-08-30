@@ -1,2 +1,2 @@
-export {default as AddArticle} from "./add";
-export {default as DetailArticle} from "./detail";
+export {default as AddArticle} from "./Add";
+export {default as DetailArticle} from "./Detail";

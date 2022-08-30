@@ -10,16 +10,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { IconProp } from "@fortawesome/fontawesome-svg-core";
 import { faGear, faPlus } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
-import { followAuthorRequest } from "../../state/articles/follow/actions";
-import { fetchProfileUserRequest } from "../../state/user/actions";
 import { IrootReducer } from "../../index-reducer";
-
+import useCustomHook from "../../hooks/useCustomHook";
 import Articles from "../../components/Articles"
 
 function User() {
     const [follow, setFollow] = useState<any>(null);
+    const { fetchProfileUserRequest, followAuthorRequest } = useCustomHook();
 
-    const username = localStorage.getItem("username");
+    const userInfo = useSelector((state: IrootReducer) => state.user.data.user);
+    const username = userInfo?.username;
     const token = Boolean(localStorage.getItem("token"));
     const cx = classNames.bind(styles);
     const faPropIcon = faGear as IconProp;
@@ -50,7 +50,7 @@ function User() {
     }, [user])
 
     return (
-        <div className={cx("wrapper")}> 
+        <div className={cx("wrapper")}>
             {profile && follow !== null ?
                 <div className={cx("profile-page")}>
 
@@ -66,9 +66,10 @@ function User() {
                                         {profile.bio}
                                     </p>
 
-                                    {username === profile.username ?
+                                    {username === profile.username && token ?
                                         <Link to="/settings" className={cx("settings", "btn-sm", "btn-outline-secondary")}>
                                             <FontAwesomeIcon icon={faPropIcon} />
+
                                             <span className={cx("action")}>
                                                 Edit Profile Settings
                                             </span>

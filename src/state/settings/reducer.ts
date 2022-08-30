@@ -7,13 +7,13 @@ import {
     UPDATE_SETTINGS_ERRORS
 } from "./constants";
 
-import {DataSettings} from "./sagas";
+import {User} from "../type";
 
 export interface SettingsState { 
     requesting: boolean;
     successful: boolean;
     errors: object;
-    data: DataSettings;
+    data: User;
 }
 
 const initialState: SettingsState = {
@@ -25,7 +25,7 @@ const initialState: SettingsState = {
 export interface Actions {
     type: string;
     error?: any;
-    data?: DataSettings;
+    data?: User;
 }
 const settingsReducer = (state = initialState, action: Actions) => {
     switch (action.type) {

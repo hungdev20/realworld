@@ -8,16 +8,15 @@ import { useDispatch } from "react-redux";
 import { useSelector } from 'react-redux'
 import { useNavigate } from "react-router-dom";
 import { IrootReducer } from "../../index-reducer";
-
-
-import requestSignup from "../../state/signup/actions"
+import useCustomHook from "../../hooks/useCustomHook";
 const cx = classNames.bind(styles);
 
 function Register() {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
+  const navigate = useNavigate(); 
+  const { requestSignup} = useCustomHook();
 
-  const [password, setPassword] = useState(""); 
+  const [password, setPassword] = useState("");  
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
 
@@ -34,9 +33,9 @@ function Register() {
     const payload = {
       username: username,
       email: email,
-      password: password
+      password: password,
     } 
-    dispatch(requestSignup(payload, navigate));
+    dispatch(requestSignup(payload, navigate)); 
   };
   
   return (

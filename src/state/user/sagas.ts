@@ -1,46 +1,39 @@
-import { call, takeEvery, put } from "redux-saga/effects";
-import fetchProfileUser from "../../apis/user/fetchProfileUser";
-import { fetchProfileUserRequest } from "./actions"
+import { call, put, takeEvery } from "redux-saga/effects";
+import actionUser from "../../apis/user/actionUser";
 import {
-    FETCH_PROFILE_USER_REQUEST,
-    FETCH_PROFILE_USER_SUCCESS,
-    FETCH_PROFILE_USER_ERRORS
+    ACTION_USER_REQUESTING,
+    ACTION_USER_SUCCESS,
+    ACTION_USER_ERROR
 
 } from "./constants";
 
-export interface ResponseUser {
-    profile?: {
-        username?: string;
-        bio?: string;
-        image?: string;
-        following: boolean;
-    }
-}
-
+import { User } from "../type";
+import { actionUserRequest } from "./actions";
 interface Res {
     status: number;
-    data: ResponseUser;
-    errors: object;
+    data: User;
+    errors: any;
 }
 
-function* fetchProfileUserApi(payload: string) {
+function* actionUserApi() {
 
-    const res: Res = yield call(fetchProfileUser, payload);
+    const res: Res = yield call(actionUser);
     return res;
 }
-function* fetchProfileUserFlow({ payload }: ReturnType<typeof fetchProfileUserRequest>) {
 
-    const res: Res = yield call(fetchProfileUserApi, payload);
+function* actionUserFlow({ payload }: ReturnType<typeof actionUserRequest>) {
+
+    const res: Res = yield call(actionUserApi);
     if (res.status === 200) {
-        yield put({ type: FETCH_PROFILE_USER_SUCCESS, data: res.data });
+        yield put({ type: ACTION_USER_SUCCESS, data: res.data });
     } else {
-        yield put({ type: FETCH_PROFILE_USER_ERRORS, error: res.errors });
+        yield put({ type: ACTION_USER_ERROR, error: res.errors });
     }
 }
 
-function* fetchProfileUserWatcher() {
-    yield takeEvery(FETCH_PROFILE_USER_REQUEST, fetchProfileUserFlow);
+function* actionUserWatcher() {
+    yield takeEvery(ACTION_USER_REQUESTING, actionUserFlow);
 
 }
 
-export default fetchProfileUserWatcher;
+export default actionUserWatcher;

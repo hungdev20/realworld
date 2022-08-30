@@ -3,27 +3,28 @@ import {
   FETCH_ARTICLES_SUCCESS,
   FETCH_ARTICLES_ERRORS,
 } from "./constants";
+import { Articles } from "../type";
 
 export interface ListArticleState {
   requesting: boolean;
   success: boolean;
   errors: object;
-  messages: string;
-  data: object;
+  data: Articles;
 }
 
-const initialState: ListArticleState = {
+const initialState: ListArticleState = { 
   requesting: false,
   success: false,
   errors: {},
-  messages: "",
-  data: [],
+  data: {
+    articlesCount: 0
+  },
 };
 
 export interface Actions {
   type: string;
-  data?: object;
-  error?: any;
+  data?: Articles;
+  error?: object;
 }
 
 const articlesReducer = (state = initialState, action: Actions) => {
@@ -33,34 +34,23 @@ const articlesReducer = (state = initialState, action: Actions) => {
         requesting: true,
         success: false,
         errors: {},
-        data: [],
-        messages: "Loading articles...",
+        data: {}
       };
     case FETCH_ARTICLES_SUCCESS:
       return {
         requesting: false,
         success: true,
         errors: {},
-        data: (action.data ? action.data : undefined),
-        messages: "Fetches articles successfully",
+        data: (action.data ? action.data : undefined)
       };
     case FETCH_ARTICLES_ERRORS:
       return {
         requesting: false,
         success: false,
         errors: action.error,
-        data: [],
-        messages: "",
+        data: {}
       };
-    case FETCH_ARTICLES_ERRORS:
-      return {
-        requesting: false,
-        success: false,
-        errors: action.error,
-        data: [],
-        messages: "",
-      };
-    
+
     default:
       return state;
   }

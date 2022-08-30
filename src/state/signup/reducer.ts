@@ -10,14 +10,12 @@ export interface SignUpState {
   requesting: boolean;
   success: boolean;
   errors: Errors;
-  messages: object;
 }
 
 const initialState: SignUpState = {
   requesting: false,
   success: false,
   errors: {},
-  messages: [],
 };
 
 export interface Actions {
@@ -32,26 +30,18 @@ function signupReducer(state = initialState, action: Actions) {
         requesting: true,
         success: false,
         errors: {},
-        messages: [{ body: "Signing up...", time: new Date() }],
       };
     case SIGNUP_SUCCESS:
       return {
         requesting: false,
         success: true,
-        errors: [],
-        messages: [
-          {
-            body: `Signed up successfull for ${action.email}`,
-            time: new Date(),
-          },
-        ],
+        errors: []
       };
     case SIGNUP_ERROR:
       return {
         requesting: false,
         success: false,
         errors: action.error,
-        messages: [],
       };
     default:
       return state;

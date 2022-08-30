@@ -26,10 +26,7 @@ export default async function fetchArticles(data: any) {
     data: data,
   })
     .then(function (response) {
-      return {
-        status: response.status,
-        data: response.data.articles
-      };
+      return response;
     })
     .catch(function (error) {
       return error.response.data;

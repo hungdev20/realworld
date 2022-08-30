@@ -1,5 +1,6 @@
 import { signupReducer } from "./state/signup";
 import { loginReducer } from "./state/login";
+import { actionUserReducer } from "./state/user";
 import { clientReducer } from "./state/client";
 import { settingsReducer } from "./state/settings";
 import { articlesReducer } from "./state/articles";
@@ -13,9 +14,10 @@ import { publishArticleReducer } from "./state/articles/publish";
 import { addTagArticleReducer } from "./state/articles/tags";
 
 import { favoriteArticlesReducer } from "./state/articles/favourites";
-import { profileUserReducer } from "./state/user";
+import { profileUserReducer } from "./state/profile";
 import { SignUpState } from "./state/signup/reducer";
 import { LoginState } from "./state/login/reducer";
+import { UserState } from "./state/user/reducer";
 import { ClientState } from "./state/client/reducer";
 import { SettingsState } from "./state/settings/reducer";
 import { FavoriteArticleState } from "./state/articles/favourites/reducer";
@@ -28,12 +30,13 @@ import { ListCommentState } from "./state/articles/comments/reducer";
 import { AddCommentState } from "./state/articles/comments/addCommentReducer";
 import { DeleteCommentState } from "./state/articles/comments/deleteCommentReducer";
 import { FollowAuthorState } from "./state/articles/follow/reducer";
-import { UserState } from "./state/user/reducer";
+import { ProfileState } from "./state/profile/reducer";
 import { combineReducers } from "redux";
 
 export interface IrootReducer {
   signup: SignUpState;
   login: LoginState;
+  user: UserState;
   client: ClientState;
   settings: SettingsState;
   favorites: FavoriteArticleState;
@@ -46,11 +49,12 @@ export interface IrootReducer {
   deleteCommentArticle: DeleteCommentState;
   addTagArticle: TagArticleState;
   followAuthorArticle: FollowAuthorState;
-  fetchProfileUser: UserState;
+  fetchProfileUser: ProfileState;
 }
 const rootReducer = combineReducers({
   signup: signupReducer,
   login: loginReducer,
+  user: actionUserReducer,
   client: clientReducer,
   settings: settingsReducer,
   favorites: favoriteArticlesReducer,

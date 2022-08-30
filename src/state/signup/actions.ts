@@ -1,4 +1,5 @@
 
+import { NavigateFunction } from "react-router-dom";
 import { SIGNUP_REQUESTING } from "./constants";
 
 export interface User {
@@ -6,7 +7,7 @@ export interface User {
   email: string;
   password: string;
 }
-function requestSignup(payload: User, navigate: any) {
+function requestSignup(payload: User, navigate: NavigateFunction) {
   return {
     type: SIGNUP_REQUESTING,
     payload,

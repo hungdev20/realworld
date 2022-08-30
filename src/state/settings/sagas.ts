@@ -1,32 +1,23 @@
 import { call, put, takeEvery } from "redux-saga/effects";
-import getInfoUser from "../../apis/user/getInfoUser";
+import { actionUser } from "../../apis/user";
 import {
   FETCH_SETTINGS_REQUESTING,
-  FETCH_SETTINGS_SUCCESS,
+  FETCH_SETTINGS_SUCCESS, 
   FETCH_SETTINGS_ERRORS,
 
 } from "./constants";
 
-export interface DataSettings {
-  user?: {
-    username?: string;
-    email?: string;
-    bio?: string;
-    image?: string;
-    token?: string;
-    password?: string;
-  }
-}
+import { User } from "../type";
 
 interface Res {
   status: number;
-  data: DataSettings;
+  data: User;
   errors: any;
 }
 
 function* getSettingsApi() {
 
-  const res: Res = yield call(getInfoUser);
+  const res: Res = yield call(actionUser);
   return res;
 }
 

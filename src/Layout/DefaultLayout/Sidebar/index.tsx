@@ -5,8 +5,8 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useDispatch} from "react-redux";
-import { requestFetchArticles } from "../../../../state/articles/actions";
-import { SET_STATE_DEFAULT } from "../../../../state/articles/detail/constants"
+import { requestFetchArticles } from "../../../state/articles/actions";
+import { SET_STATE_DEFAULT } from "../../../state/articles/detail/constants"
 function Sidebar() {
   const dispatch = useDispatch(); 
   const cx = classNames.bind(styles); 
